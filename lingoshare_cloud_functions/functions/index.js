@@ -18,10 +18,13 @@ exports.get_token = functions.https.onCall((data, context) => {
   );
 
   // If no room is specified, use the user's uid as the room name
-  const room = data.room || context.auth.uid;
+  // const room = data.room || context.auth.uid;
+  const room = "room1"
 
   const name = context.auth.token.name || null;
-  accessToken.identity = name;
+
+  console.log(name)
+  accessToken.identity = "user";
   console.log(room);
   const videoGrant = new twilio.jwt.AccessToken.VideoGrant({
     room: room,

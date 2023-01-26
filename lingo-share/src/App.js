@@ -4,7 +4,7 @@ import Login from "./components/login";
 import Account from "./components/account";
 import Crud from "./components/crud";
 import Signup from "./components/signup";
-import Video from "./components/video";
+import VideoChat from "./components/videochat";
 import React, { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import { BrowserRouter as Router } from "react-router-dom";
@@ -25,7 +25,7 @@ function App() {
               <Route path="/signup" element={<Signup />} />
               <Route path="/account" element={<ProtectedRoute><Account /></ProtectedRoute>} />
               <Route path="/crud" element={<ProtectedRoute><Crud /></ProtectedRoute>} />
-              <Route path="/video" element={<ProtectedRoute><Video /></ProtectedRoute>} />
+              <Route path="/videochat" element={<ProtectedRoute><VideoChat /></ProtectedRoute>} />
             </Routes>
           </div>
         </Router>
