@@ -1,6 +1,6 @@
 import { Button } from "@chakra-ui/react";
 import React from "react";
-import { createContext, useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Video from "twilio-video";
 import Participant from "./participant";
 
@@ -14,18 +14,21 @@ const Room = ({ roomName, token, handleLeave }) => {
 
   useEffect(() => {
     const participantConnected = (participant) => {
+      console.log("CONNECTED")
       setParticipants((prevParticipants) => [...prevParticipants, participant]);
     };
 
     const participantDisconnected = (participant) => {
+      console.log("DISCONNECTED")
       setParticipants((prevParticipants) =>
         prevParticipants.filter((p) => p !== participant)
       );
     };
-    
+
     // CHANGE ROOM HERE
 
-    Video.connect(token, { name: 'room1' }).then((room) => {
+    Video.connect(token, { name: "room1" }).then((room) => {
+      console.log("STARTING ROOM")
       setRoom(room);
       room.on("participantConnected", participantConnected);
       room.on("participantDisconnected", participantDisconnected);
@@ -54,9 +57,10 @@ const Room = ({ roomName, token, handleLeave }) => {
       <Button onClick={handleLeave}>Logout</Button>
       <div className="local-participant">
         {room ? (
-          <p key={room.localParticipant.sid}>
-            {room.localParticipant.identity}
-          </p>
+          <Participant
+            key={room.localParticipant.sid}
+            participant={room.localParticipant}
+          />
         ) : (
           ""
         )}

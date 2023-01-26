@@ -7,26 +7,26 @@ import Room from "./room";
 
 const VideoChat = () => {
   const [username, setUsername] = useState("");
-  const [room, setRoom] = useState("");
+  const [roomName, setRoomName] = useState("");
   const [token, setToken] = useState(null);
 
   const handleUsernameChange = useCallback((event) => {
     setUsername(event.target.value);
   }, []);
 
-  const handleRoomChange = useCallback((event) => {
-    setRoom(event.target.value);
+  const handleRoomNameChange = useCallback((event) => {
+    setRoomName(event.target.value);
   }, []);
 
   const handleSubmit = useCallback(
     async (event) => {
       event.preventDefault();
-      const result = await get_token({ room: room });
+      const result = await get_token({ identity: username, room: roomName });
       const data = result.data;
       setToken(data.token);
       console.log(data.token);
     },
-    [room]
+    [username, roomName]
   );
 
   const handleLeave = useCallback(async (event) => {
@@ -37,7 +37,7 @@ const VideoChat = () => {
   if (token) {
     render = (
       <div>
-        <Room roomName={room} token={token} handleLeave={handleLeave} />
+        <Room roomName={roomName} token={token} handleLeave={handleLeave} />
       </div>
     );
   } else {
@@ -46,9 +46,9 @@ const VideoChat = () => {
         <h1>VideoChat</h1>
         <Lobby
           username={username}
-          room={room}
+          roomName={roomName}
           handleUsernameChange={handleUsernameChange}
-          handleRoomChange={handleRoomChange}
+          handleRoomNameChange={handleRoomNameChange}
           handleSubmit={handleSubmit}
         />
       </div>

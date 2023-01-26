@@ -11,21 +11,23 @@ exports.get_token = functions.https.onCall((data, context) => {
     );
   }
 
+  const identity = data.identity || "user"
+
   const accessToken = new twilio.jwt.AccessToken(
     process.env.TWILIO_ACCOUNT_SID,
     process.env.TWILIO_API_KEY_SID,
-    process.env.TWILIO_API_KEY_SECRET
+    process.env.TWILIO_API_KEY_SECRET,
+    {identity: identity}
   );
 
   // If no room is specified, use the user's uid as the room name
   // const room = data.room || context.auth.uid;
-  const room = "room1"
+  const room = data.room || "room"
+  // const name = context.auth.token.name || null;
 
-  const name = context.auth.token.name || null;
-
-  console.log(name)
-  accessToken.identity = "user";
-  console.log(room);
+  console.log("identity: " + identity)
+  console.log("room: " + room)
+  
   const videoGrant = new twilio.jwt.AccessToken.VideoGrant({
     room: room,
   });

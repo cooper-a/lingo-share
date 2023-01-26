@@ -9,8 +9,8 @@ const Participant = ({ participant }) => {
 
   const trackpubsToTracks = (trackMap) =>
     Array.from(trackMap.values())
-      .map((publication) => publication.track)
-      .filter((track) => track !== null);
+      .map(publication => publication.track)
+      .filter(track => track !== null);
 
   useEffect(() => {
     const trackSubscribed = (track) => {
@@ -45,7 +45,7 @@ const Participant = ({ participant }) => {
   useEffect(() => {
     const videoTrack = videoTracks[0];
     if (videoTrack) {
-      videoTrack.attatch(videoRef.current);
+      videoTrack.attach(videoRef.current);
       return () => {
         videoTrack.detach();
       };
@@ -55,7 +55,7 @@ const Participant = ({ participant }) => {
   useEffect(() => {
     const audioTrack = audioTracks[0];
     if (audioTrack) {
-      audioTrack.attatch(audioRef.current);
+      audioTrack.attach(audioRef.current);
       return () => {
         audioTrack.detach();
       };
