@@ -1,8 +1,11 @@
 import React from 'react';
-import { Input, Button } from '@chakra-ui/react';
+import { Input, Button, ChakraProvider, Text } from '@chakra-ui/react';
+import PasswordInput from './passwordinput';
 import { useState } from 'react';
 import { link, useNavigate } from 'react-router-dom';
 import { UserAuth } from '../contexts/AuthContext';
+import "../styles/homepage.css";
+import Navbar from './navbar';
 
 export default function Signup() {
     const [email, setEmail] = useState(null);
@@ -16,7 +19,8 @@ export default function Signup() {
         setError('');
         try {
             await createUser(email, password);
-            navigate('/account');
+            console.log('successfully added user');
+            navigate("/account");
         } catch (e) {
             setError(e.message);
             console.log(e.message);
@@ -29,10 +33,15 @@ export default function Signup() {
 
     return (
         <div>
-            <h1>Sign up for an Account</h1>
-            <Input onChange={(e) => setEmail(e.target.value)} placeholder="Email..." />
-            <Input onInput={handleChange} placeholder="password..."/>
-            <Button colorScheme='blue' onClick={handleSubmit}>Sign Up</Button>
+            <Navbar />
+            <ChakraProvider>
+                <div className='welcome-pg'>
+                    <Text fontSize='4xl'>Sign Up</Text>
+                    <Input onChange={(e) => setEmail(e.target.value)} width={'300px'} placeholder="Email..." />
+                    <PasswordInput onChange={handleChange} placeholder="password..." />
+                    <Button variant='outline' onClick={handleSubmit}>Sign Up</Button>
+                </div>
+            </ChakraProvider>
         </div>
     );
 }

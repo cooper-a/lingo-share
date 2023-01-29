@@ -1,8 +1,10 @@
 import React from 'react';
-import { Input, Button } from '@chakra-ui/react';
+import { ChakraProvider, Input, Button, Text } from '@chakra-ui/react';
+import PasswordInput from './passwordinput';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserAuth } from '../contexts/AuthContext';
+import Navbar from './navbar';
 
 export default function Login() {
     const [email, setEmail] = useState(null);
@@ -29,10 +31,15 @@ export default function Login() {
 
     return (
         <div>
-            <h1>Sign in for an Account</h1>
-            <Input onChange={(e) => setEmail(e.target.value)} placeholder="Email..." />
-            <Input onInput={handleChange} placeholder="password..."/>
-            <Button colorScheme='blue' onClick={handleSubmit}>Sign In</Button>
+            <ChakraProvider>
+                <Navbar />
+                <div className='welcome-pg'>
+                    <Text fontSize='5xl'>Login</Text>
+                    <Input onChange={(e) => setEmail(e.target.value)} width={'300px'} placeholder="Email..." />
+                    <PasswordInput onChange={handleChange} placeholder="password..." />
+                    <Button variant='outline' onClick={handleSubmit}>Sign In</Button>
+                </div>
+            </ChakraProvider>
         </div>
     );
 }

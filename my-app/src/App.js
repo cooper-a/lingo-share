@@ -4,12 +4,13 @@ import Login from "./components/login";
 import Account from "./components/account";
 import Crud from "./components/crud";
 import React, { useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { BrowserRouter as Router } from "react-router-dom";
 import { ChakraProvider } from "@chakra-ui/react";
 import Signup from "./components/signup";
 import { AuthContextProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./components/protectedRoute";
+import Navbar from "./components/navbar";
 
 function App() {
   return (
@@ -17,7 +18,7 @@ function App() {
       <AuthContextProvider>
         <Router>
           <div className="App">
-            <h1>LingoShare</h1>
+            {/* <h1>LingoShare</h1> */}
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />

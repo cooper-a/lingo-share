@@ -1,36 +1,30 @@
 import React from "react";
-import { useRef } from "react";
-
-import { db } from "../firebase";
-import { addDoc, collection } from "@firebase/firestore";
+import { Button, ChakraProvider, Text } from '@chakra-ui/react'
+import { ArrowForwardIcon } from '@chakra-ui/icons'
+import "../styles/nav.css";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
-  const nameRef = useRef();
-  const ref = collection(db, "people");
+  const navigate = useNavigate();
 
-  const handleSave = (e) => {
-    e.preventDefault();
-    console.log(nameRef.current.value);
-
-    let data = {
-      name: nameRef.current.value,
-    };
-
-    try {
-      addDoc(ref, data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const handleClick = (path) => {
+    navigate("/" + path);
+  }
 
   return (
     <div>
-      <h1>Home</h1>
-      <form onSubmit={handleSave}>
-        <label>Add to DB:</label>
-        <input type="text" ref={nameRef} />
-        <button type="submit">Submit</button>
-      </form>
+      <ChakraProvider>
+        <div className="welcome-pg">
+          <Text fontSize='5xl'>Welcome to LingoShare!</Text>
+          <Button onClick={() => handleClick("signup")} className="btn" rightIcon={<ArrowForwardIcon />} variant='outline'>
+            Sign Up
+          </Button>
+          <Button onClick={() => handleClick("login")} className="btn" rightIcon={<ArrowForwardIcon />} variant='outline'>
+            Login
+          </Button>
+        </div>
+      </ChakraProvider>      
+
     </div>
   );
 }
