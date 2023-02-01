@@ -10,30 +10,6 @@ export default function Account() {
     const {user, logout} = UserAuth();
     const navigate = useNavigate();
 
-    const user_documents = ref(rtdb, "users/" + user.uid);
-
-    const addOnboardedStatus = () => {
-        let data = {
-            isOnboarded: false,
-        };
-        const isOnboardedRef = ref(rtdb, "users/" + user.uid);
-        set(isOnboardedRef, data);
-    }
-
-    useEffect(() => {
-        let isUserOnboarded = false;
-        onValue(user_documents, (snapshot) => {
-            const snapshotVal = snapshot.val();
-            console.log(snapshotVal);
-            const hasOnboardProperty = snapshotVal.hasOwnProperty('isOnboarded');
-            if (hasOnboardProperty) {
-                const { isOnboarded } = snapshotVal;
-                if (isOnboarded) isUserOnboarded = true;
-            }
-        })
-        if (!isUserOnboarded) addOnboardedStatus();
-    })
-
     const handleClick = async () => {
         try
         {

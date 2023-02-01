@@ -2,7 +2,7 @@ import React from 'react';
 import { Input, Button, ChakraProvider, Text } from '@chakra-ui/react';
 import PasswordInput from './passwordinput';
 import { useState } from 'react';
-import { link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { UserAuth } from '../contexts/AuthContext';
 import "../styles/homepage.css";
 import Navbar from './navbar';
@@ -20,7 +20,7 @@ export default function Signup() {
         try {
             await createUser(email, password);
             console.log('successfully added user');
-            navigate("/account");
+            navigate("/userselect");
         } catch (e) {
             setError(e.message);
             console.log(e.message);
