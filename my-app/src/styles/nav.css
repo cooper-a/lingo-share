@@ -11,3 +11,13 @@
   margin-left: auto;
   padding: 20px;
 }
+
+.user-icon {
+  width: 35px;
+  height: 35px;
+}
+
+.menu-user-icon {
+  width: 20px;
+  height: 20px;
+}

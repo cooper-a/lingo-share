@@ -8,14 +8,15 @@ import {
   MenuList,
   Text,
 } from "@chakra-ui/react";
-// import {
-//   AddIcon,
-//   EditIcon,
-//   ExternalLinkIcon,
-//   HamburgerIcon,
-//   RepeatIcon,
-//   WarningIcon,
-// } from "@chakra-ui/icons";
+import {
+  AddIcon,
+  EditIcon,
+  ExternalLinkIcon,
+  HamburgerIcon,
+  RepeatIcon,
+  WarningIcon,
+} from "@chakra-ui/icons";
+import Icon from "@adeira/icons";
 import "../styles/nav.css";
 import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../contexts/AuthContext";
@@ -45,29 +46,29 @@ export default function Navbar() {
           <div className="logo" onClick={() => handleClick("")}>
             <Text fontSize={"4xl"}>LingoShare</Text>
           </div>
-          {/* <Button className="logout-btn" onClick={handleLogout} variant="link">
-            Logout
-          </Button> */}
           <div className="logout-btn">
-            {/* <Menu className="logout-btn">
+            <Menu>
               <MenuButton
                 as={IconButton}
                 aria-label="Options"
-                icon={<HamburgerIcon />}
+                icon={<Icon className="user-icon" name="user_male" />}
                 variant="outline"
               />
               <MenuList>
-                <MenuItem icon={<ExternalLinkIcon />} command="⌘N">
+                <MenuItem
+                  icon={<Icon className="menu-user-icon" name="settings" />}
+                  onClick={() => handleClick("account")}
+                >
                   Account
                 </MenuItem>
-                <MenuItem icon={<RepeatIcon />} command="⌘⇧N">
-                  Open Closed Tab
-                </MenuItem>
-                <MenuItem icon={<EditIcon />} command="⌘O">
-                  Open File...
+                <MenuItem
+                  icon={<Icon className="menu-user-icon" name="lock" />}
+                  onClick={() => handleLogout()}
+                >
+                  Logout
                 </MenuItem>
               </MenuList>
-            </Menu> */}
+            </Menu>
           </div>
         </div>
       </ChakraProvider>

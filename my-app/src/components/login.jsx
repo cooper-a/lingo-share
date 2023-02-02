@@ -18,7 +18,7 @@ export default function Login() {
     setError("");
     try {
       await login(email, password);
-      navigate("/account");
+      navigate("/dashboard");
     } catch (e) {
       setError(e.message);
       console.log(e.message);
