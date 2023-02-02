@@ -1,17 +1,17 @@
 .welcome-pg {
-    font-family: 'Roboto';
-    display: flex;
-    height: 100%;
-    margin-top: 10%;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    min-height: 100vh;
-    gap: 15px;
+  font-family: "Roboto";
+  display: flex;
+  height: 100%;
+  margin-top: 10%;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;
+  gap: 15px;
 }
 
 .btn {
-    border-radius: 50%;
-    padding: 10px;
-    width: 120px;
+  border-radius: 50%;
+  padding: 10px;
+  width: 120px;
 }
