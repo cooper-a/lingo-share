@@ -1,0 +1,24 @@
+.navbar {
+  display: flex;
+}
+
+.logo {
+  align-self: flex-start;
+  padding: 15px;
+  cursor: pointer;
+}
+
+.logout-btn {
+  margin-left: auto;
+  padding: 20px;
+}
+
+.user-icon {
+  width: 30px;
+  height: 30px;
+}
+
+.menu-user-icon {
+  width: 20px;
+  height: 20px;
+}

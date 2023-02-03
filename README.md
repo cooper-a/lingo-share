@@ -1,2 +1,3 @@
-# firebase-auth-crud
-Using this repo to learn about firebase auth and making a react based crud
+# LingoShare
+A platform to connect older adult native Mandarin speakers with younger adult language learners through
+interactive, prompt-based video calls and language learning activities

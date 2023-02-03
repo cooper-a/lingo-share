@@ -1,58 +1,58 @@
-import React from "react";
-import { useRef } from "react";
-import { Button } from "@chakra-ui/react";
-import { db } from "../firebase";
-import { addDoc, collection } from "@firebase/firestore";
-import { get_token } from "../firebase";
+import "../styles/nav.css";
+import { ArrowForwardIcon } from "@chakra-ui/icons";
+import { Button, ChakraProvider, Text } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
+import { UserAuth } from "../contexts/AuthContext";
+import React, { useEffect, useState } from "react";
 
 export default function Home() {
-  const nameRef = useRef();
-  const ref = collection(db, "people");
+  const navigate = useNavigate();
+  const { user } = UserAuth();
+  const [showLogin, setShowLogin] = useState(false);
+  // console.log(user);
 
-  const handleSave = (e) => {
-    e.preventDefault();
-    console.log(nameRef.current.value);
+  const handleClick = (path) => {
+    navigate("/" + path);
+  };
 
-    let data = {
-      name: nameRef.current.value,
-    };
-
-    try {
-      addDoc(ref, data);
-    } catch (error) {
-      console.log(error);
+  useEffect(() => {
+    if (user && Object.keys(user).length !== 0) {
+      navigate("/dashboard");
+    } else if (user === null) {
+      setShowLogin(true);
     }
-  };
-
-  const getToken = (e) => {
-    e.preventDefault();
-    get_token({room: "testing"})
-      .then((result) => {
-        // Read result of the Cloud Function.
-        /** @type {any} */
-        const data = result.data;
-        const token = data.token;
-        // console.log(token);
-      })
-      .catch((error) => {
-        // Getting the Error details.
-        const code = error.code;
-        const message = error.message;
-        const details = error.details;
-        // ...
-      });
-  };
-
+  }, [user, navigate, showLogin]);
 
   return (
     <div>
-      <h1>Home</h1>
-      <form onSubmit={handleSave}>
-        <label>Add to DB:</label>
-        <input type="text" ref={nameRef} />
-        <button type="submit">Submit</button>
-        <Button onClick={getToken}>GetTokenTest</Button>
-      </form>
+      {showLogin ? (
+        <ChakraProvider>
+          <div className="welcome-pg">
+            <Text fontSize="5xl">Welcome to LingoShare!</Text>
+            <Button
+              className="btn"
+              height={"50px"}
+              marginTop={"50px"}
+              onClick={() => handleClick("signup")}
+              rightIcon={<ArrowForwardIcon />}
+              variant="outline"
+            >
+              Sign Up
+            </Button>
+            <Button
+              className="btn"
+              height={"50px"}
+              onClick={() => handleClick("login")}
+              rightIcon={<ArrowForwardIcon />}
+              variant="outline"
+            >
+              Login
+            </Button>
+          </div>
+        </ChakraProvider>
+      ) : (
+        <></>
+      )}
     </div>
   );
 }
