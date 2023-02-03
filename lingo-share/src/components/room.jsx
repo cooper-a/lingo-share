@@ -7,8 +7,11 @@ const Room = ({ roomName, room, handleLogout }) => {
   useEffect(() => {
     // Here we define what happens when a remote participant joins
     const participantConnected = (participant) => {
-      console.log("Participant %s connected", participant.identity)
-      setParticipants((prevParticipants) => [...prevParticipants, participant]);
+      console.log("HERE");
+      setParticipants((prevParticipants) => [
+        ...prevParticipants,
+        participant,
+      ]);
     };
 
     // This is what happens when a remote participant leaves
@@ -23,6 +26,8 @@ const Room = ({ roomName, room, handleLogout }) => {
 
     // This is what happens when you join the room
     // It will trigger the participantConnected function for each participant
+    // This is being called twice for some reason
+    console.log(room.participants)
     room.participants.forEach(participantConnected);
     return () => {
       room.off("participantConnected", participantConnected);
@@ -30,7 +35,11 @@ const Room = ({ roomName, room, handleLogout }) => {
     };
   }, [room]);
 
-  const remoteParticipants = participants.map((participant) => (
+  // filter out any participants that are repeated
+  const uniqueParticipants = participants.filter((p, index) => {
+    return participants.indexOf(p) === index;
+  });
+  const remoteParticipants = uniqueParticipants.map((participant) => (
     <Participant key={participant.sid} participant={participant} />
   ));
 
@@ -49,6 +58,7 @@ const Room = ({ roomName, room, handleLogout }) => {
         )}
       </div>
       <h3>Remote Participants</h3>
+      {/* {console.log(room.participants)} */}
       <div className="remote-participants">{remoteParticipants}</div>
     </div>
   );
