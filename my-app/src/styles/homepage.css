@@ -1,0 +1,32 @@
+.welcome-pg {
+  font-family: "Roboto";
+  display: flex;
+  height: 100%;
+  margin-top: 10%;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;
+  gap: 15px;
+}
+
+.field-pg {
+  font-family: "Roboto";
+  display: flex;
+  height: 100%;
+  margin-top: 4%;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;
+  gap: 15px;
+}
+
+.btn {
+  padding: 10px;
+  width: 280px;
+}
+
+.selection-btn {
+  width: 400px;
+}
