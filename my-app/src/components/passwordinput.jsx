@@ -8,15 +8,16 @@ export default function PasswordInput({ onChange }) {
   const handleClick = () => setShow(!show);
 
   return (
-    <InputGroup size="md" width={'300px'}>
+    <InputGroup size="md" width={"300px"}>
       <Input
         pr="4.5rem"
         type={show ? "text" : "password"}
         placeholder="Enter password"
         onChange={onChange}
+        height={"50px"}
       />
-      <InputRightElement width="4.5rem">
-        <Button h="1.75rem" size="sm" onClick={handleClick}>
+      <InputRightElement width="4.5rem" paddingTop="10px">
+        <Button h="2.75rem" size="sm" onClick={handleClick}>
           {show ? "Hide" : "Show"}
         </Button>
       </InputRightElement>

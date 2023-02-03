@@ -30,16 +30,19 @@ export default function Home() {
           <div className="welcome-pg">
             <Text fontSize="5xl">Welcome to LingoShare!</Text>
             <Button
-              onClick={() => handleClick("signup")}
               className="btn"
+              height={"50px"}
+              marginTop={"50px"}
+              onClick={() => handleClick("signup")}
               rightIcon={<ArrowForwardIcon />}
               variant="outline"
             >
               Sign Up
             </Button>
             <Button
-              onClick={() => handleClick("login")}
               className="btn"
+              height={"50px"}
+              onClick={() => handleClick("login")}
               rightIcon={<ArrowForwardIcon />}
               variant="outline"
             >

@@ -35,12 +35,23 @@ export default function UserSelect() {
     <div>
       <Navbar />
       <ChakraProvider>
-        <div className="welcome-pg">
+        <div className="field-pg">
           <Text fontSize="4xl">You are...</Text>
-          <Button variant="outline" onClick={() => handleSelection("native")}>
+          <Button
+            variant="outline"
+            className="selection-btn"
+            height={"50px"}
+            onClick={() => handleSelection("native")}
+            marginTop={"50px"}
+          >
             A native Mandarin speaker
           </Button>
-          <Button variant="outline" onClick={() => handleSelection("learner")}>
+          <Button
+            className="selection-btn"
+            variant="outline"
+            height={"50px"}
+            onClick={() => handleSelection("learner")}
+          >
             Learning to speak Mandarin
           </Button>
         </div>

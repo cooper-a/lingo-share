@@ -1,5 +1,6 @@
 import React from "react";
 import { Input, Button, ChakraProvider, Text } from "@chakra-ui/react";
+import { ArrowForwardIcon } from "@chakra-ui/icons";
 import PasswordInput from "./passwordinput";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -35,15 +36,23 @@ export default function Signup() {
     <div>
       <Navbar />
       <ChakraProvider>
-        <div className="welcome-pg">
-          <Text fontSize="4xl">Sign Up</Text>
+        <div className="field-pg">
+          <Text fontSize="5xl">Sign Up</Text>
           <Input
             onChange={(e) => setEmail(e.target.value)}
             width={"300px"}
             placeholder="Email..."
+            height={"50px"}
+            marginTop={"50px"}
           />
           <PasswordInput onChange={handleChange} placeholder="password..." />
-          <Button variant="outline" onClick={handleSubmit}>
+          <Button
+            variant="outline"
+            onClick={handleSubmit}
+            rightIcon={<ArrowForwardIcon />}
+            marginTop={"15px"}
+            className="btn"
+          >
             Sign Up
           </Button>
         </div>

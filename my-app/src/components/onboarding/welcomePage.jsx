@@ -40,9 +40,14 @@ export default function WelcomePage() {
     <div>
       <Navbar />
       <ChakraProvider>
-        <div className="welcome-pg">
+        <div className="field-pg">
           <Text fontSize="4xl">All done! We hope you enjoy LingoShare</Text>
-          <Button variant="outline" onClick={() => handleSelection()}>
+          <Button
+            className="selection-btn"
+            marginTop={"50px"}
+            variant="outline"
+            onClick={() => handleSelection()}
+          >
             Get Started
           </Button>
         </div>

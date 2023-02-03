@@ -1,4 +1,5 @@
 import { ChakraProvider, Input, Button, Text } from "@chakra-ui/react";
+import { ArrowForwardIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../contexts/AuthContext";
 import { useState } from "react";
@@ -33,16 +34,24 @@ export default function Login() {
     <div>
       <ChakraProvider>
         <Navbar />
-        <div className="welcome-pg">
+        <div className="field-pg">
           <Text fontSize="5xl">Login</Text>
           <Input
+            height={"50px"}
+            marginTop={"50px"}
             onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email"
             width={"300px"}
-            placeholder="Email..."
           />
           <PasswordInput onChange={handleChange} placeholder="password..." />
-          <Button variant="outline" onClick={handleSubmit}>
-            Sign In
+          <Button
+            marginTop={"15px"}
+            variant="outline"
+            onClick={handleSubmit}
+            rightIcon={<ArrowForwardIcon />}
+            className="btn"
+          >
+            Log In
           </Button>
         </div>
       </ChakraProvider>

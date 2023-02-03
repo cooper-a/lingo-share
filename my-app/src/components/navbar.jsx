@@ -1,5 +1,4 @@
 import {
-  Button,
   ChakraProvider,
   IconButton,
   Menu,
@@ -8,14 +7,6 @@ import {
   MenuList,
   Text,
 } from "@chakra-ui/react";
-import {
-  AddIcon,
-  EditIcon,
-  ExternalLinkIcon,
-  HamburgerIcon,
-  RepeatIcon,
-  WarningIcon,
-} from "@chakra-ui/icons";
 import Icon from "@adeira/icons";
 import "../styles/nav.css";
 import { useNavigate } from "react-router-dom";

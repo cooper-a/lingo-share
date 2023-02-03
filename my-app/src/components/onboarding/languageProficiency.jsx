@@ -41,18 +41,31 @@ export default function LanguageProficiency() {
     <div>
       <Navbar />
       <ChakraProvider>
-        <div className="welcome-pg">
+        <div className="field-pg">
           <Text fontSize="4xl">
             How well can you speak{" "}
-            {userType === "native" ? "English" : "Mandarin"}
+            {userType === "native" ? "English" : "Mandarin"}?
           </Text>
-          <Button variant="outline" onClick={() => handleSelection("well")}>
+          <Button
+            variant="outline"
+            marginTop={"50px"}
+            onClick={() => handleSelection("well")}
+            className="selection-btn"
+          >
             Well
           </Button>
-          <Button variant="outline" onClick={() => handleSelection("okay")}>
+          <Button
+            className="selection-btn"
+            variant="outline"
+            onClick={() => handleSelection("okay")}
+          >
             Okay
           </Button>
-          <Button variant="outline" onClick={() => handleSelection("poor")}>
+          <Button
+            className="selection-btn"
+            variant="outline"
+            onClick={() => handleSelection("poor")}
+          >
             Poorly
           </Button>
         </div>

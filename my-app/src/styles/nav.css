@@ -5,6 +5,7 @@
 .logo {
   align-self: flex-start;
   padding: 15px;
+  cursor: pointer;
 }
 
 .logout-btn {
@@ -13,8 +14,8 @@
 }
 
 .user-icon {
-  width: 35px;
-  height: 35px;
+  width: 30px;
+  height: 30px;
 }
 
 .menu-user-icon {
