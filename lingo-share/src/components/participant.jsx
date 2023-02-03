@@ -9,14 +9,17 @@ const Participant = ({ participant }) => {
 
   const trackpubsToTracks = (trackMap) =>
     Array.from(trackMap.values())
-      .map(publication => publication.track)
-      .filter(track => track !== null);
+      .map((publication) => publication.track)
+      .filter((track) => track !== null);
 
   useEffect(() => {
+    setVideoTracks(trackpubsToTracks(participant.videoTracks));
+    setAudioTracks(trackpubsToTracks(participant.audioTracks));
+
     const trackSubscribed = (track) => {
       if (track.kind === "video") {
         setVideoTracks((videoTracks) => [...videoTracks, track]);
-      } else {
+      } else if (track.kind === "audio") {
         setAudioTracks((audioTracks) => [...audioTracks, track]);
       }
     };
@@ -24,13 +27,10 @@ const Participant = ({ participant }) => {
     const trackUnsubscribed = (track) => {
       if (track.kind === "video") {
         setVideoTracks((videoTracks) => videoTracks.filter((v) => v !== track));
-      } else {
+      } else if (track.kind === "audio") {
         setAudioTracks((audioTracks) => audioTracks.filter((a) => a !== track));
       }
     };
-
-    setVideoTracks(trackpubsToTracks(participant.videoTracks));
-    setAudioTracks(trackpubsToTracks(participant.audioTracks));
 
     participant.on("trackSubscribed", trackSubscribed);
     participant.on("trackUnsubscribed", trackUnsubscribed);
@@ -60,7 +60,7 @@ const Participant = ({ participant }) => {
         audioTrack.detach();
       };
     }
-  }, [videoTracks]);
+  }, [audioTracks]);
 
   return (
     <div className="participant">

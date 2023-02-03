@@ -11,7 +11,7 @@ export default function Crud() {
   const messageRef = useRef();
   const handleSave = (e) => {
     e.preventDefault();
-    console.log(messageRef.current.value);
+    // console.log(messageRef.current.value);
 
     let data = {
       name: messageRef.current.value,
@@ -20,7 +20,7 @@ export default function Crud() {
     try {
       const message_ref = ref(rtdb, "users/" + user.uid);
       set(message_ref, data);
-      console.log(user.auth);
+      // console.log(user.auth);
     } catch (error) {
       console.log(error);
     }

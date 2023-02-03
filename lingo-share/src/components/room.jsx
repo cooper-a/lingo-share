@@ -1,60 +1,43 @@
-import { Button } from "@chakra-ui/react";
-import React from "react";
-import { useEffect, useState } from "react";
-import Video from "twilio-video";
+import React, { useEffect, useState } from "react";
 import Participant from "./participant";
 
-const Room = ({ roomName, token, handleLeave }) => {
-  const [room, setRoom] = useState(null);
+const Room = ({ roomName, room, handleLogout }) => {
   const [participants, setParticipants] = useState([]);
 
-  const remoteParticipants = participants.map((participant) => (
-    <Participant key={participant.sid} participant={participant} />
-  ));
-
   useEffect(() => {
+    // Here we define what happens when a remote participant joins
     const participantConnected = (participant) => {
-      console.log("CONNECTED")
+      console.log("Participant %s connected", participant.identity)
       setParticipants((prevParticipants) => [...prevParticipants, participant]);
     };
 
+    // This is what happens when a remote participant leaves
     const participantDisconnected = (participant) => {
-      console.log("DISCONNECTED")
       setParticipants((prevParticipants) =>
         prevParticipants.filter((p) => p !== participant)
       );
     };
 
-    // CHANGE ROOM HERE
+    room.on("participantConnected", participantConnected);
+    room.on("participantDisconnected", participantDisconnected);
 
-    Video.connect(token, { name: "room1" }).then((room) => {
-      console.log("STARTING ROOM")
-      setRoom(room);
-      room.on("participantConnected", participantConnected);
-      room.on("participantDisconnected", participantDisconnected);
-      room.participants.forEach(participantConnected);
-    });
-
+    // This is what happens when you join the room
+    // It will trigger the participantConnected function for each participant
+    room.participants.forEach(participantConnected);
     return () => {
-      setRoom((currentRoom) => {
-        if (currentRoom && currentRoom.localParticipant.state === "connected") {
-          currentRoom.localParticipant.tracks.forEach(function (
-            trackPublication
-          ) {
-            trackPublication.track.stop();
-          });
-          currentRoom.disconnect();
-          return null;
-        } else {
-          return currentRoom;
-        }
-      });
+      room.off("participantConnected", participantConnected);
+      room.off("participantDisconnected", participantDisconnected);
     };
-  }, [roomName, token]);
+  }, [room]);
+
+  const remoteParticipants = participants.map((participant) => (
+    <Participant key={participant.sid} participant={participant} />
+  ));
 
   return (
     <div className="room">
-      <Button onClick={handleLeave}>Logout</Button>
+      <h2>Room: {roomName}</h2>
+      <button onClick={handleLogout}>Log out</button>
       <div className="local-participant">
         {room ? (
           <Participant
