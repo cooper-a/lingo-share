@@ -7,11 +7,7 @@ const Room = ({ roomName, room, handleLogout }) => {
   useEffect(() => {
     // Here we define what happens when a remote participant joins
     const participantConnected = (participant) => {
-      console.log("HERE");
-      setParticipants((prevParticipants) => [
-        ...prevParticipants,
-        participant,
-      ]);
+      setParticipants((prevParticipants) => [...prevParticipants, participant]);
     };
 
     // This is what happens when a remote participant leaves
@@ -27,7 +23,7 @@ const Room = ({ roomName, room, handleLogout }) => {
     // This is what happens when you join the room
     // It will trigger the participantConnected function for each participant
     // This is being called twice for some reason
-    console.log(room.participants)
+    console.log(room.participants);
     room.participants.forEach(participantConnected);
     return () => {
       room.off("participantConnected", participantConnected);
