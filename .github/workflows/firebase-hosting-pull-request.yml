@@ -10,6 +10,8 @@ jobs:
     defaults:
       run:
         working-directory: ./lingo-share
+    env:
+      CI: false
     steps:
       - uses: actions/checkout@v2
       - run: npm ci && npm run build
