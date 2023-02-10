@@ -7,9 +7,11 @@ jobs:
   build_and_preview:
     if: "${{ github.event.pull_request.head.repo.full_name == github.repository }}"
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./lingo-share
     steps:
       - uses: actions/checkout@v2
-      - working-directory: ./lingo-share
       - run: npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
