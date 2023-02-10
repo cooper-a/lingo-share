@@ -23,3 +23,4 @@ jobs:
           firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_AUTH_CRUD_1DA7A }}"
           channelId: live
           projectId: auth-crud-1da7a
+          entryPoint: ./lingo-share
