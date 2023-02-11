@@ -8,6 +8,18 @@
   cursor: pointer;
 }
 
+.title {
+  /* font-family: "Sacramento", cursive; */
+  font-family: "Patrick Hand SC", cursive;
+  font-size: 50px;
+  padding-left: 10px;
+  margin-bottom: 3px;
+}
+
+.homepage-logo {
+  display: flex;
+}
+
 .logout-btn {
   margin-left: auto;
   padding: 20px;

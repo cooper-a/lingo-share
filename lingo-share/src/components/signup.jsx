@@ -12,6 +12,8 @@ export default function Signup() {
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
   const [error, setError] = useState(null);
+  const [emailError, setEmailError] = useState(null);
+  const [pwrdError, setPwrdError] = useState(null);
   const { createUser } = UserAuth();
   const navigate = useNavigate();
 
@@ -23,7 +25,19 @@ export default function Signup() {
       console.log("successfully added user");
       navigate("/userselect");
     } catch (e) {
-      setError(e.message);
+      let errorType = e.message.split("(")[1].split(")")[0];
+      console.log(errorType);
+      let errorMsg = e.message.split(":")[1].split("(")[0];
+      if (errorType === "auth/weak-password") {
+        setEmailError(null);
+        setPwrdError(errorMsg);
+      } else if (errorType === "auth/email-already-in-use") {
+        setPwrdError(null);
+        setEmailError("Email is already in use");
+      } else if (errorType === "auth/invalid-email") {
+        setPwrdError(null);
+        setEmailError("Please enter a valid email");
+      }
       console.log(e.message);
     }
   };
@@ -38,14 +52,27 @@ export default function Signup() {
       <ChakraProvider>
         <div className="field-pg">
           <Text fontSize="5xl">Sign Up</Text>
-          <Input
-            onChange={(e) => setEmail(e.target.value)}
-            width={"300px"}
-            placeholder="Email..."
-            height={"50px"}
-            marginTop={"50px"}
+          <div>
+            <Input
+              isInvalid={emailError !== null}
+              onChange={(e) => setEmail(e.target.value)}
+              width={"300px"}
+              placeholder="Email..."
+              height={"50px"}
+              marginTop={"50px"}
+            />
+            {emailError !== null && (
+              <Text paddingTop={"5px"} color={"crimson"} fontSize="sm">
+                {emailError}
+              </Text>
+            )}
+          </div>
+          <PasswordInput
+            isInvalid={pwrdError !== null}
+            error={pwrdError}
+            onChange={handleChange}
+            placeholder="password..."
           />
-          <PasswordInput onChange={handleChange} placeholder="password..." />
           <Button
             variant="outline"
             onClick={handleSubmit}
