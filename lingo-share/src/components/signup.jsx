@@ -1,5 +1,5 @@
 import React from "react";
-import { Input, Button, ChakraProvider, Text } from "@chakra-ui/react";
+import { Button, ChakraProvider, Text } from "@chakra-ui/react";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import PasswordInput from "./passwordinput";
 import { useState } from "react";
@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../contexts/AuthContext";
 import "../styles/homepage.css";
 import Navbar from "./navbar";
+import Input from "./lingoshare-components/input";
 
 export default function Signup() {
   const [email, setEmail] = useState(null);
@@ -52,21 +53,15 @@ export default function Signup() {
       <ChakraProvider>
         <div className="field-pg">
           <Text fontSize="5xl">Sign Up</Text>
-          <div>
-            <Input
-              isInvalid={emailError !== null}
-              onChange={(e) => setEmail(e.target.value)}
-              width={"300px"}
-              placeholder="Email..."
-              height={"50px"}
-              marginTop={"50px"}
-            />
-            {emailError !== null && (
-              <Text paddingTop={"5px"} color={"crimson"} fontSize="sm">
-                {emailError}
-              </Text>
-            )}
-          </div>
+          <Input
+            isInvalid={emailError !== null}
+            error={emailError}
+            onChange={(e) => setEmail(e.target.value)}
+            width={"300px"}
+            placeholder="Email..."
+            height={"50px"}
+            marginTop={"50px"}
+          />
           <PasswordInput
             isInvalid={pwrdError !== null}
             error={pwrdError}
