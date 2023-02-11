@@ -1,0 +1,38 @@
+{
+  "Chinese Tradition": {
+    "Prompts": [
+      {
+        "Prompt": "What is the name of the Chinese tradition that is celebrated on the 15th day of the first lunar month?",
+        "id": 1
+      },
+      {
+        "Prompt": "What is your favorite Chinese tradition?",
+        "id": 2
+      }
+    ]
+  },
+  "Food": {
+    "Prompts": [
+      {
+        "Prompt": "What is your favorite food?",
+        "id": 3
+      },
+      {
+        "Prompt": "What is your favorite food to eat on a special occasion?",
+        "id": 4
+      }
+    ]
+  },
+  "Family": {
+    "Prompts": [
+      {
+        "Prompt": "What is your favorite family tradition?",
+        "id": 5
+      },
+      {
+        "Prompt": "What is your favorite family tradition?",
+        "id": 6
+      }
+    ]
+  }
+}
