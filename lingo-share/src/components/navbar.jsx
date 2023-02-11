@@ -11,9 +11,7 @@ import Icon from "@adeira/icons";
 import "../styles/nav.css";
 import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../contexts/AuthContext";
-import "@fontsource/sacramento";
-import "@fontsource/indie-flower";
-import "@fontsource/patrick-hand-sc";
+import "@fontsource/handlee";
 
 export default function Navbar() {
   const { user, logout } = UserAuth();
