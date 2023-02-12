@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardBody,
@@ -18,8 +18,12 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const [userType, setUserType] = useState("");
   const [snapshotData, setSnapshotData] = useState({});
-  const { user } = UserAuth();
+  const { user, checkStatus } = UserAuth();
   const user_documents = ref(rtdb, "users/" + user.uid);
+
+  useEffect(() => {
+    checkStatus(user);
+  }, []);
 
   return (
     <div>
