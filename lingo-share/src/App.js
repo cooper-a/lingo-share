@@ -8,6 +8,7 @@ import ProtectedRoute from "./components/protectedRoute";
 import Signup from "./components/signup";
 import UserSelect from "./components/onboarding/userSelect";
 import WelcomePage from "./components/onboarding/welcomePage";
+import NotFound from "./components/notfound";
 import React, { useEffect } from "react";
 import { AuthContextProvider } from "./contexts/AuthContext";
 import { BrowserRouter as Router } from "react-router-dom";
@@ -83,6 +84,7 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
         </Router>
