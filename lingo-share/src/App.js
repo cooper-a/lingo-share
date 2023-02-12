@@ -3,12 +3,13 @@ import Home from "./components/home";
 import Login from "./components/login";
 import Account from "./components/account";
 import Crud from "./components/crud";
-import Video from "./components/videochat";
+import Video from "./components/video/videochat";
 import ProtectedRoute from "./components/protectedRoute";
 import Signup from "./components/signup";
 import UserSelect from "./components/onboarding/userSelect";
 import WelcomePage from "./components/onboarding/welcomePage";
 import NotFound from "./components/notfound";
+import Prompt from "./components/video/prompt";
 import React, { useEffect } from "react";
 import { AuthContextProvider } from "./contexts/AuthContext";
 import { BrowserRouter as Router } from "react-router-dom";
@@ -28,6 +29,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
+              <Route path="/prompt" element={<Prompt />} />
               <Route
                 path="/userselect"
                 element={

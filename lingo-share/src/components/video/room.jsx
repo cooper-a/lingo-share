@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Participant from "./participant";
+import Prompt from "./prompt";
 
 const Room = ({ roomName, room, handleLogout }) => {
   const [participants, setParticipants] = useState([]);
@@ -52,6 +53,9 @@ const Room = ({ roomName, room, handleLogout }) => {
         ) : (
           ""
         )}
+      </div>
+      <div>
+        <Prompt />
       </div>
       <h3>Remote Participants</h3>
       {/* {console.log(room.participants)} */}
