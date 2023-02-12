@@ -8,6 +8,17 @@
   cursor: pointer;
 }
 
+.title {
+  font-family: "Handlee", cursive;
+  font-size: 50px;
+  padding-left: 10px;
+  margin-bottom: 3px;
+}
+
+.homepage-logo {
+  display: flex;
+}
+
 .logout-btn {
   margin-left: auto;
   padding: 20px;

@@ -11,6 +11,7 @@ import Icon from "@adeira/icons";
 import "../styles/nav.css";
 import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../contexts/AuthContext";
+import "@fontsource/handlee";
 
 export default function Navbar() {
   const { user, logout } = UserAuth();
@@ -35,7 +36,12 @@ export default function Navbar() {
       <ChakraProvider>
         <div className="navbar">
           <div className="logo" onClick={() => handleClick("")}>
-            <Text fontSize={"4xl"}>LingoShare</Text>
+            <div className="homepage-logo">
+              {/* <Text paddingLeft={"10px"} fontSize={"4xl"}>
+                LingoShare
+              </Text> */}
+              <span className="title">LingoShare</span>
+            </div>
           </div>
           <div className="logout-btn">
             <Menu>
