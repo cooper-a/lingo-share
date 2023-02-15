@@ -7,38 +7,64 @@ import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../contexts/AuthContext";
 import "../styles/homepage.css";
 import Navbar from "./navbar";
-import Input from "./lingoshare-components/input";
+import CustomInput from "./lingoshare-components/input";
+import { updateProfile, getAuth } from "firebase/auth";
 
 export default function Signup() {
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [error, setError] = useState(null);
+  const [firstNameError, setFirstNameError] = useState(null);
+  const [lastNameError, setLastNameError] = useState(null);
   const [emailError, setEmailError] = useState(null);
   const [pwrdError, setPwrdError] = useState(null);
+  const auth = getAuth();
   const { createUser } = UserAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
+
+    const clearErrors = () => {
+      setFirstNameError(null);
+      setLastNameError(null);
+      setEmailError(null);
+      setPwrdError(null);
+    };
+
     try {
+      clearErrors();
+      if (firstName === "") {
+        setFirstNameError("First name missing");
+        return;
+      }
+      setFirstNameError(null);
+      if (lastName === "") {
+        setLastNameError("Last name missing");
+        return;
+      }
+      setLastNameError(null);
       await createUser(email, password);
+      await updateProfile(auth.currentUser, {
+        displayName: firstName + " " + lastName,
+      });
       console.log("successfully added user");
       navigate("/userselect");
     } catch (e) {
+      if (!e.message.includes("auth/")) {
+        console.log(e.message);
+        return;
+      }
       let errorType = e.message.split("(")[1].split(")")[0];
       console.log(errorType);
       let errorMsg = e.message.split(":")[1].split("(")[0];
-      if (errorType === "auth/weak-password") {
-        setEmailError(null);
-        setPwrdError(errorMsg);
-      } else if (errorType === "auth/email-already-in-use") {
-        setPwrdError(null);
+      if (errorType === "auth/weak-password") setPwrdError(errorMsg);
+      else if (errorType === "auth/email-already-in-use")
         setEmailError("Email is already in use");
-      } else if (errorType === "auth/invalid-email") {
-        setPwrdError(null);
+      else if (errorType === "auth/invalid-email")
         setEmailError("Please enter a valid email");
-      }
       console.log(e.message);
     }
   };
@@ -53,20 +79,44 @@ export default function Signup() {
       <ChakraProvider>
         <div className="field-pg">
           <Text fontSize="5xl">Sign Up</Text>
-          <Input
+          <div className="first-last-name" style={{ marginTop: "50px" }}>
+            <div className="grid-child">
+              <CustomInput
+                isInvalid={firstNameError !== null}
+                error={firstNameError}
+                width={"175px"}
+                height={"50px"}
+                placeholder="First Name"
+                type="text"
+                onChange={(e) => setFirstName(e.target.value)}
+              />
+            </div>
+            <div className="grid-child">
+              <CustomInput
+                isInvalid={lastNameError !== null}
+                error={lastNameError}
+                width={"175px"}
+                height={"50px"}
+                placeholder="Last Name"
+                type="text"
+                onChange={(e) => setLastName(e.target.value)}
+              />
+            </div>
+          </div>
+          <CustomInput
             isInvalid={emailError !== null}
             error={emailError}
             onChange={(e) => setEmail(e.target.value)}
-            width={"300px"}
-            placeholder="Email..."
+            width={"350px"}
+            placeholder="Email"
             height={"50px"}
-            marginTop={"50px"}
           />
           <PasswordInput
             isInvalid={pwrdError !== null}
             error={pwrdError}
             onChange={handleChange}
             placeholder="password..."
+            width={"350px"}
           />
           <Button
             variant="outline"

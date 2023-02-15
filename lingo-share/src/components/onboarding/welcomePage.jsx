@@ -15,7 +15,7 @@ export default function WelcomePage() {
   const user_documents = ref(rtdb, "users/" + user.uid);
 
   const navigateOnboarding = () => {
-    navigate("/account");
+    navigate("/dashboard");
   };
 
   const handleSelection = () => {

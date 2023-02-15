@@ -7,13 +7,13 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-export default function PasswordInput({ onChange, isInvalid, error }) {
+export default function PasswordInput({ onChange, isInvalid, error, width }) {
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
 
   return (
     <div>
-      <InputGroup size="md" width={"300px"}>
+      <InputGroup size="md" width={width}>
         <Input
           isInvalid={isInvalid}
           pr="4.5rem"

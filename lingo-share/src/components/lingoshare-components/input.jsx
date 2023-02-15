@@ -1,17 +1,26 @@
 import * as React from "react";
 import { Input, InputGroup, Text } from "@chakra-ui/react";
 
-export default function PasswordInput({ onChange, isInvalid, error }) {
+export default function CustomInput({
+  onChange,
+  isInvalid,
+  error,
+  groupSize,
+  marginTop,
+  placeholder,
+  width,
+  height,
+}) {
   return (
     <div>
-      <InputGroup size="md" width={"300px"}>
+      <InputGroup size="md" width={groupSize}>
         <Input
           isInvalid={isInvalid}
-          height={"50px"}
-          marginTop={"50px"}
+          height={height}
+          marginTop={marginTop}
           onChange={onChange}
-          placeholder="Email"
-          width={"300px"}
+          placeholder={placeholder}
+          width={width}
         />
       </InputGroup>
       {isInvalid && (
