@@ -21,6 +21,10 @@ export default function Dashboard() {
   const { user, checkStatus } = UserAuth();
   const user_documents = ref(rtdb, "users/" + user.uid);
 
+  const handleCallFriend = () => {
+    navigate("/video");
+  };
+
   useEffect(() => {
     checkStatus(user);
   }, []);
@@ -31,7 +35,13 @@ export default function Dashboard() {
       <ChakraProvider>
         <div className="welcome-pg">
           <SimpleGrid columns={2} spacing={10}>
-            <Card className="card" width={"300px"} height={"100px"} size={"lg"}>
+            <Card
+              onClick={handleCallFriend}
+              className="card"
+              width={"300px"}
+              height={"100px"}
+              size={"lg"}
+            >
               <CardBody>
                 <Heading as="h4" size="md">
                   Call a Friend
