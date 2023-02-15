@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { get_token } from "../../firebase";
+import { get_token } from "../firebase";
 import Video from "twilio-video";
 import Lobby from "./lobby";
 import Room from "./room";
