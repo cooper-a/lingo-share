@@ -21,9 +21,9 @@ export default function Dashboard() {
   const { user, checkStatus } = UserAuth();
   const user_documents = ref(rtdb, "users/" + user.uid);
 
-  // const handleCallFriend = () => {
-  //   navigate("/video");
-  // };
+  const handleCallFriend = () => {
+    navigate("/video");
+  };
 
   useEffect(() => {
     checkStatus(user);
@@ -36,7 +36,7 @@ export default function Dashboard() {
         <div className="welcome-pg">
           <SimpleGrid columns={2} spacing={10}>
             <Card
-              // onClick={handleCallFriend}
+              onClick={handleCallFriend}
               className="card"
               width={"300px"}
               height={"100px"}
