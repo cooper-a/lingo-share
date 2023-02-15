@@ -40,9 +40,9 @@ export const AuthContextProvider = ({ children }) => {
   };
 
   const checkStatus = (user) => {
-    // console.log(user);
-    // console.log("checking status");
-    if (user.uid) {
+    console.log(user);
+    console.log("checking status");
+    if (user && user.uid) {
       var uid = user.uid;
       var userStatusDatabaseRef = ref(rtdb, "/status/" + uid);
       var isOfflineForDatabase = {
