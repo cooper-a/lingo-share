@@ -30,10 +30,10 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const functions = getFunctions(app);
-// const appCheck = initializeAppCheck(app, {
-//   provider: new ReCaptchaV3Provider("6LdzmWskAAAAAIA5BpBOOW0Fo8WCrNXHNUvc1ONB"),
-//   isTokenAutoRefreshEnabled: true,
-// });
+const appCheck = initializeAppCheck(app, {
+  provider: new ReCaptchaV3Provider("6LdzmWskAAAAAIA5BpBOOW0Fo8WCrNXHNUvc1ONB"),
+  isTokenAutoRefreshEnabled: true,
+});
 
 // For eumlator (local development)
 // connectFunctionsEmulator(functions, "localhost", 5001);
