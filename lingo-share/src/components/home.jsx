@@ -4,12 +4,13 @@ import { Button, ChakraProvider, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../contexts/AuthContext";
 import React, { useEffect, useState } from "react";
+import { rtdb } from "../firebase";
+import { ref, onValue } from "firebase/database";
 
 export default function Home() {
   const navigate = useNavigate();
   const { user } = UserAuth();
   const [showLogin, setShowLogin] = useState(false);
-  // console.log(user);
 
   const handleClick = (path) => {
     navigate("/" + path);
@@ -17,8 +18,22 @@ export default function Home() {
 
   useEffect(() => {
     if (user && Object.keys(user).length !== 0) {
-      navigate("/dashboard");
+      const user_documents = ref(rtdb, "users/" + user.uid);
+      onValue(user_documents, (snapshot) => {
+        const snapshotVal = snapshot.val();
+        const { isOnboarded } = snapshotVal;
+        if (!isOnboarded) {
+          // navigate to the onboarding if user created but not onboarded
+          // could occur when user was onboarding then exited midway
+          navigate("/userselect");
+          return;
+        } else {
+          // otherwise go to the dashboard as usual
+          navigate("/dashboard");
+        }
+      });
     } else if (user === null) {
+      // user not logged in
       setShowLogin(true);
     }
   }, [user, navigate, showLogin]);
