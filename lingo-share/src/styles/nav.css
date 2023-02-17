@@ -2,6 +2,11 @@
   display: flex;
 }
 
+.avatar {
+  padding-top: 10px;
+  padding-right: 10px;
+}
+
 .logo {
   align-self: flex-start;
   padding: 15px;
@@ -30,6 +35,6 @@
 }
 
 .menu-user-icon {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
 }
