@@ -4,7 +4,7 @@ import { set, ref } from "firebase/database";
 import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../../contexts/AuthContext";
 import Navbar from "../navbar";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 export default function UserSelect() {
   const { user } = UserAuth();
@@ -30,6 +30,16 @@ export default function UserSelect() {
     set(userTypeRef, newData);
     navigateOnboarding();
   };
+
+  useEffect(() => {
+    // create the default fields for the user
+    let newData = {};
+    newData["userType"] = null;
+    newData["proficiency"] = null;
+    newData["isOnboarded"] = false;
+    const userRef = ref(rtdb, "users/" + user.uid);
+    set(userRef, newData);
+  }, []);
 
   return (
     <div>
