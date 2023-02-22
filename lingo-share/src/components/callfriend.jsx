@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
+import { UserAuth } from "../contexts/AuthContext";
 import { ref, get } from "firebase/database";
 import { rtdb } from "../firebase";
 import {
@@ -13,6 +14,7 @@ export default function CallFriend() {
   const [mergedObj, setMergedObj] = useState([]);
   const status_ref = ref(rtdb, "/status");
   const users_ref = ref(rtdb, "/users");
+  const { user } = UserAuth();
   // console.log(statusObj);
   // console.log(usersObj);
   console.log(mergedObj);
@@ -75,6 +77,20 @@ export default function CallFriend() {
 
     return res
   };
+
+  const handleClick = event => {
+    event.currentTarget.disabled = true;
+    console.log('button clicked');
+  };
+
+  const disableButton = (key, state) => {
+    if (state === "offline" || typeof state === 'undefined') {
+      return true;
+    } else if (key === user.uid) {
+      return true; // if it's the current user, disable the button
+    }
+    return false;
+  }
   
   useEffect(() => {
     getQuery(status_ref);
@@ -86,11 +102,11 @@ export default function CallFriend() {
   }, [statusObj, usersObj]);
 
     return (
-          <UnorderedList spacing={5} align>
+          <UnorderedList spacing={5}>
             {Object.entries(mergedObj).map(([key, value]) => {
               return (
                 <ListItem key={key}>
-                  {key}     {value.state}     {String(value.isOnboarded)}     {value.proficiency}     {value.userType}     {value.last_changed} <Button colorScheme='blue' direction='row' align='center'>Call</Button>
+                  {key}     {value.state}     {String(value.isOnboarded)}     {value.proficiency}     {value.userType}     {value.last_changed} <Button onClick={handleClick} isDisabled={disableButton(key, value.state)} colorScheme='blue' direction='row' align='center'>Call</Button>
                 </ListItem>
               )
             })}
