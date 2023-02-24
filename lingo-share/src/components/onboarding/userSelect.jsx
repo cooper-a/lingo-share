@@ -8,7 +8,10 @@ import React, { useState, useEffect } from "react";
 
 export default function UserSelect() {
   const { user } = UserAuth();
-  const [data, setData] = useState({ isOnboarded: false });
+  const [data, setData] = useState({
+    isOnboarded: false,
+    userDisplayName: user.displayName,
+  });
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
