@@ -7,13 +7,12 @@ import Lobby from "./lobby";
 import Room from "./room";
 
 const VideoChat = ({callerID}) => {
+  const [userName, setUserName] = useState("");
   const [roomName, setRoomName] = useState("");
   const [room, setRoom] = useState(null);
   const [connecting, setConnecting] = useState(false);
   const { user } = UserAuth();
   const navigate = useNavigate();
-  console.log(user.uid);
-  console.log(callerID);
 
   const handleLogout = useCallback(() => {
     setRoom((prevRoom) => {
@@ -34,15 +33,19 @@ const VideoChat = ({callerID}) => {
   };
   
   useEffect(() => {
-    setRoomName(getRoomName(user.uid, callerID));
+    let concatRoomName = getRoomName(user.uid, callerID);
+    setRoomName(concatRoomName);
     const handleSubmit = async () => {
       setConnecting(true);
       let identityName = !user.displayName ? user.uid : user.displayName;
-      const result = await get_token({ identity: identityName, room: roomName });
+      // roomName is null here
+      console.log(identityName);
+      console.log(concatRoomName);
+      const result = await get_token({ identity: identityName, room: concatRoomName });
       const data = result.data;
       console.log(data.token);
       Video.connect(data.token, {
-        name: roomName,
+        name: concatRoomName,
       })
         .then((room) => {
           setConnecting(false);
