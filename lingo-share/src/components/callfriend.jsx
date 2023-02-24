@@ -2,6 +2,7 @@ import React, { useState, useEffect, useLayoutEffect } from "react";
 import { UserAuth } from "../contexts/AuthContext";
 import { ref, get } from "firebase/database";
 import { rtdb } from "../firebase";
+import VideoChat from "./video/videochat";
 import {
   Button,
   ListItem,
@@ -12,12 +13,14 @@ export default function CallFriend() {
   const [statusObj, setStatusObj] = useState([]);
   const [usersObj, setUsersObj] = useState([]);
   const [mergedObj, setMergedObj] = useState([]);
+  const [callerID, setCallerID] = useState("");
+  const [redirectToVideo, setRedirectToVideo] = useState(false);
   const status_ref = ref(rtdb, "/status");
   const users_ref = ref(rtdb, "/users");
   const { user } = UserAuth();
   // console.log(statusObj);
   // console.log(usersObj);
-  console.log(mergedObj);
+  // console.log(mergedObj);
 
   const getQuery = (ref) => {
     get(ref)
@@ -74,19 +77,20 @@ export default function CallFriend() {
         }
       }
     }
-
     return res
   };
 
-  const handleClick = event => {
+  const handleClick = (event, callerID) => {
     event.currentTarget.disabled = true;
-    console.log('button clicked');
+    setCallerID(callerID);
+    setRedirectToVideo(true);
   };
 
   const disableButton = (key, state) => {
     if (state === "offline" || typeof state === 'undefined') {
       return true;
-    } else if (key === user.uid) {
+    } 
+    else if (key === user.uid) {
       return true; // if it's the current user, disable the button
     }
     return false;
@@ -101,15 +105,27 @@ export default function CallFriend() {
     setMergedObj(mergeObj(statusObj, usersObj));
   }, [statusObj, usersObj]);
 
-    return (
-          <UnorderedList spacing={5}>
-            {Object.entries(mergedObj).map(([key, value]) => {
-              return (
-                <ListItem key={key}>
-                  {key}     {value.state}     {String(value.isOnboarded)}     {value.proficiency}     {value.userType}     {value.last_changed} <Button onClick={handleClick} isDisabled={disableButton(key, value.state)} colorScheme='blue' direction='row' align='center'>Call</Button>
-                </ListItem>
-              )
-            })}
-          </UnorderedList>
+  let render;
+  if (!redirectToVideo) {
+    render = (
+      <div>
+        <UnorderedList spacing={5}>
+          {Object.entries(mergedObj).map(([key, value]) => {
+            return (
+              <ListItem key={key}>
+                {key}     {value.state}     {String(value.isOnboarded)}     {value.proficiency}     {value.userType} <Button onClick={event => handleClick(event, key)} isDisabled={disableButton(key, value.state)} colorScheme='blue' direction='row' align='center'>Call</Button>
+              </ListItem>
+            )
+          })}
+        </UnorderedList>
+      </div>
     );
+  } else {
+    render = (
+    <div>
+      <VideoChat callerID={callerID}/>
+    </div>
+    );
+  }
+  return render;
 }
