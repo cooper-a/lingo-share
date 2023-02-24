@@ -7,9 +7,8 @@ import Lobby from "./lobby";
 import Room from "./room";
 
 const VideoChat = ({callerID}) => {
-  const [identityName, setIdentityName] = useState("");
+  const [userName, setUserName] = useState("");
   const [roomName, setRoomName] = useState("");
-  const [roomCreationObj, setRoomCreationObj] = useState({});
   const [room, setRoom] = useState(null);
   const [connecting, setConnecting] = useState(false);
   const { user } = UserAuth();
@@ -34,22 +33,19 @@ const VideoChat = ({callerID}) => {
   };
   
   useEffect(() => {
-    let identityName = !user.displayName ? user.uid : user.displayName;
-    setIdentityName(identityName);
     let concatRoomName = getRoomName(user.uid, callerID);
     setRoomName(concatRoomName);
-    let newRoomCreationObj = {identity: identityName, room: concatRoomName};
-    setRoomCreationObj(newRoomCreationObj);
-  }, []);
-
-  useEffect(() => {
     const handleSubmit = async () => {
       setConnecting(true);
-      const result = await get_token(roomCreationObj);
+      let identityName = !user.displayName ? user.uid : user.displayName;
+      // roomName is null here
+      console.log(identityName);
+      console.log(concatRoomName);
+      const result = await get_token({ identity: identityName, room: concatRoomName });
       const data = result.data;
       console.log(data.token);
       Video.connect(data.token, {
-        name: roomCreationObj.room,
+        name: concatRoomName,
       })
         .then((room) => {
           setConnecting(false);
@@ -61,7 +57,7 @@ const VideoChat = ({callerID}) => {
         });
     };
     handleSubmit().catch((err) => console.error(err));
-  }, [roomCreationObj]);
+  }, []);
 
   useEffect(() => {
     if (room) {
