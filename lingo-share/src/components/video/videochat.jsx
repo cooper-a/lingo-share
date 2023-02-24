@@ -36,11 +36,9 @@ const VideoChat = ({callerID}) => {
     let concatRoomName = getRoomName(user.uid, callerID);
     setRoomName(concatRoomName);
     const handleSubmit = async () => {
+      // preventDefault();
       setConnecting(true);
       let identityName = !user.displayName ? user.uid : user.displayName;
-      // roomName is null here
-      console.log(identityName);
-      console.log(concatRoomName);
       const result = await get_token({ identity: identityName, room: concatRoomName });
       const data = result.data;
       console.log(data.token);
