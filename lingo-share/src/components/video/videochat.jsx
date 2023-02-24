@@ -7,12 +7,13 @@ import Lobby from "./lobby";
 import Room from "./room";
 
 const VideoChat = ({callerID}) => {
-  const [username, setUsername] = useState("");
   const [roomName, setRoomName] = useState("");
   const [room, setRoom] = useState(null);
   const [connecting, setConnecting] = useState(false);
   const { user } = UserAuth();
   const navigate = useNavigate();
+  console.log(user.uid);
+  console.log(callerID);
 
   const handleLogout = useCallback(() => {
     setRoom((prevRoom) => {
@@ -28,17 +29,15 @@ const VideoChat = ({callerID}) => {
   }, []);
 
   const getRoomName = (uid, callerID) => {
-    const concatenatedRoomName = uid + callerID;
-    return concatenatedRoomName.split('').sort().join(''); // room name will be the concatenation of the two user IDs sorted alphabetically
-  }
-
+    let roomNameInList = [uid, callerID];
+    return roomNameInList.sort().join(""); // room name will be the concatenation of the two user IDs sorted alphabetically
+  };
   
   useEffect(() => {
-    setUsername(user.uid);
-    setRoomName(getRoomName(user.uid+callerID));
+    setRoomName(getRoomName(user.uid, callerID));
     const handleSubmit = async () => {
       setConnecting(true);
-      const result = await get_token({ identity: user.uid, room: roomName }); // idk why username is still null at this line so I replaced with user.uid
+      const result = await get_token({ identity: user.displayName, room: roomName });
       const data = result.data;
       console.log(data.token);
       Video.connect(data.token, {

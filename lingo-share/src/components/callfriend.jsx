@@ -155,7 +155,7 @@ export default function CallFriend() {
                                 {value.userDisplayName}
                               </Heading>
                             ) : (
-                              <Heading size="sm">Name not set</Heading>
+                              <Heading size="sm">{key}</Heading>
                             )}
                             {value.state === "online" ? (
                               <Text float={"left"}>Online</Text>
