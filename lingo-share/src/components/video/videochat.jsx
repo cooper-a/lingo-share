@@ -37,7 +37,8 @@ const VideoChat = ({callerID}) => {
     setRoomName(getRoomName(user.uid, callerID));
     const handleSubmit = async () => {
       setConnecting(true);
-      const result = await get_token({ identity: user.displayName, room: roomName });
+      let identityName = !user.displayName ? user.uid : user.displayName;
+      const result = await get_token({ identity: identityName, room: roomName });
       const data = result.data;
       console.log(data.token);
       Video.connect(data.token, {
