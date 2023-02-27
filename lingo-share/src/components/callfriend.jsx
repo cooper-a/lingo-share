@@ -14,7 +14,7 @@ import Icon from "@adeira/icons";
 import { PhoneIcon } from "@chakra-ui/icons";
 import "../styles/homepage.css";
 import { UserAuth } from "../contexts/AuthContext";
-import { ref, get } from "firebase/database";
+import { ref, onValue } from "firebase/database";
 import { rtdb } from "../firebase";
 import VideoChat from "./video/videochat";
 import Navbar from "./navbar";
@@ -34,23 +34,19 @@ export default function CallFriend() {
   // console.log(mergedObj);
 
   const getQuery = (ref) => {
-    get(ref)
-      .then((snapshot) => {
-        let newObjectList = [];
-        snapshot.forEach((childSnapshot) => {
-          let newObject = {};
-          newObject[childSnapshot.key] = childSnapshot.val();
-          newObjectList.push(newObject);
-        });
-        if (ref === status_ref) {
-          setStatusObj(newObjectList);
-        } else if (ref === users_ref) {
-          setUsersObj(newObjectList);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
+    onValue(ref, (snapshot) => {
+      let newObjectList = [];
+      snapshot.forEach((childSnapshot) => {
+        let newObject = {};
+        newObject[childSnapshot.key] = childSnapshot.val();
+        newObjectList.push(newObject);
       });
+      if (ref === status_ref) {
+        setStatusObj(newObjectList);
+      } else if (ref === users_ref) {
+        setUsersObj(newObjectList);
+      }
+    })
   };
 
   const mergeObj = (statusList, userList) => {
