@@ -1,16 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Button } from "@chakra-ui/react";
-import Controls from "./controls";
+import "../../styles/participant.css";
 
-const Participant = ({
-  participant,
-  handleCallDisconnect,
-  handleAudioToggle,
-  handleVideoToggle,
-  toggleAudio,
-  toggleVideo,
-  isLocal,
-}) => {
+const Participant = ({ participant }) => {
   const [videoTracks, setVideoTracks] = useState([]);
   const [audioTracks, setAudioTracks] = useState([]);
 
@@ -75,17 +66,10 @@ const Participant = ({
   return (
     <div className="participant">
       <h3>{participant.identity}</h3>
-      <video ref={videoRef} autoPlay={true} />
+      <div className="video">
+        <video ref={videoRef} autoPlay={true} />{" "}
+      </div>
       <audio ref={audioRef} autoPlay={true} muted={false} />
-      {isLocal && (
-        <Controls
-          handleCallDisconnect={handleCallDisconnect}
-          handleAudioToggle={handleAudioToggle}
-          handleVideoToggle={handleVideoToggle}
-          audio={toggleAudio}
-          video={toggleVideo}
-        />
-      )}
     </div>
   );
 };

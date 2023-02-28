@@ -1,5 +1,6 @@
 import React from "react";
-import { Button } from "@chakra-ui/react";
+import { Button, ButtonGroup } from "@chakra-ui/react";
+import "../../styles/controls.css";
 
 const Controls = ({
   handleCallDisconnect,
@@ -9,13 +10,22 @@ const Controls = ({
   video,
 }) => {
   return (
-    <>
-      <Button onClick={handleAudioToggle}>Mute On/Off</Button>
-      <Button endCall onClick={handleCallDisconnect}>
-        End Call
-      </Button>
-      <Button onClick={handleVideoToggle}>Video On/Off</Button>
-    </>
+    <div className="control-btns">
+      <div class="topic-btn">
+        <Button>Topics</Button>
+      </div>
+      <ButtonGroup className="track-btns">
+        <Button onClick={handleVideoToggle}>Camera</Button>
+        <Button marginLeft={"10px"} onClick={handleAudioToggle}>
+          Mic
+        </Button>
+      </ButtonGroup>
+      <div className="leave-btn">
+        <Button endCall onClick={handleCallDisconnect}>
+          Leave
+        </Button>
+      </div>
+    </div>
   );
 };
 

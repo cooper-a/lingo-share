@@ -16,7 +16,7 @@ import React, { useEffect, useState } from "react";
 import "../styles/nav.css";
 import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../contexts/AuthContext";
-import "@fontsource/handlee";
+import "@fontsource/inter";
 
 export default function Navbar() {
   const { user, logout } = UserAuth();

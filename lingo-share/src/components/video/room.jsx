@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Participant from "./participant";
 import Prompt from "./prompt";
+import Controls from "./controls";
+import "../../styles/room.css";
 
 const Room = ({ roomName, room, handleLogout }) => {
   const [participants, setParticipants] = useState([]);
@@ -74,30 +76,31 @@ const Room = ({ roomName, room, handleLogout }) => {
 
   return (
     <div className="room">
-      <h2>Room: {roomName}</h2>
+      {/* <h2>Room: {roomName}</h2> */}
       <button onClick={handleLogout}>Log out</button>
       <div className="local-participant">
         {room ? (
           <Participant
             key={room.localParticipant.sid}
             participant={room.localParticipant}
-            handleAudioToggle={handleAudioToggle}
-            handleVideoToggle={handleVideoToggle}
-            handleCallDisconnect={handleCallDisconnect}
-            toggleAudio={toggleAudio}
-            toggleVideo={toggleVideo}
-            isLocal={true}
           />
         ) : (
           ""
         )}
       </div>
-      <div>
-        <Prompt />
-      </div>
-      <h3>Remote Participants</h3>
-      {/* {console.log(room.participants)} */}
       <div className="remote-participants">{remoteParticipants}</div>
+      <div className="controls">
+        <Controls
+          handleCallDisconnect={handleCallDisconnect}
+          handleAudioToggle={handleAudioToggle}
+          handleVideoToggle={handleVideoToggle}
+          audio={toggleAudio}
+          video={toggleVideo}
+        />
+      </div>
+      {/* <div>
+        <Prompt />
+      </div> */}
     </div>
   );
 };
