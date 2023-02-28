@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../../styles/participant.css";
 
-const Participant = ({ participant }) => {
+const Participant = ({ participant, isLocal }) => {
   const [videoTracks, setVideoTracks] = useState([]);
   const [audioTracks, setAudioTracks] = useState([]);
 
@@ -65,10 +65,14 @@ const Participant = ({ participant }) => {
 
   return (
     <div className="participant">
-      <h3>{participant.identity}</h3>
       <div className="video">
-        <video ref={videoRef} autoPlay={true} />{" "}
+        {isLocal ? (
+          <video className="local-video" ref={videoRef} autoPlay={true} />
+        ) : (
+          <video className="remote-video" ref={videoRef} autoPlay={true} />
+        )}
       </div>
+      <h3>{participant.identity}</h3>
       <audio ref={audioRef} autoPlay={true} muted={false} />
     </div>
   );

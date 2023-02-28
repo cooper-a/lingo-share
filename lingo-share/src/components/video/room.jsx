@@ -8,6 +8,9 @@ const Room = ({ roomName, room, handleLogout }) => {
   const [participants, setParticipants] = useState([]);
   const [toggleAudio, setToggleAudio] = useState(true);
   const [toggleVideo, setToggleVideo] = useState(true);
+  const [togglePrompt, setTogglePrompt] = useState(false);
+
+  console.log(togglePrompt);
 
   useEffect(() => {
     // Here we define what happens when a remote participant joins
@@ -38,6 +41,10 @@ const Room = ({ roomName, room, handleLogout }) => {
 
   const handleCallDisconnect = () => {
     room.disconnect();
+  };
+
+  const handlePromptToggle = () => {
+    setTogglePrompt(!togglePrompt);
   };
 
   const handleAudioToggle = () => {
@@ -77,26 +84,29 @@ const Room = ({ roomName, room, handleLogout }) => {
   return (
     <div className="room">
       {/* <h2>Room: {roomName}</h2> */}
-      <button onClick={handleLogout}>Log out</button>
+      {togglePrompt && <Prompt />}
       <div className="local-participant">
         {room ? (
           <Participant
             key={room.localParticipant.sid}
             participant={room.localParticipant}
+            isLocal={true}
           />
         ) : (
           ""
         )}
       </div>
-      <div className="remote-participants">{remoteParticipants}</div>
+      <div className="remote-participants">{remoteParticipants[1]}</div>
       <div className="controls">
         <Controls
           handleCallDisconnect={handleCallDisconnect}
           handleAudioToggle={handleAudioToggle}
           handleVideoToggle={handleVideoToggle}
+          handlePromptToggle={handlePromptToggle}
           audio={toggleAudio}
           video={toggleVideo}
         />
+        {/* <button onClick={handleLogout}>Log out</button> */}
       </div>
       {/* <div>
         <Prompt />

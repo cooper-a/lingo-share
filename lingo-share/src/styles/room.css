@@ -2,6 +2,16 @@
   position: relative;
 }
 
+.sidebar {
+  z-index: 999;
+}
+
+.controls {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
 .local-participant {
   position: absolute;
   width: 300px;
@@ -11,7 +21,8 @@
 }
 
 .remote-participants {
-  /* position: relative; */
-  height: 100%;
-  width: 100%;
+  /* position: absolute; */
+  /* height: 100vw;
+  width: 100vh; */
+  /* z-index: -999; */
 }

@@ -6,13 +6,14 @@ const Controls = ({
   handleCallDisconnect,
   handleAudioToggle,
   handleVideoToggle,
+  handlePromptToggle,
   audio,
   video,
 }) => {
   return (
     <div className="control-btns">
       <div class="topic-btn">
-        <Button>Topics</Button>
+        <Button onClick={handlePromptToggle}>Topics</Button>
       </div>
       <ButtonGroup className="track-btns">
         <Button onClick={handleVideoToggle}>Camera</Button>
@@ -21,9 +22,7 @@ const Controls = ({
         </Button>
       </ButtonGroup>
       <div className="leave-btn">
-        <Button endCall onClick={handleCallDisconnect}>
-          Leave
-        </Button>
+        <Button onClick={handleCallDisconnect}>Leave</Button>
       </div>
     </div>
   );
