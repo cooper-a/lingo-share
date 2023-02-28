@@ -3,6 +3,7 @@ import Home from "./components/home";
 import Login from "./components/login";
 import Account from "./components/account";
 import Crud from "./components/crud";
+import CallFriend from "./components/callfriend";
 import Video from "./components/video/videochat";
 import ProtectedRoute from "./components/protectedRoute";
 import Signup from "./components/signup";
@@ -75,6 +76,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <Crud />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/callfriend"
+                element={
+                  <ProtectedRoute>
+                    <CallFriend />
                   </ProtectedRoute>
                 }
               />

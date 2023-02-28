@@ -20,6 +20,10 @@ export default function Dashboard() {
   const [snapshotData, setSnapshotData] = useState({});
   const { user, checkStatus } = UserAuth();
   const user_documents = ref(rtdb, "users/" + user.uid);
+  
+  const handleClick = (path) => {
+    navigate("/" + path);
+  };
 
   useEffect(() => {
     checkStatus(user);
@@ -31,7 +35,7 @@ export default function Dashboard() {
       <ChakraProvider>
         <div className="welcome-pg">
           <SimpleGrid columns={2} spacing={10}>
-            <Card className="card" width={"300px"} height={"100px"} size={"lg"}>
+            <Card className="card" width={"300px"} height={"100px"} size={"lg"} onClick={() => handleClick("callfriend")}>
               <CardBody>
                 <Heading as="h4" size="md">
                   Call a Friend
