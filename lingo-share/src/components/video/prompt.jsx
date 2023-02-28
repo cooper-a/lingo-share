@@ -17,7 +17,7 @@ export default function Prompt() {
         if (snapshot.exists()) {
           // console.log(snapshot.val());
           const data = snapshot.val();
-          const prompts = JSON.stringify(data);
+          // const prompts = JSON.stringify(data);
           // console.log(prompts);
           setPrompts(data);
         } else {
@@ -40,9 +40,7 @@ export default function Prompt() {
 
   return (
     <div className="sidebar">
-      <Sidebar prompts={prompts} />
-      {/* <p>{JSON.stringify(prompts)}</p> */}
-      {/* <Button onClick={handlePromptSelect}>Select Prompt Test</Button> */}
+      <Sidebar prompts={prompts} handlePromptSelect={handlePromptSelect} />
     </div>
   );
 }

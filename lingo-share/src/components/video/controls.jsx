@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, ButtonGroup } from "@chakra-ui/react";
+import { Button, ButtonGroup, CloseButton } from "@chakra-ui/react";
 import "../../styles/controls.css";
 
 const Controls = ({
@@ -7,13 +7,24 @@ const Controls = ({
   handleAudioToggle,
   handleVideoToggle,
   handlePromptToggle,
+  isPromptToggled,
   audio,
   video,
 }) => {
   return (
     <div className="control-btns">
       <div class="topic-btn">
-        <Button onClick={handlePromptToggle}>Topics</Button>
+        {!isPromptToggled ? (
+          <Button onClick={handlePromptToggle}>Topics</Button>
+        ) : (
+          <div className="close-btn">
+            <CloseButton
+              onClick={handlePromptToggle}
+              bgColor={"gray.100"}
+              size="lg"
+            />
+          </div>
+        )}
       </div>
       <ButtonGroup className="track-btns">
         <Button onClick={handleVideoToggle}>Camera</Button>

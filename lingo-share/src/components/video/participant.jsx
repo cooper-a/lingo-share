@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../../styles/participant.css";
+import { Text } from "@chakra-ui/react";
+import "../../styles/participant.css";
 
-const Participant = ({ participant, isLocal }) => {
+const Participant = ({ participant, isLocal, isVideoOn }) => {
   const [videoTracks, setVideoTracks] = useState([]);
   const [audioTracks, setAudioTracks] = useState([]);
 
@@ -71,8 +73,17 @@ const Participant = ({ participant, isLocal }) => {
         ) : (
           <video className="remote-video" ref={videoRef} autoPlay={true} />
         )}
+        {isLocal && isVideoOn ? (
+          <h3 className="local-name-cameraon">{participant.identity}</h3>
+        ) : (
+          <></>
+        )}
+        {isLocal && !isVideoOn ? (
+          <h3 className="local-name">{participant.identity}</h3>
+        ) : (
+          <></>
+        )}
       </div>
-      <h3>{participant.identity}</h3>
       <audio ref={audioRef} autoPlay={true} muted={false} />
     </div>
   );

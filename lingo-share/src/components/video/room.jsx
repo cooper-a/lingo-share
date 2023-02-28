@@ -91,6 +91,7 @@ const Room = ({ roomName, room, handleLogout }) => {
             key={room.localParticipant.sid}
             participant={room.localParticipant}
             isLocal={true}
+            isVideoOn={toggleVideo}
           />
         ) : (
           ""
@@ -103,14 +104,12 @@ const Room = ({ roomName, room, handleLogout }) => {
           handleAudioToggle={handleAudioToggle}
           handleVideoToggle={handleVideoToggle}
           handlePromptToggle={handlePromptToggle}
+          isPromptToggled={togglePrompt}
           audio={toggleAudio}
           video={toggleVideo}
         />
         {/* <button onClick={handleLogout}>Log out</button> */}
       </div>
-      {/* <div>
-        <Prompt />
-      </div> */}
     </div>
   );
 };

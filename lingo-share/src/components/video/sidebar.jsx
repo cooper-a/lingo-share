@@ -1,10 +1,11 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../../styles/room.css";
 
-const NavItem = ({ topicName }) => {
+const NavItem = ({ topicName, onClick }) => {
   return (
     <Flex
+      onClick={onClick}
       align="center"
       p="4"
       mx="4"
@@ -21,14 +22,12 @@ const NavItem = ({ topicName }) => {
   );
 };
 
-export default function Sidebar({ prompts }) {
-  const [displayList, setDisplayList] = useState(["Test1, Test2, Test3"]);
+export default function Sidebar({ prompts, handlePromptSelect }) {
+  const [displayList, setDisplayList] = useState([]);
 
-  console.log(prompts);
-
-  const changeDisplayList = (clicked) => {
-    console.log(clicked);
-  };
+  useEffect(() => {
+    setDisplayList(Object.keys(prompts));
+  }, [prompts]);
 
   return (
     <div>
@@ -40,15 +39,15 @@ export default function Sidebar({ prompts }) {
         top={"0px"}
         bottom={"60px"}
         position={"fixed"}
-        w="210px"
+        w="275px"
       >
         <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
           <Text fontSize="2xl" fontFamily="Inter" fontWeight="bold">
             Topics
           </Text>
         </Flex>
-        {displayList.map((link) => (
-          <NavItem onClick={changeDisplayList(link)} topicName={link} />
+        {displayList.map((link, i) => (
+          <NavItem onClick={handlePromptSelect} topicName={link} />
         ))}
       </Box>
     </div>
