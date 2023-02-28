@@ -41,6 +41,7 @@ const Room = ({ roomName, room, handleLogout }) => {
 
   const handleCallDisconnect = () => {
     room.disconnect();
+    handleLogout();
   };
 
   const handlePromptToggle = () => {
