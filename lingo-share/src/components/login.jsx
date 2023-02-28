@@ -65,6 +65,7 @@ export default function Login() {
             error={pwrdError}
             onChange={handleChange}
             placeholder="password..."
+            width={"300px"}
           />
           <Button
             marginTop={"15px"}
