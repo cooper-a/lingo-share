@@ -14,11 +14,12 @@ import Icon from "@adeira/icons";
 import { PhoneIcon } from "@chakra-ui/icons";
 import "../styles/homepage.css";
 import { UserAuth } from "../contexts/AuthContext";
-import { ref, onValue } from "firebase/database";
+import { ref, onValue, push, get } from "firebase/database";
 import { rtdb } from "../firebase";
 import VideoChat from "./video/videochat";
 import Navbar from "./navbar";
 import { Button, UnorderedList } from "@chakra-ui/react";
+import CallNotification from "./callNotification";
 
 export default function CallFriend() {
   const [statusObj, setStatusObj] = useState([]);
@@ -28,6 +29,7 @@ export default function CallFriend() {
   const [redirectToVideo, setRedirectToVideo] = useState(false);
   const status_ref = ref(rtdb, "/status");
   const users_ref = ref(rtdb, "/users");
+  const callRef = ref(rtdb, "/calls");
   const { user } = UserAuth();
   // console.log(statusObj);
   // console.log(usersObj);
@@ -93,9 +95,41 @@ export default function CallFriend() {
     return res;
   };
 
+  const updateCallStatus = (callerID) => {
+      console.log("updateCallStatus is CALLED");
+      get(callRef)
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            snapshot.forEach((childSnapshot) => {
+              console.log(childSnapshot.val());
+              if (childSnapshot.val().caller === user.uid) {
+                console.log("here1");
+                return;
+              }
+              else if (childSnapshot.val().callee === user.uid) {
+                console.log("here2");
+                return;
+              }
+              else {
+                console.log("here3");
+                const pushData = {
+                  caller: user.uid, // the user who initiated the call will always be caller
+                  callee: callerID // the user who is being called will always be callee
+                };
+                push(callRef, pushData);
+              }
+            });
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+  };
+
   const handleClick = (event, callerID) => {
     event.currentTarget.disabled = true;
     setCallerID(callerID);
+    updateCallStatus(callerID);
     setRedirectToVideo(true);
   };
 
@@ -121,6 +155,7 @@ export default function CallFriend() {
   if (!redirectToVideo) {
     render = (
       <div>
+        <CallNotification />
         <Navbar />
         <Text fontSize="3xl">Who do you want to call?</Text>
         <ChakraProvider>
