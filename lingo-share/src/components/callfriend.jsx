@@ -26,8 +26,8 @@ export default function CallFriend() {
   const [usersObj, setUsersObj] = useState([]);
   const [mergedObj, setMergedObj] = useState([]);
   const [callerID, setCallerID] = useState("");
-  const status_ref = ref(rtdb, "/status");
-  const users_ref = ref(rtdb, "/users");
+  const statusRef = ref(rtdb, "/status");
+  const usersRef = ref(rtdb, "/users");
   const callRef = ref(rtdb, "/calls");
   const { user } = UserAuth();
   const navigate = useNavigate();
@@ -43,9 +43,9 @@ export default function CallFriend() {
         newObject[childSnapshot.key] = childSnapshot.val();
         newObjectList.push(newObject);
       });
-      if (ref === status_ref) {
+      if (ref === statusRef) {
         setStatusObj(newObjectList);
-      } else if (ref === users_ref) {
+      } else if (ref === usersRef) {
         setUsersObj(newObjectList);
       }
     });
@@ -95,21 +95,16 @@ export default function CallFriend() {
     return res;
   };
 
-  const updateCallStatus = (callerID) => {
-    console.log("updateCallStatus is CALLED");
+  const generateCallStatusEntry = (callerID) => {
     get(callRef)
       .then((snapshot) => {
         if (snapshot.exists()) {
           snapshot.forEach((childSnapshot) => {
-            console.log(childSnapshot.val());
             if (childSnapshot.val().caller === user.uid) {
-              console.log("here1");
               return;
             } else if (childSnapshot.val().callee === user.uid) {
-              console.log("here2");
               return;
             } else {
-              console.log("here3");
               const pushData = {
                 caller: user.uid, // the user who initiated the call will always be caller
                 callee: callerID, // the user who is being called will always be callee
@@ -127,6 +122,7 @@ export default function CallFriend() {
   const handleClick = (event, callerID) => {
     event.currentTarget.disabled = true;
     setCallerID(callerID);
+    generateCallStatusEntry(callerID);
     navigate("/callRoom", { state: { callerID: callerID } });
   };
 
@@ -140,8 +136,8 @@ export default function CallFriend() {
   };
 
   useEffect(() => {
-    getQuery(status_ref);
-    getQuery(users_ref);
+    getQuery(statusRef);
+    getQuery(usersRef);
   }, []);
 
   useEffect(() => {
@@ -150,6 +146,7 @@ export default function CallFriend() {
 
   return (
     <div>
+      <CallNotification />
       <Navbar />
       <Text fontSize="3xl">Who do you want to call?</Text>
       <ChakraProvider>
