@@ -88,7 +88,7 @@ function App() {
                 }
               />
               <Route
-                path="/video"
+                path="/callroom"
                 element={
                   <ProtectedRoute>
                     <Video />
