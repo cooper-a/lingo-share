@@ -11,12 +11,12 @@ import {
   Text,
 } from "@chakra-ui/react";
 import Icon from "@adeira/icons";
+import { useNavigate } from "react-router-dom";
 import { PhoneIcon } from "@chakra-ui/icons";
 import "../styles/homepage.css";
 import { UserAuth } from "../contexts/AuthContext";
 import { ref, onValue, push, get } from "firebase/database";
 import { rtdb } from "../firebase";
-import VideoChat from "./video/videochat";
 import Navbar from "./navbar";
 import { Button, UnorderedList } from "@chakra-ui/react";
 import CallNotification from "./callNotification";
@@ -26,11 +26,11 @@ export default function CallFriend() {
   const [usersObj, setUsersObj] = useState([]);
   const [mergedObj, setMergedObj] = useState([]);
   const [callerID, setCallerID] = useState("");
-  const [redirectToVideo, setRedirectToVideo] = useState(false);
   const status_ref = ref(rtdb, "/status");
   const users_ref = ref(rtdb, "/users");
   const callRef = ref(rtdb, "/calls");
   const { user } = UserAuth();
+  const navigate = useNavigate();
   // console.log(statusObj);
   // console.log(usersObj);
   // console.log(mergedObj);
@@ -48,7 +48,7 @@ export default function CallFriend() {
       } else if (ref === users_ref) {
         setUsersObj(newObjectList);
       }
-    })
+    });
   };
 
   const mergeObj = (statusList, userList) => {
@@ -96,41 +96,38 @@ export default function CallFriend() {
   };
 
   const updateCallStatus = (callerID) => {
-      console.log("updateCallStatus is CALLED");
-      get(callRef)
-        .then((snapshot) => {
-          if (snapshot.exists()) {
-            snapshot.forEach((childSnapshot) => {
-              console.log(childSnapshot.val());
-              if (childSnapshot.val().caller === user.uid) {
-                console.log("here1");
-                return;
-              }
-              else if (childSnapshot.val().callee === user.uid) {
-                console.log("here2");
-                return;
-              }
-              else {
-                console.log("here3");
-                const pushData = {
-                  caller: user.uid, // the user who initiated the call will always be caller
-                  callee: callerID // the user who is being called will always be callee
-                };
-                push(callRef, pushData);
-              }
-            });
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    console.log("updateCallStatus is CALLED");
+    get(callRef)
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          snapshot.forEach((childSnapshot) => {
+            console.log(childSnapshot.val());
+            if (childSnapshot.val().caller === user.uid) {
+              console.log("here1");
+              return;
+            } else if (childSnapshot.val().callee === user.uid) {
+              console.log("here2");
+              return;
+            } else {
+              console.log("here3");
+              const pushData = {
+                caller: user.uid, // the user who initiated the call will always be caller
+                callee: callerID, // the user who is being called will always be callee
+              };
+              push(callRef, pushData);
+            }
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const handleClick = (event, callerID) => {
     event.currentTarget.disabled = true;
     setCallerID(callerID);
-    updateCallStatus(callerID);
-    setRedirectToVideo(true);
+    navigate("/callRoom", { state: { callerID: callerID } });
   };
 
   const disableButton = (key, state) => {
@@ -151,78 +148,65 @@ export default function CallFriend() {
     setMergedObj(mergeObj(statusObj, usersObj));
   }, [statusObj, usersObj]);
 
-  let render;
-  if (!redirectToVideo) {
-    render = (
-      <div>
-        <CallNotification />
-        <Navbar />
-        <Text fontSize="3xl">Who do you want to call?</Text>
-        <ChakraProvider>
-          <div className="field-pg">
-            <UnorderedList spacing={5}>
-              {Object.entries(mergedObj).map(([key, value]) => {
-                return (
-                  <Card maxW="md" key={key} width={"400px"}>
-                    <CardHeader>
-                      <Flex spacing="4">
-                        <Flex
-                          flex="1"
-                          gap="4"
-                          alignItems="center"
-                          flexWrap="wrap"
-                        >
-                          {value.state === "online" ? (
-                            <Avatar bg="grey">
-                              <AvatarBadge boxSize="1.25em" bg="green.500" />
-                            </Avatar>
-                          ) : (
-                            <Avatar bg="grey" />
-                          )}
+  return (
+    <div>
+      <Navbar />
+      <Text fontSize="3xl">Who do you want to call?</Text>
+      <ChakraProvider>
+        <div className="field-pg">
+          <UnorderedList spacing={5}>
+            {Object.entries(mergedObj).map(([key, value]) => {
+              return (
+                <Card maxW="md" key={key} width={"400px"}>
+                  <CardHeader>
+                    <Flex spacing="4">
+                      <Flex
+                        flex="1"
+                        gap="4"
+                        alignItems="center"
+                        flexWrap="wrap"
+                      >
+                        {value.state === "online" ? (
+                          <Avatar bg="grey">
+                            <AvatarBadge boxSize="1.25em" bg="green.500" />
+                          </Avatar>
+                        ) : (
+                          <Avatar bg="grey" />
+                        )}
 
-                          <Box>
-                            {value.userDisplayName ? (
-                              <Heading size="sm">
-                                {value.userDisplayName}
-                              </Heading>
-                            ) : (
-                              <Heading size="sm">{key}</Heading>
-                            )}
-                            {value.state === "online" ? (
-                              <Text float={"left"}>Online</Text>
-                            ) : (
-                              <Text float={"left"}>Offline</Text>
-                            )}
-                          </Box>
-                        </Flex>
-                        <Box alignSelf={"center"}>
-                          <Button
-                            onClick={(event) => handleClick(event, key)}
-                            isDisabled={disableButton(key, value.state)}
-                            direction="row"
-                            align="center"
-                            leftIcon={<PhoneIcon w={3} h={3} />}
-                            variant="outline"
-                          >
-                            Call
-                          </Button>
+                        <Box>
+                          {value.userDisplayName ? (
+                            <Heading size="sm">{value.userDisplayName}</Heading>
+                          ) : (
+                            <Heading size="sm">{key}</Heading>
+                          )}
+                          {value.state === "online" ? (
+                            <Text float={"left"}>Online</Text>
+                          ) : (
+                            <Text float={"left"}>Offline</Text>
+                          )}
                         </Box>
                       </Flex>
-                    </CardHeader>
-                  </Card>
-                );
-              })}
-            </UnorderedList>
-          </div>
-        </ChakraProvider>
-      </div>
-    );
-  } else {
-    render = (
-      <div>
-        <VideoChat callerID={callerID} />
-      </div>
-    );
-  }
-  return render;
+                      <Box alignSelf={"center"}>
+                        <Button
+                          onClick={(event) => handleClick(event, key)}
+                          isDisabled={disableButton(key, value.state)}
+                          direction="row"
+                          align="center"
+                          leftIcon={<PhoneIcon w={3} h={3} />}
+                          variant="outline"
+                        >
+                          Call
+                        </Button>
+                      </Box>
+                    </Flex>
+                  </CardHeader>
+                </Card>
+              );
+            })}
+          </UnorderedList>
+        </div>
+      </ChakraProvider>
+    </div>
+  );
 }
