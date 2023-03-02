@@ -6,7 +6,7 @@ import Video from "twilio-video";
 import Lobby from "./lobby";
 import Room from "./room";
 
-const VideoChat = ({callerID}) => {
+const VideoChat = ({ callerID }) => {
   const [userName, setUserName] = useState("");
   const [roomName, setRoomName] = useState("");
   const [room, setRoom] = useState(null);
@@ -31,7 +31,7 @@ const VideoChat = ({callerID}) => {
     let roomNameInList = [uid, callerID];
     return roomNameInList.sort().join(""); // room name will be the concatenation of the two user IDs sorted alphabetically
   };
-  
+
   useEffect(() => {
     let concatRoomName = getRoomName(user.uid, callerID);
     setRoomName(concatRoomName);
@@ -39,7 +39,10 @@ const VideoChat = ({callerID}) => {
       // preventDefault();
       setConnecting(true);
       let identityName = !user.displayName ? user.uid : user.displayName;
-      const result = await get_token({ identity: identityName, room: concatRoomName });
+      const result = await get_token({
+        identity: identityName,
+        room: concatRoomName,
+      });
       const data = result.data;
       console.log(data.token);
       Video.connect(data.token, {

@@ -1,12 +1,23 @@
-.grid-container {
+.onboard-grid {
   display: grid;
   grid-template-columns: auto auto;
-  padding: 10px;
+  margin-top: 7%;
+  column-gap: 100px;
 }
 
 .grid-item {
-  border: 1px solid rgba(0, 0, 0, 0.8);
-  padding: 20px;
-  font-size: 30px;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
+
+.grid-btns {
+  display: grid;
+  grid-template-columns: auto;
+  row-gap: 20px;
+  justify-content: start;
+}
+
+.grid-item-btns {
+  display: flex;
 }

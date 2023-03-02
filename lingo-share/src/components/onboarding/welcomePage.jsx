@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../../contexts/AuthContext";
 import Navbar from "../navbar";
 import React, { useEffect, useState } from "react";
+import "../../styles/homepage.css";
 
 export default function WelcomePage() {
   const [error, setError] = useState(null);
@@ -43,7 +44,8 @@ export default function WelcomePage() {
         <div className="field-pg">
           <Text fontSize="4xl">All done! We hope you enjoy LingoShare</Text>
           <Button
-            className="selection-btn"
+            width={"400px"}
+            height={"50px"}
             marginTop={"50px"}
             variant="outline"
             onClick={() => handleSelection()}

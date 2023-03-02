@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
   Card,
   CardBody,
+  CardHeader,
   ChakraProvider,
   Heading,
   SimpleGrid,
@@ -37,9 +38,8 @@ export default function Dashboard() {
           <SimpleGrid columns={2} spacing={10}>
             <Card
               className="card"
-              width={"300px"}
-              height={"100px"}
               size={"lg"}
+              bgColor={"gray.100"}
               onClick={() => handleClick("callfriend")}
             >
               <CardBody>
@@ -48,35 +48,21 @@ export default function Dashboard() {
                 </Heading>
               </CardBody>
             </Card>
-            <Card className="card" width={"300px"} height={"100px"} size={"lg"}>
-              <CardBody>
+            <Card className="card" bgColor={"gray.100"} size={"lg"}>
+              <CardBody className="card-body">
                 <Heading as="h4" size="md">
                   Meet New Friends
                 </Heading>
               </CardBody>
             </Card>
-            <Card className="card" width={"300px"} height={"100px"} size={"lg"}>
-              <CardBody>
-                <Heading as="h4" size="md">
-                  Your Friends
-                </Heading>
-              </CardBody>
-            </Card>
-            <Card className="card" width={"300px"} height={"100px"} size={"lg"}>
+            <Card className="card" bgColor={"gray.100"} size={"lg"}>
               <CardBody>
                 <Heading as="h4" size="md">
                   Your Profile
                 </Heading>
               </CardBody>
             </Card>
-            <Card className="card" width={"300px"} height={"100px"} size={"lg"}>
-              <CardBody>
-                <Heading as="h4" size="md">
-                  Settings
-                </Heading>
-              </CardBody>
-            </Card>
-            <Card className="card" width={"300px"} height={"100px"} size={"lg"}>
+            <Card className="card" bgColor={"gray.100"} size={"lg"}>
               <CardBody>
                 <Heading as="h4" size="md">
                   How to Use this App

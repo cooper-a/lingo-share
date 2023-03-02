@@ -46,7 +46,7 @@ export default function CallFriend() {
       } else if (ref === users_ref) {
         setUsersObj(newObjectList);
       }
-    })
+    });
   };
 
   const mergeObj = (statusList, userList) => {

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../../contexts/AuthContext";
 import Navbar from "../navbar";
 import React, { useEffect, useState } from "react";
+import "../../styles/onboarding.css";
 
 export default function LanguageProficiency() {
   const [error, setError] = useState(null);
@@ -41,33 +42,46 @@ export default function LanguageProficiency() {
     <div>
       <Navbar />
       <ChakraProvider>
-        <div className="field-pg">
-          <Text fontSize="4xl">
-            How well can you speak{" "}
-            {userType === "native" ? "English" : "Mandarin"}?
-          </Text>
-          <Button
-            variant="outline"
-            marginTop={"50px"}
-            onClick={() => handleSelection("well")}
-            className="selection-btn"
-          >
-            Well
-          </Button>
-          <Button
-            className="selection-btn"
-            variant="outline"
-            onClick={() => handleSelection("okay")}
-          >
-            Okay
-          </Button>
-          <Button
-            className="selection-btn"
-            variant="outline"
-            onClick={() => handleSelection("poor")}
-          >
-            Poorly
-          </Button>
+        <div className="onboard-grid">
+          <div className="grid-item">
+            <Text fontSize="4xl">
+              How well can you speak{" "}
+              {userType === "native" ? "English" : "Mandarin"}?
+            </Text>
+          </div>
+          <div className="grid-btns">
+            <div className="grid-item-btn">
+              <Button
+                variant="outline"
+                marginTop={"50px"}
+                onClick={() => handleSelection("well")}
+                width={"400px"}
+                height={"50px"}
+              >
+                Well
+              </Button>
+            </div>
+            <div className="grid-item-btn">
+              <Button
+                width={"400px"}
+                height={"50px"}
+                variant="outline"
+                onClick={() => handleSelection("okay")}
+              >
+                Okay
+              </Button>
+            </div>
+            <div className="grid-item-btn">
+              <Button
+                width={"400px"}
+                height={"50px"}
+                variant="outline"
+                onClick={() => handleSelection("poor")}
+              >
+                Poorly
+              </Button>
+            </div>
+          </div>
         </div>
       </ChakraProvider>
     </div>
