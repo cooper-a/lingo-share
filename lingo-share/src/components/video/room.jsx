@@ -98,7 +98,7 @@ const Room = ({ roomName, room, handleLogout }) => {
           ""
         )}
       </div>
-      <div className="remote-participants">{remoteParticipants[1]}</div>
+      <div className="remote-participants">{remoteParticipants}</div>
       <div className="controls">
         <Controls
           handleCallDisconnect={handleCallDisconnect}
