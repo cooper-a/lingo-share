@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { get_token } from "../../firebase";
 import { UserAuth } from "../../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Video from "twilio-video";
 import Lobby from "./lobby";
 import Room from "./room";
@@ -13,6 +13,8 @@ const VideoChat = ({ callerID }) => {
   const [connecting, setConnecting] = useState(false);
   const { user } = UserAuth();
   const navigate = useNavigate();
+  const { state } = useLocation();
+  const { callerID } = state;
 
   const handleLogout = useCallback(() => {
     setRoom((prevRoom) => {
