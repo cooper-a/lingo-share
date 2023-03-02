@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../../styles/participant.css";
-import { Text } from "@chakra-ui/react";
-import "../../styles/participant.css";
 
 const Participant = ({ participant, isLocal, isVideoOn }) => {
   const [videoTracks, setVideoTracks] = useState([]);

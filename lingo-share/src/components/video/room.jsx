@@ -109,7 +109,6 @@ const Room = ({ roomName, room, handleLogout }) => {
           audio={toggleAudio}
           video={toggleVideo}
         />
-        {/* <button onClick={handleLogout}>Log out</button> */}
       </div>
     </div>
   );
