@@ -2,6 +2,8 @@ import React, { useState, useCallback, useEffect } from "react";
 import { get_token } from "../../firebase";
 import { UserAuth } from "../../contexts/AuthContext";
 import { useNavigate, useLocation } from "react-router-dom";
+import { ref, onValue, get, child, remove } from "firebase/database";
+import { rtdb } from "../../firebase";
 import Video from "twilio-video";
 import Lobby from "./lobby";
 import Room from "./room";
@@ -15,8 +17,25 @@ const VideoChat = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
   const { callerID } = state;
+  const callRef = ref(rtdb, "/calls");
+
+  const removeCallStatusEntry = () => {
+    get(callRef).then((snapshot) => {
+      snapshot.forEach((childSnapshot) => {
+        if (childSnapshot.exists()) {
+          if (
+            childSnapshot.val().callee === user.uid ||
+            childSnapshot.val().caller === user.uid
+          ) {
+            remove(childSnapshot.ref);
+          }
+        }
+      });
+    });
+  };
 
   const handleLogout = useCallback(() => {
+    removeCallStatusEntry();
     setRoom((prevRoom) => {
       if (prevRoom) {
         prevRoom.localParticipant.tracks.forEach((trackPub) => {
