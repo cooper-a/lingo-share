@@ -23,14 +23,15 @@ export default function CallNotification() {
     get(usersRef)
       .then((snapshot) => {
         snapshot.forEach((childSnapshot) => {
+          console.log(childSnapshot.val());
           if (
             childSnapshot.key === callerID &&
             typeof childSnapshot.val().userDisplayName !== "undefined"
           ) {
-            // console.log(childSnapshot.val().userDisplayName);
+            console.log(childSnapshot.val().userDisplayName);
             return childSnapshot.val().userDisplayName;
           }
-          // console.log(callerID);
+          console.log(callerID);
           return callerID;
         });
       })
@@ -40,19 +41,23 @@ export default function CallNotification() {
   };
 
   useEffect(() => {
-    onValue(callRef, (snapshot) => {
-      if (snapshot.exists()) {
-        snapshot.forEach((childSnapshot) => {
-          if (
-            childSnapshot.val().callee === user.uid &&
-            childSnapshot.key !== "dummyObject"
-          ) {
-            setisCallee(true);
-            setCallerID(childSnapshot.val().caller);
-          }
-        });
-      }
-    });
+    const interval = setInterval(() => {
+      get(callRef).then((snapshot) => {
+        setisCallee(false);
+        if (snapshot.exists()) {
+          snapshot.forEach((childSnapshot) => {
+            if (
+              childSnapshot.val().callee === user.uid &&
+              childSnapshot.key !== "dummyObject"
+            ) {
+              setisCallee(true);
+              setCallerID(childSnapshot.val().caller);
+            }
+          });
+        }
+      });
+    }, 1000);
+    return () => clearInterval(interval);
   }, []);
 
   let render;
