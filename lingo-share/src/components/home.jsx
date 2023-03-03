@@ -7,6 +7,7 @@ import React, { useEffect, useState } from "react";
 import { rtdb } from "../firebase";
 import { ref, onValue } from "firebase/database";
 import { useTranslation } from "react-i18next";
+import Navbar from "./navbar";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -43,30 +44,33 @@ export default function Home() {
   return (
     <div>
       {showLogin ? (
-        <ChakraProvider>
-          <div className="welcome-pg">
-            <Text fontSize="5xl">{t("Welcome to LingoShare!")}</Text>
-            <Button
-              className="btn"
-              height={"50px"}
-              marginTop={"50px"}
-              onClick={() => handleClick("signup")}
-              rightIcon={<ArrowForwardIcon />}
-              variant="outline"
-            >
-              {t("Sign Up")}
-            </Button>
-            <Button
-              className="btn"
-              height={"50px"}
-              onClick={() => handleClick("login")}
-              rightIcon={<ArrowForwardIcon />}
-              variant="outline"
-            >
-              {t("Login")}
-            </Button>
-          </div>
-        </ChakraProvider>
+        <div>
+          <Navbar />
+          <ChakraProvider>
+            <div className="welcome-pg">
+              <Text fontSize="5xl">{t("Welcome to LingoShare!")}</Text>
+              <Button
+                className="btn"
+                height={"50px"}
+                marginTop={"50px"}
+                onClick={() => handleClick("signup")}
+                rightIcon={<ArrowForwardIcon />}
+                variant="outline"
+              >
+                {t("Sign Up")}
+              </Button>
+              <Button
+                className="btn"
+                height={"50px"}
+                onClick={() => handleClick("login")}
+                rightIcon={<ArrowForwardIcon />}
+                variant="outline"
+              >
+                {t("Login")}
+              </Button>
+            </div>
+          </ChakraProvider>
+        </div>
       ) : (
         <></>
       )}
