@@ -10,6 +10,7 @@ import {
   HStack,
   VStack,
   Text,
+  Button,
 } from "@chakra-ui/react";
 import Icon from "@adeira/icons";
 import React, { useEffect, useState } from "react";
@@ -17,11 +18,13 @@ import "../styles/nav.css";
 import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../contexts/AuthContext";
 import "@fontsource/handlee";
+import { useTranslation } from "react-i18next";
 
 export default function Navbar() {
   const { user, logout } = UserAuth();
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { t, i18n } = useTranslation();
 
   useEffect(() => {
     if (user === null || Object.keys(user).length === 0) return;
@@ -43,6 +46,11 @@ export default function Navbar() {
     }
   };
 
+  const handleTranslate = () => {
+    console.log("translate");
+    i18n.changeLanguage(i18n.language === "en" ? "zh" : "en");
+  };
+
   return (
     <div>
       <ChakraProvider>
@@ -51,6 +59,12 @@ export default function Navbar() {
             <div className="homepage-logo">
               <span className="title">LingoShare</span>
             </div>
+          </div>
+          <div className="translate-btn">
+            <Button onClick={() => handleTranslate()}>
+              {t("Language")}
+              <Icon name="translate" width={"20px"} height={"20px"} />
+            </Button>
           </div>
           {isLoggedIn && (
             <div className="logout-btn">
@@ -91,7 +105,7 @@ export default function Navbar() {
                     icon={<Icon name="lock" width={"19px"} height={"19px"} />}
                     onClick={() => handleLogout()}
                   >
-                    Logout
+                    {t("Logout")}
                   </MenuItem>
                 </MenuList>
               </Menu>

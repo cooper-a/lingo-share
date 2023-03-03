@@ -12,6 +12,7 @@ import { set, ref, onValue } from "firebase/database";
 import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../../contexts/AuthContext";
 import Navbar from "../navbar";
+import { useTranslation } from "react-i18next";
 
 export default function Dashboard() {
   const [error, setError] = useState(null);
@@ -20,7 +21,8 @@ export default function Dashboard() {
   const [snapshotData, setSnapshotData] = useState({});
   const { user, checkStatus } = UserAuth();
   const user_documents = ref(rtdb, "users/" + user.uid);
-  
+  const { t } = useTranslation();
+
   const handleClick = (path) => {
     navigate("/" + path);
   };
@@ -35,45 +37,51 @@ export default function Dashboard() {
       <ChakraProvider>
         <div className="welcome-pg">
           <SimpleGrid columns={2} spacing={10}>
-            <Card className="card" width={"300px"} height={"100px"} size={"lg"} onClick={() => handleClick("callfriend")}>
+            <Card
+              className="card"
+              width={"300px"}
+              height={"100px"}
+              size={"lg"}
+              onClick={() => handleClick("callfriend")}
+            >
               <CardBody>
                 <Heading as="h4" size="md">
-                  Call a Friend
+                  {t("Call a Friend")}
                 </Heading>
               </CardBody>
             </Card>
             <Card className="card" width={"300px"} height={"100px"} size={"lg"}>
               <CardBody>
                 <Heading as="h4" size="md">
-                  Meet New Friends
+                  {t("Meet New Friends")}
                 </Heading>
               </CardBody>
             </Card>
             <Card className="card" width={"300px"} height={"100px"} size={"lg"}>
               <CardBody>
                 <Heading as="h4" size="md">
-                  Your Friends
+                  {t("Your Friends")}
                 </Heading>
               </CardBody>
             </Card>
             <Card className="card" width={"300px"} height={"100px"} size={"lg"}>
               <CardBody>
                 <Heading as="h4" size="md">
-                  Your Profile
+                  {t("Your Profile")}
                 </Heading>
               </CardBody>
             </Card>
             <Card className="card" width={"300px"} height={"100px"} size={"lg"}>
               <CardBody>
                 <Heading as="h4" size="md">
-                  Settings
+                  {t("Settings")}
                 </Heading>
               </CardBody>
             </Card>
             <Card className="card" width={"300px"} height={"100px"} size={"lg"}>
               <CardBody>
                 <Heading as="h4" size="md">
-                  How to Use this App
+                  {t("How to Use this App")}
                 </Heading>
               </CardBody>
             </Card>
