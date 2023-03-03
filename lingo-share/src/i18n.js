@@ -50,6 +50,7 @@ const resources = {
       Okay: "Okay",
       Poorly: "Poorly",
       "Who would you like to call?": "Who would you like to call?",
+      "Welcome to LingoShare!": "Welcome to LingoShare!",
     },
   },
   zh: {
@@ -96,6 +97,7 @@ const resources = {
       Well: "好",
       Poorly: "差",
       "Who would you like to call?": "你想打电话给谁？",
+      "Welcome to LingoShare!": "欢迎来到LingoShare！",
     },
   },
 };
