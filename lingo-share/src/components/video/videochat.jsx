@@ -6,7 +6,7 @@ import Video from "twilio-video";
 import Lobby from "./lobby";
 import Room from "./room";
 
-const VideoChat = ({ callerID }) => {
+const VideoChat = () => {
   const [userName, setUserName] = useState("");
   const [roomName, setRoomName] = useState("");
   const [room, setRoom] = useState(null);
