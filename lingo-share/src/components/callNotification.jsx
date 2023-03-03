@@ -13,31 +13,9 @@ export default function CallNotification() {
   const navigate = useNavigate();
   const callRef = ref(rtdb, "/calls");
   const usersRef = ref(rtdb, "/users");
-
   const handleClick = (event, callerID) => {
     event.currentTarget.disabled = true;
     navigate("/callRoom", { state: { callerID: callerID } });
-  };
-
-  const getUserDisplayName = (callerID) => {
-    get(usersRef)
-      .then((snapshot) => {
-        snapshot.forEach((childSnapshot) => {
-          console.log(childSnapshot.val());
-          if (
-            childSnapshot.key === callerID &&
-            typeof childSnapshot.val().userDisplayName !== "undefined"
-          ) {
-            console.log(childSnapshot.val().userDisplayName);
-            return childSnapshot.val().userDisplayName;
-          }
-          console.log(callerID);
-          return callerID;
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
   };
 
   useEffect(() => {
@@ -60,11 +38,36 @@ export default function CallNotification() {
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    const getUserDisplayName = async (callerID) => {
+      await get(usersRef)
+        .then((snapshot) => {
+          snapshot.forEach((childSnapshot) => {
+            if (
+              childSnapshot.key === callerID &&
+              childSnapshot.val().userDisplayName !== undefined
+            ) {
+              setCallerDisplayName(childSnapshot.val().userDisplayName);
+            }
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+    getUserDisplayName(callerID).catch((error) => {
+      console.log(error);
+    });
+  }, [callerID]);
+
   let render;
   if (isCallee) {
     render = (
       <div>
-        <h1>{callerID} is calling you!</h1>
+        <h1>
+          {callerDisplayName === "" ? callerID : callerDisplayName} is calling
+          you
+        </h1>
         <Button
           onClick={(event) => handleClick(event, callerID)}
           direction="row"
