@@ -38,7 +38,6 @@ const resources = {
       "First name missing": "First name missing",
       "Last name missing": "Last name missing",
       "Email is already in use": "Email is already in use",
-      "Please enter a valid email": "Please enter a valid email",
       "First Name": "First Name",
       "Last Name": "Last Name",
       Show: "Show",
@@ -50,6 +49,7 @@ const resources = {
       Well: "Well",
       Okay: "Okay",
       Poorly: "Poorly",
+      "Who would you like to call?": "Who would you like to call?",
     },
   },
   zh: {
@@ -84,7 +84,6 @@ const resources = {
       "First name missing": "缺少名字",
       "Last name missing": "缺少姓氏",
       "Email is already in use": "电子邮件已被使用",
-      "Please enter a valid email": "请输入有效的电子邮件地址",
       "First Name": "名字",
       "Last Name": "姓氏",
       Show: "显示",
@@ -96,6 +95,7 @@ const resources = {
       Okay: "好的",
       Well: "好",
       Poorly: "差",
+      "Who would you like to call?": "你想打电话给谁？",
     },
   },
 };
