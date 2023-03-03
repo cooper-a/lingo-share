@@ -13,6 +13,7 @@ import { set, ref, onValue } from "firebase/database";
 import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../../contexts/AuthContext";
 import Navbar from "../navbar";
+import CallNotification from "../callNotification";
 
 export default function Dashboard() {
   const [error, setError] = useState(null);
@@ -32,6 +33,7 @@ export default function Dashboard() {
 
   return (
     <div>
+      <CallNotification />
       <Navbar />
       <ChakraProvider>
         <div className="welcome-pg">
