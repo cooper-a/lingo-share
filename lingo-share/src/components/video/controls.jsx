@@ -1,8 +1,8 @@
-import React from "react";
-import { Button, ButtonGroup, CloseButton } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import { Button, ButtonGroup, CloseButton, Tooltip } from "@chakra-ui/react";
 import "../../styles/controls.css";
 
-const Controls = ({
+export default function Controls({
   handleCallDisconnect,
   handleAudioToggle,
   handleVideoToggle,
@@ -10,12 +10,23 @@ const Controls = ({
   isPromptToggled,
   audio,
   video,
-}) => {
+}) {
   return (
     <div className="control-btns">
       <div class="topic-btn">
         {!isPromptToggled ? (
-          <Button onClick={handlePromptToggle}>Topics</Button>
+          <Tooltip
+            className="tooltip"
+            hasArrow
+            label="Continue the conversation
+by selecting a topic!"
+            bg="gray.700"
+            fontSize={"l"}
+            color="white"
+            placement="top-end"
+          >
+            <Button onClick={handlePromptToggle}>Topics</Button>
+          </Tooltip>
         ) : (
           <div className="close-btn">
             <CloseButton
@@ -37,6 +48,4 @@ const Controls = ({
       </div>
     </div>
   );
-};
-
-export default Controls;
+}
