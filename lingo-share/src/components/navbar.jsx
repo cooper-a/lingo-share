@@ -65,10 +65,6 @@ export default function Navbar() {
           </div>
           <div className="top-right-settings">
             <div className="translate-btn">
-              {/* <Button onClick={() => handleTranslate()}>
-                  {t("Language")}
-                  <Icon name="translate" width={"20px"} height={"20px"} />
-                </Button> */}
               <Tag
                 onClick={() => handleTranslate("en")}
                 size={"lg"}
