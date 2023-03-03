@@ -6,10 +6,12 @@ import {
   InputRightElement,
   Text,
 } from "@chakra-ui/react";
+import { useTranslation } from "react-i18next";
 
 export default function PasswordInput({ onChange, isInvalid, error, width }) {
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
+  const { t } = useTranslation();
 
   return (
     <div>
@@ -18,13 +20,13 @@ export default function PasswordInput({ onChange, isInvalid, error, width }) {
           isInvalid={isInvalid}
           pr="4.5rem"
           type={show ? "text" : "password"}
-          placeholder="Enter password"
+          placeholder={t("Enter password")}
           onChange={onChange}
           height={"50px"}
         />
         <InputRightElement width="4.5rem" paddingTop="10px">
           <Button h="2.75rem" size="sm" onClick={handleClick}>
-            {show ? "Hide" : "Show"}
+            {show ? t("Hide") : t("Show")}
           </Button>
         </InputRightElement>
       </InputGroup>

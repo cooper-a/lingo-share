@@ -97,7 +97,7 @@ export default function Navbar() {
                     icon={<Icon className="menu-user-icon" name="settings" />}
                     onClick={() => handleClick("account")}
                   >
-                    Account
+                    {t("Account")}
                   </MenuItem>
                   <MenuDivider />
                   <MenuItem

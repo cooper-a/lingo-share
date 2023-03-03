@@ -6,11 +6,13 @@ import { UserAuth } from "../contexts/AuthContext";
 import React, { useEffect, useState } from "react";
 import { rtdb } from "../firebase";
 import { ref, onValue } from "firebase/database";
+import { useTranslation } from "react-i18next";
 
 export default function Home() {
   const navigate = useNavigate();
   const { user } = UserAuth();
   const [showLogin, setShowLogin] = useState(false);
+  const { t } = useTranslation();
 
   const handleClick = (path) => {
     navigate("/" + path);
@@ -43,7 +45,7 @@ export default function Home() {
       {showLogin ? (
         <ChakraProvider>
           <div className="welcome-pg">
-            <Text fontSize="5xl">Welcome to LingoShare!</Text>
+            <Text fontSize="5xl">{t("Welcome to LingoShare!")}</Text>
             <Button
               className="btn"
               height={"50px"}
@@ -52,7 +54,7 @@ export default function Home() {
               rightIcon={<ArrowForwardIcon />}
               variant="outline"
             >
-              Sign Up
+              {t("Sign Up")}
             </Button>
             <Button
               className="btn"
@@ -61,7 +63,7 @@ export default function Home() {
               rightIcon={<ArrowForwardIcon />}
               variant="outline"
             >
-              Login
+              {t("Login")}
             </Button>
           </div>
         </ChakraProvider>
