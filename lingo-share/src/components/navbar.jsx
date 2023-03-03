@@ -10,7 +10,7 @@ import {
   HStack,
   VStack,
   Text,
-  Button,
+  Tag,
 } from "@chakra-ui/react";
 import Icon from "@adeira/icons";
 import React, { useEffect, useState } from "react";
@@ -25,6 +25,7 @@ export default function Navbar() {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { t, i18n } = useTranslation();
+  const [isEnglish, setIsEnglish] = useState(true);
 
   useEffect(() => {
     if (user === null || Object.keys(user).length === 0) return;
@@ -46,9 +47,11 @@ export default function Navbar() {
     }
   };
 
-  const handleTranslate = () => {
+  const handleTranslate = (lang) => {
     console.log("translate");
-    i18n.changeLanguage(i18n.language === "en" ? "zh" : "en");
+    // i18n.changeLanguage(i18n.language === "en" ? "zh" : "en");
+    setIsEnglish(!isEnglish);
+    i18n.changeLanguage(lang);
   };
 
   return (
@@ -60,57 +63,77 @@ export default function Navbar() {
               <span className="title">LingoShare</span>
             </div>
           </div>
-          <div className="translate-btn">
-            <Button onClick={() => handleTranslate()}>
-              {t("Language")}
-              <Icon name="translate" width={"20px"} height={"20px"} />
-            </Button>
-          </div>
-          {isLoggedIn && (
-            <div className="logout-btn">
-              <Menu>
-                <MenuButton>
-                  <HStack className={"avatar"}>
-                    <Avatar size={"sm"} bg="grey" />
-                    <VStack
-                      display={{ base: "none", md: "flex" }}
-                      alignItems="flex-start"
-                      spacing="1px"
-                      ml="2"
-                    >
-                      <Text fontSize="sm">{user.displayName}</Text>
-                      <Text fontSize="xs" color="gray.600">
-                        {user.email}
-                      </Text>
-                    </VStack>
-                    <Box display={{ base: "none", md: "flex" }}>
-                      <Icon
-                        name={"chevron_down"}
-                        width={"30px"}
-                        height={"30px"}
-                      />
-                    </Box>
-                  </HStack>
-                </MenuButton>
-                <MenuList>
-                  <MenuItem
-                    icon={<Icon className="menu-user-icon" name="settings" />}
-                    onClick={() => handleClick("account")}
-                  >
-                    {t("Account")}
-                  </MenuItem>
-                  <MenuDivider />
-                  <MenuItem
-                    paddingLeft={"13px"}
-                    icon={<Icon name="lock" width={"19px"} height={"19px"} />}
-                    onClick={() => handleLogout()}
-                  >
-                    {t("Logout")}
-                  </MenuItem>
-                </MenuList>
-              </Menu>
+          <div className="top-right-settings">
+            <div className="translate-btn">
+              {/* <Button onClick={() => handleTranslate()}>
+                  {t("Language")}
+                  <Icon name="translate" width={"20px"} height={"20px"} />
+                </Button> */}
+              <Tag
+                onClick={() => handleTranslate("en")}
+                size={"lg"}
+                variant="solid"
+                bgColor={isEnglish ? "black" : "white"}
+                color={isEnglish ? "white" : "black"}
+              >
+                English
+              </Tag>
+              <Tag
+                onClick={() => handleTranslate("zh")}
+                size={"lg"}
+                variant="solid"
+                bgColor={isEnglish ? "white" : "black"}
+                color={isEnglish ? "black" : "white"}
+              >
+                Mandarin
+              </Tag>
             </div>
-          )}
+            {isLoggedIn && (
+              <div className="logout-btn">
+                <Menu>
+                  <MenuButton>
+                    <HStack className={"avatar"}>
+                      <Avatar size={"sm"} bg="grey" />
+                      <VStack
+                        display={{ base: "none", md: "flex" }}
+                        alignItems="flex-start"
+                        spacing="1px"
+                        ml="2"
+                      >
+                        <Text fontSize="sm">{user.displayName}</Text>
+                        <Text fontSize="xs" color="gray.600">
+                          {user.email}
+                        </Text>
+                      </VStack>
+                      <Box display={{ base: "none", md: "flex" }}>
+                        <Icon
+                          name={"chevron_down"}
+                          width={"30px"}
+                          height={"30px"}
+                        />
+                      </Box>
+                    </HStack>
+                  </MenuButton>
+                  <MenuList>
+                    <MenuItem
+                      icon={<Icon className="menu-user-icon" name="settings" />}
+                      onClick={() => handleClick("account")}
+                    >
+                      {t("Account")}
+                    </MenuItem>
+                    <MenuDivider />
+                    <MenuItem
+                      paddingLeft={"13px"}
+                      icon={<Icon name="lock" width={"19px"} height={"19px"} />}
+                      onClick={() => handleLogout()}
+                    >
+                      {t("Logout")}
+                    </MenuItem>
+                  </MenuList>
+                </Menu>
+              </div>
+            )}
+          </div>
         </div>
       </ChakraProvider>
     </div>
