@@ -13,7 +13,7 @@ export default function Controls({
 }) {
   return (
     <div className="control-btns">
-      <div class="topic-btn">
+      <div className="topic-btn">
         {!isPromptToggled ? (
           <Tooltip
             className="tooltip"

@@ -7,7 +7,7 @@ import { rtdb } from "../../firebase";
 import Video from "twilio-video";
 import Room from "./room";
 
-const VideoChat = () => {
+export default function VideoChat() {
   const [userName, setUserName] = useState("");
   // const [roomName, setRoomName] = useState("");
   const [activePrompt, setActivePrompt] = useState(null);
@@ -103,18 +103,18 @@ const VideoChat = () => {
     }
   }, [room, handleLogout]);
 
-  let render;
-  if (room) {
-    render = (
-      <Room
-        roomName={roomName}
-        room={room}
-        handleLogout={handleLogout}
-        callID={callID}
-      />
-    );
-  }
-  return render;
-};
-
-export default VideoChat;
+  return (
+    <div>
+      {room ? (
+        <Room
+          roomName={roomName}
+          room={room}
+          handleLogout={handleLogout}
+          callID={callID}
+        />
+      ) : (
+        <></>
+      )}
+    </div>
+  );
+}
