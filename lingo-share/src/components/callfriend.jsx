@@ -122,7 +122,7 @@ export default function CallFriend() {
               set(callIDRef, {
                 caller: user.uid,
                 callee: callerID,
-                active_prompt: null,
+                active_prompt: "",
               });
               var endTime = performance.now();
               console.log(

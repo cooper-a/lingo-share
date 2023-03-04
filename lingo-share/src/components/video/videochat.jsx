@@ -79,7 +79,7 @@ const VideoChat = () => {
         });
     };
     handleSubmit().catch((err) => console.error(err));
-  }, []);
+  }, [roomName, user.displayName, user.uid]);
 
   useEffect(() => {
     if (room) {
