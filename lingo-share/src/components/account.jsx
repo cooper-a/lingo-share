@@ -3,10 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../contexts/AuthContext";
 import Navbar from "./navbar";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 export default function Account() {
   const { user, logout } = UserAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleClick = async () => {
     try {
@@ -21,10 +23,12 @@ export default function Account() {
   return (
     <div>
       <Navbar />
-      <h1>Account</h1>
-      <h2>User Email: {user && user.email}</h2>
+      <h1>{t("Account")}</h1>
+      <h2>
+        {t("User Email")}: {user && user.email}
+      </h2>
       <Button onClick={handleClick} colorScheme="blue">
-        Logout
+        {t("Logout")}
       </Button>
     </div>
   );

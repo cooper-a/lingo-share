@@ -2,7 +2,6 @@ import "./App.css";
 import Home from "./components/home";
 import Login from "./components/login";
 import Account from "./components/account";
-import Crud from "./components/crud";
 import CallFriend from "./components/callfriend";
 import Video from "./components/video/videochat";
 import ProtectedRoute from "./components/protectedRoute";
@@ -68,14 +67,6 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <Account />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/crud"
-                element={
-                  <ProtectedRoute>
-                    <Crud />
                   </ProtectedRoute>
                 }
               />

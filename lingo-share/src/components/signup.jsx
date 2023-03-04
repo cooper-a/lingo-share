@@ -9,6 +9,7 @@ import "../styles/homepage.css";
 import Navbar from "./navbar";
 import CustomInput from "./lingoshare-components/input";
 import { updateProfile, getAuth } from "firebase/auth";
+import { useTranslation } from "react-i18next";
 
 export default function Signup() {
   const [email, setEmail] = useState(null);
@@ -23,6 +24,7 @@ export default function Signup() {
   const auth = getAuth();
   const { createUser } = UserAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,12 +39,12 @@ export default function Signup() {
     try {
       clearErrors();
       if (firstName === "") {
-        setFirstNameError("First name missing");
+        setFirstNameError(t("First name missing"));
         return;
       }
       setFirstNameError(null);
       if (lastName === "") {
-        setLastNameError("Last name missing");
+        setLastNameError(t("Last name missing"));
         return;
       }
       setLastNameError(null);
@@ -62,9 +64,9 @@ export default function Signup() {
       let errorMsg = e.message.split(":")[1].split("(")[0];
       if (errorType === "auth/weak-password") setPwrdError(errorMsg);
       else if (errorType === "auth/email-already-in-use")
-        setEmailError("Email is already in use");
+        setEmailError(t("Email is already in use"));
       else if (errorType === "auth/invalid-email")
-        setEmailError("Please enter a valid email");
+        setEmailError(t("Please enter a valid email"));
       console.log(e.message);
     }
   };
@@ -78,7 +80,7 @@ export default function Signup() {
       <Navbar />
       <ChakraProvider>
         <div className="field-pg">
-          <Text fontSize="5xl">Sign Up</Text>
+          <Text fontSize="5xl">{t("Sign Up")}</Text>
           <div className="first-last-name" style={{ marginTop: "50px" }}>
             <div className="grid-child">
               <CustomInput
@@ -86,7 +88,7 @@ export default function Signup() {
                 error={firstNameError}
                 width={"175px"}
                 height={"50px"}
-                placeholder="First Name"
+                placeholder={t("First Name")}
                 type="text"
                 onChange={(e) => setFirstName(e.target.value)}
               />
@@ -97,7 +99,7 @@ export default function Signup() {
                 error={lastNameError}
                 width={"175px"}
                 height={"50px"}
-                placeholder="Last Name"
+                placeholder={t("Last Name")}
                 type="text"
                 onChange={(e) => setLastName(e.target.value)}
               />
@@ -108,14 +110,14 @@ export default function Signup() {
             error={emailError}
             onChange={(e) => setEmail(e.target.value)}
             width={"350px"}
-            placeholder="Email"
+            placeholder={t("Email")}
             height={"50px"}
           />
           <PasswordInput
             isInvalid={pwrdError !== null}
             error={pwrdError}
             onChange={handleChange}
-            placeholder="password..."
+            placeholder={t("pasword...")}
             width={"350px"}
           />
           <Button
@@ -125,7 +127,7 @@ export default function Signup() {
             marginTop={"15px"}
             className="btn"
           >
-            Sign Up
+            {t("Sign Up")}
           </Button>
         </div>
       </ChakraProvider>

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../../contexts/AuthContext";
 import Navbar from "../navbar";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function LanguageProficiency() {
   const [error, setError] = useState(null);
@@ -13,6 +14,7 @@ export default function LanguageProficiency() {
   const [snapshotData, setSnapshotData] = useState({});
   const { user } = UserAuth();
   const user_documents = ref(rtdb, "users/" + user.uid);
+  const { t } = useTranslation();
 
   const navigateOnboarding = () => {
     navigate("/welcomepage");
@@ -43,8 +45,8 @@ export default function LanguageProficiency() {
       <ChakraProvider>
         <div className="field-pg">
           <Text fontSize="4xl">
-            How well can you speak{" "}
-            {userType === "native" ? "English" : "Mandarin"}?
+            {t("How well can you speak")}{" "}
+            {userType === "native" ? t("English") : t("Mandarin")}?
           </Text>
           <Button
             variant="outline"
@@ -52,21 +54,21 @@ export default function LanguageProficiency() {
             onClick={() => handleSelection("well")}
             className="selection-btn"
           >
-            Well
+            {t("Well")}
           </Button>
           <Button
             className="selection-btn"
             variant="outline"
             onClick={() => handleSelection("okay")}
           >
-            Okay
+            {t("Okay")}
           </Button>
           <Button
             className="selection-btn"
             variant="outline"
             onClick={() => handleSelection("poor")}
           >
-            Poorly
+            {t("Poorly")}
           </Button>
         </div>
       </ChakraProvider>
