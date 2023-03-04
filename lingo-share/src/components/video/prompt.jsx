@@ -7,9 +7,7 @@ import "../../styles/room.css";
 
 export default function Prompt({ roomName, callID }) {
   const prompt_ref = ref(rtdb, "/prompts/");
-  const live_prompt_ref = ref(rtdb, "/live_prompts/");
   const [prompts, setPrompts] = useState({});
-  const test_prompt = "test prompt tell me what you think?";
 
   const getPrompts = () => {
     get(prompt_ref)
@@ -29,18 +27,13 @@ export default function Prompt({ roomName, callID }) {
       });
   };
 
-  const handlePromptSelect = () => {
-    console.log("Prompt Selected");
-    set(live_prompt_ref, test_prompt);
-  };
-
   useEffect(() => {
     getPrompts();
   }, []);
 
   return (
     <div className="sidebar">
-      <Sidebar prompts={prompts} handlePromptSelect={handlePromptSelect} />
+      <Sidebar prompts={prompts} />
     </div>
   );
 }

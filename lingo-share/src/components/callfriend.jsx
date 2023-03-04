@@ -20,6 +20,7 @@ import { rtdb } from "../firebase";
 import Navbar from "./navbar";
 import { Button, UnorderedList } from "@chakra-ui/react";
 import CallNotification from "./callNotification";
+import { useTranslation } from "react-i18next";
 
 export default function CallFriend() {
   const [statusObj, setStatusObj] = useState([]);
@@ -30,6 +31,7 @@ export default function CallFriend() {
   const activeCallsRef = ref(rtdb, "/active_calls");
   const { user } = UserAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   // console.log(statusObj);
   // console.log(usersObj);
   // console.log(mergedObj);
@@ -185,7 +187,7 @@ export default function CallFriend() {
     <div>
       <CallNotification />
       <Navbar />
-      <Text fontSize="3xl">Who do you want to call?</Text>
+      <Text fontSize="3xl">{t("Who do you want to call?")}</Text>
       <ChakraProvider>
         <div className="field-pg">
           <UnorderedList spacing={5}>
@@ -215,9 +217,9 @@ export default function CallFriend() {
                             <Heading size="sm">{key}</Heading>
                           )}
                           {value.state === "online" ? (
-                            <Text float={"left"}>Online</Text>
+                            <Text float={"left"}>{t("Online")}</Text>
                           ) : (
-                            <Text float={"left"}>Offline</Text>
+                            <Text float={"left"}>{t("Offline")}</Text>
                           )}
                         </Box>
                       </Flex>
@@ -230,7 +232,7 @@ export default function CallFriend() {
                           leftIcon={<PhoneIcon w={3} h={3} />}
                           variant="outline"
                         >
-                          Call
+                          {t("Call")}
                         </Button>
                       </Box>
                     </Flex>
