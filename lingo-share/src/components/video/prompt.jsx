@@ -4,7 +4,7 @@ import { rtdb } from "../../firebase";
 import { ref, get, set } from "firebase/database";
 import { Button } from "@chakra-ui/react";
 
-export default function Prompt() {
+export default function Prompt({ roomName, callID }) {
   const prompt_ref = ref(rtdb, "/prompts/");
   const live_prompt_ref = ref(rtdb, "/live_prompts/");
   const [prompts, setPrompts] = useState("");

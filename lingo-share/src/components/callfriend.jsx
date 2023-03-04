@@ -92,6 +92,20 @@ export default function CallFriend() {
         }
       }
     }
+    // TODO QOL improvement: sort the res object based on if the user is online or offline
+    // sort the res object based on if the user is online or offline
+    // res.sort((a, b) => {
+    //   if (a.state === "online" && b.state === "offline") {
+    //     return -1;
+    //   } else if (a.state === "offline" && b.state === "online") {
+    //     return 1;
+    //   } else {
+    //     return 0;
+    //   }
+    // });
+    //
+    console.log(res);
+
     return res;
   };
 
@@ -122,7 +136,7 @@ export default function CallFriend() {
               set(callIDRef, {
                 caller: user.uid,
                 callee: callerID,
-                active_prompt: "",
+                active_prompt: "none",
               });
               var endTime = performance.now();
               console.log(

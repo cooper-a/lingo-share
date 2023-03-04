@@ -10,6 +10,7 @@ import Room from "./room";
 const VideoChat = () => {
   const [userName, setUserName] = useState("");
   // const [roomName, setRoomName] = useState("");
+  const [activePrompt, setActivePrompt] = useState(null);
   const [room, setRoom] = useState(null);
   const [connecting, setConnecting] = useState(false);
   const { user } = UserAuth();
@@ -17,6 +18,7 @@ const VideoChat = () => {
   const { state } = useLocation();
   const { callID, roomName } = state;
   const activeCallsRef = ref(rtdb, "/active_calls");
+  const activePromptsRef = ref(rtdb, `/calls/${roomName}/${callID}/prompts}`);
 
   const removeCallStatusEntry = () => {
     get(activeCallsRef).then((snapshot) => {
@@ -79,6 +81,8 @@ const VideoChat = () => {
         });
     };
     handleSubmit().catch((err) => console.error(err));
+
+    // on value check the prompts list for the specific callID
   }, [roomName, user.displayName, user.uid]);
 
   useEffect(() => {
@@ -103,7 +107,12 @@ const VideoChat = () => {
   let render;
   if (room) {
     render = (
-      <Room roomName={roomName} room={room} handleLogout={handleLogout} />
+      <Room
+        roomName={roomName}
+        room={room}
+        handleLogout={handleLogout}
+        callID={callID}
+      />
     );
   }
   return render;

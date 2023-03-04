@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Participant from "./participant";
 import Prompt from "./prompt";
 
-const Room = ({ roomName, room, handleLogout }) => {
+const Room = ({ roomName, room, handleLogout, callID }) => {
   const [participants, setParticipants] = useState([]);
 
   useEffect(() => {
@@ -26,6 +26,7 @@ const Room = ({ roomName, room, handleLogout }) => {
     // This is being called twice for some reason
     // console.log(room.participants);
     room.participants.forEach(participantConnected);
+
     return () => {
       room.off("participantConnected", participantConnected);
       room.off("participantDisconnected", participantDisconnected);
@@ -55,7 +56,7 @@ const Room = ({ roomName, room, handleLogout }) => {
         )}
       </div>
       <div>
-        <Prompt />
+        <Prompt roomName={roomName} callID={callID} />
       </div>
       <h3>Remote Participants</h3>
       {/* {console.log(room.participants)} */}
