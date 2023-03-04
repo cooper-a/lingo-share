@@ -13,6 +13,7 @@ import { set, ref, onValue } from "firebase/database";
 import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../../contexts/AuthContext";
 import Navbar from "../navbar";
+import { useTranslation } from "react-i18next";
 import CallNotification from "../callNotification";
 
 export default function Dashboard() {
@@ -22,6 +23,7 @@ export default function Dashboard() {
   const [snapshotData, setSnapshotData] = useState({});
   const { user, checkStatus } = UserAuth();
   const user_documents = ref(rtdb, "users/" + user.uid);
+  const { t } = useTranslation();
 
   const handleClick = (path) => {
     navigate("/" + path);
@@ -46,28 +48,28 @@ export default function Dashboard() {
             >
               <CardBody>
                 <Heading as="h4" size="md">
-                  Call a Friend
+                  {t("Call a Friend")}
                 </Heading>
               </CardBody>
             </Card>
             <Card className="card" bgColor={"gray.100"} size={"lg"}>
               <CardBody className="card-body">
                 <Heading as="h4" size="md">
-                  Meet New Friends
+                  {t("Meet New Friends")}
                 </Heading>
               </CardBody>
             </Card>
             <Card className="card" bgColor={"gray.100"} size={"lg"}>
               <CardBody>
                 <Heading as="h4" size="md">
-                  Your Profile
+                  {t("Your Profile")}
                 </Heading>
               </CardBody>
             </Card>
             <Card className="card" bgColor={"gray.100"} size={"lg"}>
               <CardBody>
                 <Heading as="h4" size="md">
-                  How to Use this App
+                  {t("How to Use this App")}
                 </Heading>
               </CardBody>
             </Card>

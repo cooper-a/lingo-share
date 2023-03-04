@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../../contexts/AuthContext";
 import Navbar from "../navbar";
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function UserSelect() {
   const { user } = UserAuth();
@@ -14,6 +15,7 @@ export default function UserSelect() {
   });
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const navigateOnboarding = () => {
     navigate("/languageproficiency");
@@ -49,7 +51,7 @@ export default function UserSelect() {
       <Navbar />
       <ChakraProvider>
         <div className="field-pg">
-          <Text fontSize="4xl">You are...</Text>
+          <Text fontSize="4xl">{t("You are...")}</Text>
           <Button
             variant="outline"
             className="selection-btn"
@@ -57,7 +59,7 @@ export default function UserSelect() {
             onClick={() => handleSelection("native")}
             marginTop={"50px"}
           >
-            A native Mandarin speaker
+            {t("A native Mandarin speaker")}
           </Button>
           <Button
             className="selection-btn"
@@ -65,7 +67,7 @@ export default function UserSelect() {
             height={"50px"}
             onClick={() => handleSelection("learner")}
           >
-            Learning to speak Mandarin
+            {t("Learning to speak Mandarin")}
           </Button>
         </div>
       </ChakraProvider>
