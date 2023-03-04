@@ -7,20 +7,29 @@ import { useNavigate } from "react-router-dom";
 
 export default function CallNotification() {
   const [callerID, setCallerID] = useState("");
+  const [callID, setCallID] = useState(""); // callID is the key of the active call in the database
   const [isCallee, setisCallee] = useState(false);
   const [callerDisplayName, setCallerDisplayName] = useState("");
   const { user } = UserAuth();
   const navigate = useNavigate();
-  const callRef = ref(rtdb, "/calls");
+  const activeCallsRef = ref(rtdb, "/active_calls");
   const usersRef = ref(rtdb, "/users");
+
+  const generateRoomName = (uid, callerID) => {
+    let roomNameInList = [uid, callerID];
+    return roomNameInList.sort().join(""); // room name will be the concatenation of the two user IDs sorted alphabetically
+  };
+
   const handleClick = (event, callerID) => {
     event.currentTarget.disabled = true;
-    navigate("/callRoom", { state: { callerID: callerID } });
+    let roomName = generateRoomName(user.uid, callerID);
+    navigate("/callroom", { state: { callID: callID, roomName: roomName } });
   };
 
   useEffect(() => {
+    // TODO: We should stop the interval when we render the notification
     const interval = setInterval(() => {
-      get(callRef).then((snapshot) => {
+      get(activeCallsRef).then((snapshot) => {
         setisCallee(false);
         if (snapshot.exists()) {
           snapshot.forEach((childSnapshot) => {
@@ -28,8 +37,10 @@ export default function CallNotification() {
               childSnapshot.val().callee === user.uid &&
               childSnapshot.key !== "dummyObject"
             ) {
+              console.log(childSnapshot.key);
               setisCallee(true);
               setCallerID(childSnapshot.val().caller);
+              setCallID(childSnapshot.key);
             }
           });
         }

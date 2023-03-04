@@ -4,7 +4,7 @@ import Prompt from "./prompt";
 import Controls from "./controls";
 import "../../styles/room.css";
 
-const Room = ({ roomName, room, handleLogout }) => {
+const Room = ({ roomName, room, handleLogout, callID }) => {
   const [participants, setParticipants] = useState([]);
   const [toggleAudio, setToggleAudio] = useState(true);
   const [toggleVideo, setToggleVideo] = useState(true);
@@ -33,6 +33,7 @@ const Room = ({ roomName, room, handleLogout }) => {
     // This is being called twice for some reason
     // console.log(room.participants);
     room.participants.forEach(participantConnected);
+
     return () => {
       room.off("participantConnected", participantConnected);
       room.off("participantDisconnected", participantDisconnected);
@@ -85,7 +86,7 @@ const Room = ({ roomName, room, handleLogout }) => {
   return (
     <div className="room">
       {/* <h2>Room: {roomName}</h2> */}
-      {togglePrompt && <Prompt />}
+      {togglePrompt && <Prompt roomName={roomName} callID={callID} />}
       <div className="local-participant">
         {room ? (
           <Participant

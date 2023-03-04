@@ -5,7 +5,7 @@ import { ref, get, set } from "firebase/database";
 import Sidebar from "./sidebar";
 import "../../styles/room.css";
 
-export default function Prompt() {
+export default function Prompt({ roomName, callID }) {
   const prompt_ref = ref(rtdb, "/prompts/");
   const live_prompt_ref = ref(rtdb, "/live_prompts/");
   const [prompts, setPrompts] = useState({});
