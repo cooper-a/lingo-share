@@ -11,7 +11,7 @@ export default function CallNotification() {
   const [callerDisplayName, setCallerDisplayName] = useState("");
   const { user } = UserAuth();
   const navigate = useNavigate();
-  const callRef = ref(rtdb, "/calls");
+  const activeCallsRef = ref(rtdb, "/active_calls");
   const usersRef = ref(rtdb, "/users");
   const handleClick = (event, callerID) => {
     event.currentTarget.disabled = true;
@@ -20,7 +20,7 @@ export default function CallNotification() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      get(callRef).then((snapshot) => {
+      get(activeCallsRef).then((snapshot) => {
         setisCallee(false);
         if (snapshot.exists()) {
           snapshot.forEach((childSnapshot) => {

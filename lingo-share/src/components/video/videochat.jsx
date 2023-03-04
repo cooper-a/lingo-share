@@ -2,25 +2,24 @@ import React, { useState, useCallback, useEffect } from "react";
 import { get_token } from "../../firebase";
 import { UserAuth } from "../../contexts/AuthContext";
 import { useNavigate, useLocation } from "react-router-dom";
-import { ref, onValue, get, child, remove } from "firebase/database";
+import { ref, onValue, get, child, remove, set, push } from "firebase/database";
 import { rtdb } from "../../firebase";
 import Video from "twilio-video";
-import Lobby from "./lobby";
 import Room from "./room";
 
 const VideoChat = () => {
   const [userName, setUserName] = useState("");
-  const [roomName, setRoomName] = useState("");
+  // const [roomName, setRoomName] = useState("");
   const [room, setRoom] = useState(null);
   const [connecting, setConnecting] = useState(false);
   const { user } = UserAuth();
   const navigate = useNavigate();
   const { state } = useLocation();
-  const { callerID } = state;
-  const callRef = ref(rtdb, "/calls");
+  const { callID, roomName } = state;
+  const activeCallsRef = ref(rtdb, "/active_calls");
 
   const removeCallStatusEntry = () => {
-    get(callRef).then((snapshot) => {
+    get(activeCallsRef).then((snapshot) => {
       snapshot.forEach((childSnapshot) => {
         if (childSnapshot.exists()) {
           if (
@@ -48,26 +47,26 @@ const VideoChat = () => {
     navigate("/dashboard");
   }, []);
 
-  const getRoomName = (uid, callerID) => {
-    let roomNameInList = [uid, callerID];
-    return roomNameInList.sort().join(""); // room name will be the concatenation of the two user IDs sorted alphabetically
-  };
+  // const getRoomName = (uid, callerID) => {
+  //   let roomNameInList = [uid, callerID];
+  //   return roomNameInList.sort().join(""); // room name will be the concatenation of the two user IDs sorted alphabetically
+  // };
 
   useEffect(() => {
-    let concatRoomName = getRoomName(user.uid, callerID);
-    setRoomName(concatRoomName);
+    // let concatRoomName = getRoomName(user.uid, callerID);
+    // setRoomName(concatRoomName);
     const handleSubmit = async () => {
       // preventDefault();
       setConnecting(true);
       let identityName = !user.displayName ? user.uid : user.displayName;
       const result = await get_token({
         identity: identityName,
-        room: concatRoomName,
+        room: roomName,
       });
       const data = result.data;
-      console.log(data.token);
+      // console.log(data.token);
       Video.connect(data.token, {
-        name: concatRoomName,
+        name: roomName,
       })
         .then((room) => {
           setConnecting(false);

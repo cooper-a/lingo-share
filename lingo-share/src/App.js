@@ -2,9 +2,8 @@ import "./App.css";
 import Home from "./components/home";
 import Login from "./components/login";
 import Account from "./components/account";
-import Crud from "./components/crud";
 import CallFriend from "./components/callfriend";
-import Video from "./components/video/videochat";
+import VideoChat from "./components/video/videochat";
 import ProtectedRoute from "./components/protectedRoute";
 import Signup from "./components/signup";
 import UserSelect from "./components/onboarding/userSelect";
@@ -72,14 +71,6 @@ function App() {
                 }
               />
               <Route
-                path="/crud"
-                element={
-                  <ProtectedRoute>
-                    <Crud />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
                 path="/callfriend"
                 element={
                   <ProtectedRoute>
@@ -91,7 +82,7 @@ function App() {
                 path="/callroom"
                 element={
                   <ProtectedRoute>
-                    <Video />
+                    <VideoChat />
                   </ProtectedRoute>
                 }
               />
