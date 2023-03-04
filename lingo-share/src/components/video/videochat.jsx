@@ -65,6 +65,7 @@ const VideoChat = () => {
       });
       const data = result.data;
       // console.log(data.token);
+      console.log("HERE");
       Video.connect(data.token, {
         name: roomName,
       })

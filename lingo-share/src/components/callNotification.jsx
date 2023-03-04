@@ -13,9 +13,16 @@ export default function CallNotification() {
   const navigate = useNavigate();
   const activeCallsRef = ref(rtdb, "/active_calls");
   const usersRef = ref(rtdb, "/users");
+
+  const generateRoomName = (uid, callerID) => {
+    let roomNameInList = [uid, callerID];
+    return roomNameInList.sort().join(""); // room name will be the concatenation of the two user IDs sorted alphabetically
+  };
+
   const handleClick = (event, callerID) => {
     event.currentTarget.disabled = true;
-    navigate("/callRoom", { state: { callerID: callerID } });
+    let roomName = generateRoomName(user.uid, callerID);
+    navigate("/callroom", { state: { roomName: roomName } });
   };
 
   useEffect(() => {
