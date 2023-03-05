@@ -3,14 +3,19 @@ import Participant from "./participant";
 import Prompt from "./prompt";
 import Controls from "./controls";
 import "../../styles/room.css";
+import { rtdb } from "../../firebase";
+import { ref, get, set, onValue } from "firebase/database";
 
 const Room = ({ roomName, room, handleLogout, callID }) => {
   const [participants, setParticipants] = useState([]);
+  const [activePrompt, setActivePrompt] = useState("");
   const [toggleAudio, setToggleAudio] = useState(true);
   const [toggleVideo, setToggleVideo] = useState(true);
   const [togglePrompt, setTogglePrompt] = useState(false);
-
-  console.log(togglePrompt);
+  const activePromptRef = ref(
+    rtdb,
+    `/calls/${roomName}/${callID}/active_prompt`
+  );
 
   useEffect(() => {
     // Here we define what happens when a remote participant joins
@@ -34,9 +39,30 @@ const Room = ({ roomName, room, handleLogout, callID }) => {
     // console.log(room.participants);
     room.participants.forEach(participantConnected);
 
+    const interval = setInterval(() => {
+      get(activePromptRef).then((snapshot) => {
+        console.log("grabbing active prompt");
+        if (snapshot.exists()) {
+          console.log(snapshot.val());
+          const dbPrompt = snapshot.val();
+          if (dbPrompt !== activePrompt && dbPrompt !== "none") {
+            setActivePrompt(dbPrompt);
+            setTogglePrompt(true);
+          }
+        }
+      });
+    }, 2500);
+
+    // onValue(activePromptRef, (snapshot) => {
+    //   const data = snapshot.val();
+    //   console.log(data);
+    //   console.log("change detected");
+    // });
+
     return () => {
       room.off("participantConnected", participantConnected);
       room.off("participantDisconnected", participantDisconnected);
+      clearInterval(interval);
     };
   }, [room]);
 

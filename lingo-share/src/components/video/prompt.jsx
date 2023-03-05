@@ -5,12 +5,14 @@ import { ref, get, set, onValue } from "firebase/database";
 import Sidebar from "./sidebar";
 import "../../styles/room.css";
 
-export default function Prompt({ roomName, callID }) {
+export default function Prompt({ roomName, callID, activePrompt }) {
   const prompts_ref = ref(rtdb, "/prompts/");
-  const [activePrompt, setActivePrompt] = useState(null);
   const [prompts, setPrompts] = useState({});
-  const test_prompt = "test prompt tell me what you think abc?";
-  const activePromptsRef = ref(rtdb, `/calls/${roomName}/${callID}/}`);
+  const callIDRef = ref(rtdb, `/calls/${roomName}/${callID}`);
+  const activePromptRef = ref(
+    rtdb,
+    `/calls/${roomName}/${callID}/active_prompt`
+  );
 
   const getPrompts = () => {
     get(prompts_ref)
@@ -30,29 +32,26 @@ export default function Prompt({ roomName, callID }) {
       });
   };
 
-  const handlePromptSelect = () => {
+  const handlePromptSelect = (promptName) => {
     console.log("Prompt Selected");
-    console.log(roomName);
-    console.log(callID);
-    ref = ref(rtdb, `/calls/${roomName}/${callID}/}`);
-    set(ref, { active_prompt: test_prompt });
+    set(activePromptRef, promptName);
   };
 
   useEffect(() => {
     getPrompts();
-    console.log(activePromptsRef);
-    ref = ref(rtdb, `/calls/${roomName}/${callID}/}`);
-    onValue(ref, (snapshot) => {
-      const data = snapshot.val();
-      setActivePrompt(data);
-      console.log("change detected");
-    });
-  }, [activePromptsRef, getPrompts]);
+    // const interval = setInterval(() => {
+    //   get(activePromptRef).then((snapshot) => {
+    //     console.log("grabbing active prompt");
+    //     if (snapshot.exists()) {
+    //       console.log(snapshot.val());
+    //     }
+    //   });
+    // }, 1000);
+    // return () => clearInterval(interval);
+  }, [getPrompts]);
 
   return (
     <div className="sidebar">
-      <h1>Active Prompt</h1>
-      <p>{activePrompt}</p>
       <Sidebar prompts={prompts} handlePromptSelect={handlePromptSelect} />
     </div>
   );

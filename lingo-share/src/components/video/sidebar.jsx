@@ -27,13 +27,6 @@ const NavItem = ({ topicName, onClick }) => {
 export default function Sidebar({ prompts, handlePromptSelect }) {
   const [displayList, setDisplayList] = useState([]);
 
-  const live_prompt_ref = ref(rtdb, "/live_prompts/");
-
-  const handlePromptSelection = (prompt) => {
-    console.log(prompt);
-    set(live_prompt_ref, prompt);
-  };
-
   useEffect(() => {
     setDisplayList(Object.keys(prompts));
   }, [prompts]);
@@ -58,7 +51,7 @@ export default function Sidebar({ prompts, handlePromptSelect }) {
         {displayList.map((promptName, i) => (
           <NavItem
             key={i}
-            onClick={() => handlePromptSelection(promptName)}
+            onClick={() => handlePromptSelect(promptName)}
             topicName={promptName}
           />
         ))}
