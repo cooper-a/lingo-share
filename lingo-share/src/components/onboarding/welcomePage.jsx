@@ -6,6 +6,7 @@ import { UserAuth } from "../../contexts/AuthContext";
 import Navbar from "../navbar";
 import React, { useEffect, useState } from "react";
 import "../../styles/homepage.css";
+import { useTranslation } from "react-i18next";
 
 export default function WelcomePage() {
   const [error, setError] = useState(null);
@@ -14,6 +15,7 @@ export default function WelcomePage() {
   const [snapshotData, setSnapshotData] = useState({});
   const { user } = UserAuth();
   const user_documents = ref(rtdb, "users/" + user.uid);
+  const { t } = useTranslation();
 
   const navigateOnboarding = () => {
     navigate("/dashboard");
@@ -42,7 +44,9 @@ export default function WelcomePage() {
       <Navbar />
       <ChakraProvider>
         <div className="field-pg">
-          <Text fontSize="4xl">All done! We hope you enjoy LingoShare</Text>
+          <Text fontSize="4xl">
+            {t("All done! We hope you enjoy LingoShare")}
+          </Text>
           <Button
             width={"400px"}
             height={"50px"}
@@ -50,7 +54,7 @@ export default function WelcomePage() {
             variant="outline"
             onClick={() => handleSelection()}
           >
-            Get Started
+            {t("Get Started")}
           </Button>
         </div>
       </ChakraProvider>

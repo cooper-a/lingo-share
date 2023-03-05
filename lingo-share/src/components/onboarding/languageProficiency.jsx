@@ -6,6 +6,7 @@ import { UserAuth } from "../../contexts/AuthContext";
 import Navbar from "../navbar";
 import React, { useEffect, useState } from "react";
 import "../../styles/onboarding.css";
+import { useTranslation } from "react-i18next";
 
 export default function LanguageProficiency() {
   const [error, setError] = useState(null);
@@ -14,6 +15,7 @@ export default function LanguageProficiency() {
   const [snapshotData, setSnapshotData] = useState({});
   const { user } = UserAuth();
   const user_documents = ref(rtdb, "users/" + user.uid);
+  const { t } = useTranslation();
 
   const navigateOnboarding = () => {
     navigate("/welcomepage");
@@ -45,7 +47,7 @@ export default function LanguageProficiency() {
         <div className="onboard-grid">
           <div className="grid-item">
             <Text fontSize="4xl">
-              How well can you speak{" "}
+              {t("How well can you speak")}{" "}
               {userType === "native" ? "English" : "Mandarin"}?
             </Text>
           </div>
@@ -58,7 +60,7 @@ export default function LanguageProficiency() {
                 width={"400px"}
                 height={"50px"}
               >
-                Well
+                {t("Well")}
               </Button>
             </div>
             <div className="grid-item-btn">
@@ -68,7 +70,7 @@ export default function LanguageProficiency() {
                 variant="outline"
                 onClick={() => handleSelection("okay")}
               >
-                Okay
+                {t("Okay")}
               </Button>
             </div>
             <div className="grid-item-btn">
@@ -78,7 +80,7 @@ export default function LanguageProficiency() {
                 variant="outline"
                 onClick={() => handleSelection("poor")}
               >
-                Poorly
+                {t("Poorly")}
               </Button>
             </div>
           </div>
