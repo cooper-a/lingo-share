@@ -10,7 +10,6 @@ import Room from "./room";
 export default function VideoChat() {
   const [userName, setUserName] = useState("");
   // const [roomName, setRoomName] = useState("");
-  const [activePrompt, setActivePrompt] = useState(null);
   const [room, setRoom] = useState(null);
   const [connecting, setConnecting] = useState(false);
   const { user } = UserAuth();
@@ -18,7 +17,6 @@ export default function VideoChat() {
   const { state } = useLocation();
   const { callID, roomName } = state;
   const activeCallsRef = ref(rtdb, "/active_calls");
-  const activePromptsRef = ref(rtdb, `/calls/${roomName}/${callID}/prompts}`);
 
   const removeCallStatusEntry = () => {
     get(activeCallsRef).then((snapshot) => {
