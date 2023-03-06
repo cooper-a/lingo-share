@@ -105,7 +105,7 @@ export default function CallFriend() {
     //   }
     // });
     //
-    console.log(res);
+    // console.log(res);
 
     return res;
   };
@@ -187,7 +187,7 @@ export default function CallFriend() {
     <div>
       <CallNotification />
       <Navbar />
-      <Text fontSize="3xl">{t("Who do you want to call?")}</Text>
+      <Text fontSize="3xl">{t("Who would you like to call?")}</Text>
       <ChakraProvider>
         <div className="field-pg">
           <UnorderedList spacing={5}>

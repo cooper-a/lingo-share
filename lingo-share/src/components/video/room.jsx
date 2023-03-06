@@ -112,7 +112,13 @@ const Room = ({ roomName, room, handleLogout, callID }) => {
   return (
     <div className="room">
       {/* <h2>Room: {roomName}</h2> */}
-      {togglePrompt && <Prompt roomName={roomName} callID={callID} />}
+      {togglePrompt && (
+        <Prompt
+          roomName={roomName}
+          callID={callID}
+          activePrompt={activePrompt}
+        />
+      )}
       <div className="local-participant">
         {room ? (
           <Participant

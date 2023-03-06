@@ -81,7 +81,7 @@ export default function Navbar() {
                 bgColor={isEnglish ? "white" : "black"}
                 color={isEnglish ? "black" : "white"}
               >
-                Mandarin
+                中文
               </Tag>
             </div>
             {isLoggedIn && (

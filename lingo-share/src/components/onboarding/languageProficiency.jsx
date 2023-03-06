@@ -48,7 +48,7 @@ export default function LanguageProficiency() {
           <div className="grid-item">
             <Text fontSize="4xl">
               {t("How well can you speak")}{" "}
-              {userType === "native" ? "English" : "Mandarin"}?
+              {userType === "native" ? t("English") : t("Mandarin")}?
             </Text>
           </div>
           <div className="grid-btns">

@@ -51,6 +51,9 @@ const resources = {
       Poorly: "Poorly",
       "Who would you like to call?": "Who would you like to call?",
       "Welcome to LingoShare!": "Welcome to LingoShare!",
+      Online: "Online",
+      Offline: "Offline",
+      Call: "Call",
     },
   },
   zh: {
@@ -98,6 +101,10 @@ const resources = {
       Poorly: "差",
       "Who would you like to call?": "你想与谁通话？",
       "Welcome to LingoShare!": "欢迎来到LingoShare！",
+      // TODO - translate these
+      Online: "在线",
+      Offline: "离线",
+      Call: "呼叫",
     },
   },
 };
