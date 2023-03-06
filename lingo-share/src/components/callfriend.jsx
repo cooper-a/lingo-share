@@ -15,22 +15,23 @@ import { useNavigate } from "react-router-dom";
 import { PhoneIcon } from "@chakra-ui/icons";
 import "../styles/homepage.css";
 import { UserAuth } from "../contexts/AuthContext";
-import { ref, onValue, push, get } from "firebase/database";
+import { ref, onValue, push, get, set } from "firebase/database";
 import { rtdb } from "../firebase";
 import Navbar from "./navbar";
 import { Button, UnorderedList } from "@chakra-ui/react";
 import CallNotification from "./callNotification";
+import { useTranslation } from "react-i18next";
 
 export default function CallFriend() {
   const [statusObj, setStatusObj] = useState([]);
   const [usersObj, setUsersObj] = useState([]);
   const [mergedObj, setMergedObj] = useState([]);
-  const [callerID, setCallerID] = useState("");
   const statusRef = ref(rtdb, "/status");
   const usersRef = ref(rtdb, "/users");
-  const callRef = ref(rtdb, "/calls");
+  const activeCallsRef = ref(rtdb, "/active_calls");
   const { user } = UserAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   // console.log(statusObj);
   // console.log(usersObj);
   // console.log(mergedObj);
@@ -92,11 +93,31 @@ export default function CallFriend() {
         }
       }
     }
+    // TODO QOL improvement: sort the res object based on if the user is online or offline
+    // sort the res object based on if the user is online or offline
+    // res.sort((a, b) => {
+    //   if (a.state === "online" && b.state === "offline") {
+    //     return -1;
+    //   } else if (a.state === "offline" && b.state === "online") {
+    //     return 1;
+    //   } else {
+    //     return 0;
+    //   }
+    // });
+    //
+    // console.log(res);
+
     return res;
   };
 
-  const generateCallStatusEntry = (callerID) => {
-    get(callRef)
+  const generateRoomName = (uid, callerID) => {
+    let roomNameInList = [uid, callerID];
+    return roomNameInList.sort().join(""); // room name will be the concatenation of the two user IDs sorted alphabetically
+  };
+
+  async function generateCallStatusEntryAndNavigate(callerID) {
+    var startTime = performance.now();
+    get(activeCallsRef)
       .then((snapshot) => {
         if (snapshot.exists()) {
           snapshot.forEach((childSnapshot) => {
@@ -109,7 +130,27 @@ export default function CallFriend() {
                 caller: user.uid, // the user who initiated the call will always be caller
                 callee: callerID, // the user who is being called will always be callee
               };
-              push(callRef, pushData);
+              const currActiveCallsRef = push(activeCallsRef, pushData);
+              const callID = currActiveCallsRef.key;
+              const roomName = generateRoomName(user.uid, callerID);
+              const callIDRef = ref(rtdb, `/calls/${roomName}/${callID}`);
+              set(callIDRef, {
+                caller: user.uid,
+                callee: callerID,
+                active_prompt: "none",
+              });
+              var endTime = performance.now();
+              console.log(
+                "Time taken to generate call status entry and navigate: " +
+                  (endTime - startTime) +
+                  " milliseconds."
+              );
+              navigate("/callroom", {
+                state: {
+                  callID: callID,
+                  roomName: roomName,
+                },
+              });
             }
           });
         }
@@ -117,13 +158,11 @@ export default function CallFriend() {
       .catch((error) => {
         console.log(error);
       });
-  };
+  }
 
   const handleClick = (event, callerID) => {
     event.currentTarget.disabled = true;
-    setCallerID(callerID);
-    generateCallStatusEntry(callerID);
-    navigate("/callRoom", { state: { callerID: callerID } });
+    generateCallStatusEntryAndNavigate(callerID);
   };
 
   const disableButton = (key, state) => {
@@ -148,7 +187,7 @@ export default function CallFriend() {
     <div>
       <CallNotification />
       <Navbar />
-      <Text fontSize="3xl">Who do you want to call?</Text>
+      <Text fontSize="3xl">{t("Who would you like to call?")}</Text>
       <ChakraProvider>
         <div className="field-pg">
           <UnorderedList spacing={5}>
@@ -178,9 +217,9 @@ export default function CallFriend() {
                             <Heading size="sm">{key}</Heading>
                           )}
                           {value.state === "online" ? (
-                            <Text float={"left"}>Online</Text>
+                            <Text float={"left"}>{t("Online")}</Text>
                           ) : (
-                            <Text float={"left"}>Offline</Text>
+                            <Text float={"left"}>{t("Offline")}</Text>
                           )}
                         </Box>
                       </Flex>
@@ -193,7 +232,7 @@ export default function CallFriend() {
                           leftIcon={<PhoneIcon w={3} h={3} />}
                           variant="outline"
                         >
-                          Call
+                          {t("Call")}
                         </Button>
                       </Box>
                     </Flex>

@@ -1,26 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { UserAuth } from "../../contexts/AuthContext";
 import { rtdb } from "../../firebase";
-import { ref, get, set } from "firebase/database";
-import { Button } from "@chakra-ui/react";
+import { ref, get, set, onValue } from "firebase/database";
+import Sidebar from "./sidebar";
+import "../../styles/room.css";
 
-export default function Prompt() {
-  const prompt_ref = ref(rtdb, "/prompts/");
-  const live_prompt_ref = ref(rtdb, "/live_prompts/");
-  const [prompts, setPrompts] = useState("");
-  const test_prompt = "test prompt tell me what you think?";
+export default function Prompt({ roomName, callID, activePrompt }) {
+  const prompts_ref = ref(rtdb, "/prompts/");
+  const [prompts, setPrompts] = useState({});
+  const callIDRef = ref(rtdb, `/calls/${roomName}/${callID}`);
+  const activePromptRef = ref(
+    rtdb,
+    `/calls/${roomName}/${callID}/active_prompt`
+  );
 
   const getPrompts = () => {
-    get(prompt_ref)
+    get(prompts_ref)
       .then((snapshot) => {
         if (snapshot.exists()) {
-          //   console.log(snapshot);
-          //   console.log("HERE");
-          console.log(snapshot.val());
+          // console.log(snapshot.val());
           const data = snapshot.val();
-          const prompts = JSON.stringify(data);
-          console.log(prompts);
-          setPrompts(prompts);
+          // const prompts = JSON.stringify(data);
+          // console.log(prompts);
+          setPrompts(data);
         } else {
           console.log("No data available");
         }
@@ -30,19 +32,27 @@ export default function Prompt() {
       });
   };
 
-  const handlePromptSelect = () => {
+  const handlePromptSelect = (promptName) => {
     console.log("Prompt Selected");
-    set(live_prompt_ref, test_prompt);
+    set(activePromptRef, promptName);
   };
 
   useEffect(() => {
     getPrompts();
-  }, []);
+    // const interval = setInterval(() => {
+    //   get(activePromptRef).then((snapshot) => {
+    //     console.log("grabbing active prompt");
+    //     if (snapshot.exists()) {
+    //       console.log(snapshot.val());
+    //     }
+    //   });
+    // }, 1000);
+    // return () => clearInterval(interval);
+  }, [getPrompts]);
 
   return (
-    <div>
-      <p>{prompts}</p>
-      <Button onClick={handlePromptSelect}>Select Prompt Test</Button>
+    <div className="sidebar">
+      <Sidebar prompts={prompts} handlePromptSelect={handlePromptSelect} />
     </div>
   );
 }

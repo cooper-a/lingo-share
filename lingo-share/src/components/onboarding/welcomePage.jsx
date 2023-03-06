@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../../contexts/AuthContext";
 import Navbar from "../navbar";
 import React, { useEffect, useState } from "react";
+import "../../styles/homepage.css";
 import { useTranslation } from "react-i18next";
 
 export default function WelcomePage() {
@@ -47,7 +48,8 @@ export default function WelcomePage() {
             {t("All done! We hope you enjoy LingoShare")}
           </Text>
           <Button
-            className="selection-btn"
+            width={"400px"}
+            height={"50px"}
             marginTop={"50px"}
             variant="outline"
             onClick={() => handleSelection()}

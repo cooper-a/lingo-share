@@ -17,7 +17,7 @@ import React, { useEffect, useState } from "react";
 import "../styles/nav.css";
 import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../contexts/AuthContext";
-import "@fontsource/handlee";
+import "@fontsource/inter";
 import { useTranslation } from "react-i18next";
 
 export default function Navbar() {
@@ -81,7 +81,7 @@ export default function Navbar() {
                 bgColor={isEnglish ? "white" : "black"}
                 color={isEnglish ? "black" : "white"}
               >
-                Mandarin
+                中文
               </Tag>
             </div>
             {isLoggedIn && (

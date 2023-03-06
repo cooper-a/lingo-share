@@ -1,0 +1,28 @@
+.room {
+  position: relative;
+}
+
+.sidebar {
+  z-index: 999;
+}
+
+.controls {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+.local-participant {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  top: 10px;
+  right: 10px;
+}
+
+.remote-participants {
+  /* position: absolute; */
+  /* height: 100vw;
+  width: 100vh; */
+  /* z-index: -999; */
+}

@@ -1,0 +1,31 @@
+.control-btns {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  background-color: grey;
+  height: 60px;
+}
+
+.topic-btn {
+  margin-right: auto;
+  padding-left: 10px;
+}
+
+.track-btns {
+}
+
+.leave-btn {
+  margin-left: auto;
+  padding-right: 10px;
+}
+
+.close-btn {
+  margin-right: 44px;
+}
+
+.tooltip {
+  padding: 12px;
+}

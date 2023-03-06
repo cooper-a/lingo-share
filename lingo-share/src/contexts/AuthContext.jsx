@@ -67,6 +67,7 @@ export const AuthContextProvider = ({ children }) => {
 
   useEffect(() => {
     checkStatus(user);
+    console.log("user changed");
   }, [user]);
 
   useEffect(() => {
