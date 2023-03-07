@@ -3,7 +3,6 @@ import { UserAuth } from "../contexts/AuthContext";
 import { ref, onValue, get, set } from "firebase/database";
 import { rtdb } from "../firebase";
 import { useNavigate } from "react-router-dom";
-import { getQuery } from "../helpers/userhelpers";
 import {
   Avatar,
   AvatarBadge,
