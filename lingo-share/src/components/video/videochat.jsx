@@ -19,18 +19,19 @@ export default function VideoChat() {
   const activeCallsRef = ref(rtdb, "/active_calls");
 
   const removeCallStatusEntry = () => {
-    get(activeCallsRef).then((snapshot) => {
-      snapshot.forEach((childSnapshot) => {
-        if (childSnapshot.exists()) {
-          if (
-            childSnapshot.val().callee === user.uid ||
-            childSnapshot.val().caller === user.uid
-          ) {
-            remove(childSnapshot.ref);
-          }
-        }
-      });
-    });
+    remove(child(activeCallsRef, callID));
+    // get(activeCallsRef).then((snapshot) => {
+    //   snapshot.forEach((childSnapshot) => {
+    //     if (childSnapshot.exists()) {
+    //       if (
+    //         childSnapshot.val().callee === user.uid ||
+    //         childSnapshot.val().caller === user.uid
+    //       ) {
+    //         remove(childSnapshot.ref);
+    //       }
+    //     }
+    //   });
+    // });
   };
 
   const handleLogout = useCallback(() => {
