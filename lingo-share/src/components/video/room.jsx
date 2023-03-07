@@ -29,7 +29,7 @@ const Room = ({ roomName, room, handleLogout, callID }) => {
             container: {
               color: "gray.50",
               bg: "#6B6C72",
-              height: "50px",
+              padding: "20px",
             },
           },
         },
