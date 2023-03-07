@@ -19,8 +19,6 @@ import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../contexts/AuthContext";
 import "@fontsource/inter";
 import { useTranslation } from "react-i18next";
-import { ref as storageRef, getDownloadURL } from "firebase/storage";
-import { storage } from "../firebase";
 
 export default function Navbar() {
   const { user, logout } = UserAuth();
@@ -28,7 +26,6 @@ export default function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { t, i18n } = useTranslation();
   const [isEnglish, setIsEnglish] = useState(true);
-  // const usersRef = ref(rtdb, "/users");
 
   useEffect(() => {
     if (user === null || Object.keys(user).length === 0) return;
