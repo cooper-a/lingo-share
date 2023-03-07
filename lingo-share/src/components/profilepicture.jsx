@@ -5,9 +5,9 @@ import {
   ref as storageRef,
   uploadBytes,
 } from "firebase/storage";
-import { ref as dbRef, set } from "firebase/database";
-import { rtdb, storage } from "../firebase";
+import { storage } from "../firebase";
 import React, { useState } from "react";
+import { updateProfile } from "firebase/auth";
 
 export default function ProfilePicture() {
   const [photoBinary, setPhotoBinary] = useState(null);
@@ -19,18 +19,25 @@ export default function ProfilePicture() {
     const fileRef = storageRef(storage, `profile_pics/${user.uid}_profile`);
     setLoading(true);
     uploadBytes(fileRef, file).then((snapshot) => {
-      getDownloadURL(fileRef)
-        .then((url) => {
-          console.log(url);
-          set(dbRef(rtdb, `users/${user.uid}/profilePic`), url);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
       setLoading(false);
       setPhotoBinary(null);
       console.log("Uploaded a profile pic!");
+      saveCompressedPhotoURL();
     });
+  };
+
+  const saveCompressedPhotoURL = () => {
+    getDownloadURL(
+      storageRef(storage, `profile_pics/${user.uid}_profile_150x150`)
+    )
+      .then((url) => {
+        updateProfile(user, {
+          photoURL: url, // save the compressed photo url to auth context
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const handleChange = (event) => {
