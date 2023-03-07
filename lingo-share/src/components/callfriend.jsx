@@ -26,33 +26,43 @@ export default function CallFriend() {
   const [statusObj, setStatusObj] = useState([]);
   const [usersObj, setUsersObj] = useState([]);
   const [mergedObj, setMergedObj] = useState([]);
-  const statusRef = ref(rtdb, "/status");
-  const usersRef = ref(rtdb, "/users");
-  const activeCallsRef = ref(rtdb, "/active_calls");
+  const [friendsObj, setFriendsObj] = useState([]);
   const { user } = UserAuth();
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const statusRef = ref(rtdb, "/status");
+  const usersRef = ref(rtdb, "/users");
+  const activeCallsRef = ref(rtdb, "/active_calls");
+  const friendsRef = ref(rtdb, `/users/${user.uid}/friends`);
   // console.log(statusObj);
   // console.log(usersObj);
   // console.log(mergedObj);
 
   const getQuery = (ref) => {
     onValue(ref, (snapshot) => {
-      let newObjectList = [];
-      snapshot.forEach((childSnapshot) => {
-        let newObject = {};
-        newObject[childSnapshot.key] = childSnapshot.val();
-        newObjectList.push(newObject);
-      });
-      if (ref === statusRef) {
-        setStatusObj(newObjectList);
-      } else if (ref === usersRef) {
-        setUsersObj(newObjectList);
+      if (ref === friendsRef) {
+        setFriendsObj(snapshot.val());
+        console.log("friendsObj");
+        console.log(friendsObj);
+      } else {
+        let newObjectList = [];
+        snapshot.forEach((childSnapshot) => {
+          let newObject = {};
+          newObject[childSnapshot.key] = childSnapshot.val();
+          newObjectList.push(newObject);
+        });
+        if (ref === statusRef) {
+          setStatusObj(newObjectList);
+        } else if (ref === usersRef) {
+          setUsersObj(newObjectList);
+        }
       }
     });
   };
 
-  const mergeObj = (statusList, userList) => {
+  // TODO Refactor this function
+
+  const mergeObj = (statusList, userList, friends) => {
     let res = [];
     // loop through each dictionary in userList
     for (let userDict of userList) {
@@ -93,6 +103,13 @@ export default function CallFriend() {
         }
       }
     }
+
+    // remove the current user from the result object and all users that are not friends
+    delete res[user.uid];
+    console.log(friends);
+
+    console.log(res);
+
     // TODO QOL improvement: sort the res object based on if the user is online or offline
     // sort the res object based on if the user is online or offline
     // res.sort((a, b) => {
@@ -177,11 +194,12 @@ export default function CallFriend() {
   useEffect(() => {
     getQuery(statusRef);
     getQuery(usersRef);
+    getQuery(friendsRef);
   }, []);
 
   useEffect(() => {
     setMergedObj(mergeObj(statusObj, usersObj));
-  }, [statusObj, usersObj]);
+  }, [statusObj, usersObj, friendsObj]);
 
   return (
     <div>

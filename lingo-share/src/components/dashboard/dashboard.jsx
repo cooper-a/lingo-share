@@ -52,7 +52,12 @@ export default function Dashboard() {
                 </Heading>
               </CardBody>
             </Card>
-            <Card className="card" bgColor={"gray.100"} size={"lg"}>
+            <Card
+              className="card"
+              bgColor={"gray.100"}
+              size={"lg"}
+              onClick={() => handleClick("meetnewfriends")}
+            >
               <CardBody className="card-body">
                 <Heading as="h4" size="md">
                   {t("Meet New Friends")}
