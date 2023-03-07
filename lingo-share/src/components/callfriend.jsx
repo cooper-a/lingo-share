@@ -119,39 +119,42 @@ export default function CallFriend() {
     get(activeCallsRef)
       .then((snapshot) => {
         if (snapshot.exists()) {
+          let callExists = false;
           snapshot.forEach((childSnapshot) => {
-            if (childSnapshot.val().caller === user.uid) {
-              return;
-            } else if (childSnapshot.val().callee === user.uid) {
-              return;
-            } else {
-              const pushData = {
-                caller: user.uid, // the user who initiated the call will always be caller
-                callee: callerID, // the user who is being called will always be callee
-              };
-              const currActiveCallsRef = push(activeCallsRef, pushData);
-              const callID = currActiveCallsRef.key;
-              const roomName = generateRoomName(user.uid, callerID);
-              const callIDRef = ref(rtdb, `/calls/${roomName}/${callID}`);
-              set(callIDRef, {
-                caller: user.uid,
-                callee: callerID,
-                active_prompt: "none",
-              });
-              var endTime = performance.now();
-              console.log(
-                "Time taken to generate call status entry and navigate: " +
-                  (endTime - startTime) +
-                  " milliseconds."
-              );
-              navigate("/callroom", {
-                state: {
-                  callID: callID,
-                  roomName: roomName,
-                },
-              });
+            if (
+              childSnapshot.val().caller === user.uid ||
+              childSnapshot.val().callee === callerID
+            ) {
+              callExists = true;
             }
           });
+          if (!callExists) {
+            const pushData = {
+              caller: user.uid, // the user who initiated the call will always be caller
+              callee: callerID, // the user who is being called will always be callee
+            };
+            const currActiveCallsRef = push(activeCallsRef, pushData);
+            const callID = currActiveCallsRef.key;
+            const roomName = generateRoomName(user.uid, callerID);
+            const callIDRef = ref(rtdb, `/calls/${roomName}/${callID}`);
+            set(callIDRef, {
+              caller: user.uid,
+              callee: callerID,
+              active_prompt: "none",
+            });
+            var endTime = performance.now();
+            console.log(
+              "Time taken to generate call status entry and navigate: " +
+                (endTime - startTime) +
+                " milliseconds."
+            );
+            navigate("/callroom", {
+              state: {
+                callID: callID,
+                roomName: roomName,
+              },
+            });
+          }
         }
       })
       .catch((error) => {
