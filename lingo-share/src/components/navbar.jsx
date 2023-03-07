@@ -19,6 +19,8 @@ import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../contexts/AuthContext";
 import "@fontsource/inter";
 import { useTranslation } from "react-i18next";
+import { ref as storageRef, getDownloadURL } from "firebase/storage";
+import { storage } from "../firebase";
 
 export default function Navbar() {
   const { user, logout } = UserAuth();
@@ -26,10 +28,13 @@ export default function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { t, i18n } = useTranslation();
   const [isEnglish, setIsEnglish] = useState(true);
+  const [profilePicSrc, setProfilePicSrc] = useState(null);
+  // const usersRef = ref(rtdb, "/users");
 
   useEffect(() => {
     if (user === null || Object.keys(user).length === 0) return;
     setIsLoggedIn(true);
+    checkIfProfilePicExists();
   }, [user]);
 
   const handleClick = (path) => {
@@ -52,6 +57,18 @@ export default function Navbar() {
     // i18n.changeLanguage(i18n.language === "en" ? "zh" : "en");
     setIsEnglish(!isEnglish);
     i18n.changeLanguage(lang);
+  };
+
+  const checkIfProfilePicExists = () => {
+    getDownloadURL(
+      storageRef(storage, `profile_pics/${user.uid}_profile_150x150`)
+    )
+      .then((url) => {
+        setProfilePicSrc(url);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -89,7 +106,7 @@ export default function Navbar() {
                 <Menu>
                   <MenuButton>
                     <HStack className={"avatar"}>
-                      <Avatar size={"sm"} bg="grey" />
+                      <Avatar size={"sm"} src={profilePicSrc} bg="grey" />
                       <VStack
                         display={{ base: "none", md: "flex" }}
                         alignItems="flex-start"

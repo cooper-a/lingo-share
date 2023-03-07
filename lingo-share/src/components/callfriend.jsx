@@ -19,7 +19,7 @@ import { ref, onValue, push, get, set } from "firebase/database";
 import { rtdb } from "../firebase";
 import Navbar from "./navbar";
 import { Button, UnorderedList } from "@chakra-ui/react";
-import CallNotification from "./callNotification";
+import CallNotification from "./callnotification";
 import { useTranslation } from "react-i18next";
 
 export default function CallFriend() {
