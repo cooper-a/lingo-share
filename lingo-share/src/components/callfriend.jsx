@@ -10,7 +10,6 @@ import {
   Heading,
   Text,
 } from "@chakra-ui/react";
-import Icon from "@adeira/icons";
 import { useNavigate } from "react-router-dom";
 import { PhoneIcon } from "@chakra-ui/icons";
 import "../styles/homepage.css";
