@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { ChakraProvider, extendTheme, useToast } from "@chakra-ui/react";
 import Participant from "./participant";
-import Prompt from "./prompt";
 import Controls from "./controls";
 import "../../styles/room.css";
 import { rtdb } from "../../firebase";
 import { ref, get, set, onValue } from "firebase/database";
+import PromptSidebar from "./promptSidebar";
+import Icon from "@adeira/icons";
 
 const Room = ({ roomName, room, handleLogout, callID }) => {
   const [participants, setParticipants] = useState([]);
@@ -12,10 +14,28 @@ const Room = ({ roomName, room, handleLogout, callID }) => {
   const [toggleAudio, setToggleAudio] = useState(true);
   const [toggleVideo, setToggleVideo] = useState(true);
   const [togglePrompt, setTogglePrompt] = useState(false);
+  const toast = useToast();
   const activePromptRef = ref(
     rtdb,
     `/calls/${roomName}/${callID}/active_prompt`
   );
+
+  const customTheme = extendTheme({
+    components: {
+      Alert: {
+        variants: {
+          // define own toast variant
+          toast: {
+            container: {
+              color: "gray.50",
+              bg: "#6B6C72",
+              padding: "20px",
+            },
+          },
+        },
+      },
+    },
+  });
 
   useEffect(() => {
     // Here we define what happens when a remote participant joins
@@ -47,11 +67,10 @@ const Room = ({ roomName, room, handleLogout, callID }) => {
           const dbPrompt = snapshot.val();
           if (dbPrompt !== activePrompt && dbPrompt !== "none") {
             setActivePrompt(dbPrompt);
-            setTogglePrompt(true);
           }
         }
       });
-    }, 2500);
+    }, 2000);
 
     // onValue(activePromptRef, (snapshot) => {
     //   const data = snapshot.val();
@@ -109,41 +128,51 @@ const Room = ({ roomName, room, handleLogout, callID }) => {
     />
   ));
 
+  useEffect(() => {
+    if (activePrompt === "") return;
+    toast.closeAll();
+    toast({
+      title: `${activePrompt}`,
+      variant: "toast",
+      isClosable: true,
+      containerStyle: {
+        marginBottom: "125px",
+      },
+      icon: <Icon name={"thread"} width={"25px"} height={"25px"} />,
+    });
+  }, [activePrompt, toast]);
+
   return (
-    <div className="room">
-      {/* <h2>Room: {roomName}</h2> */}
-      {togglePrompt && (
-        <Prompt
-          roomName={roomName}
-          callID={callID}
-          activePrompt={activePrompt}
-        />
-      )}
-      <div className="local-participant">
-        {room ? (
-          <Participant
-            key={room.localParticipant.sid}
-            participant={room.localParticipant}
-            isLocal={true}
-            isVideoOn={toggleVideo}
+    <ChakraProvider theme={customTheme}>
+      <div className="room">
+        {/* <h2>Room: {roomName}</h2> */}
+        {togglePrompt && <PromptSidebar roomName={roomName} callID={callID} />}
+        <div className="local-participant">
+          {room ? (
+            <Participant
+              key={room.localParticipant.sid}
+              participant={room.localParticipant}
+              isLocal={true}
+              isVideoOn={toggleVideo}
+            />
+          ) : (
+            ""
+          )}
+        </div>
+        <div className="remote-participants">{remoteParticipants}</div>
+        <div className="controls">
+          <Controls
+            handleCallDisconnect={handleCallDisconnect}
+            handleAudioToggle={handleAudioToggle}
+            handleVideoToggle={handleVideoToggle}
+            handlePromptToggle={handlePromptToggle}
+            isPromptToggled={togglePrompt}
+            audio={toggleAudio}
+            video={toggleVideo}
           />
-        ) : (
-          ""
-        )}
+        </div>
       </div>
-      <div className="remote-participants">{remoteParticipants}</div>
-      <div className="controls">
-        <Controls
-          handleCallDisconnect={handleCallDisconnect}
-          handleAudioToggle={handleAudioToggle}
-          handleVideoToggle={handleVideoToggle}
-          handlePromptToggle={handlePromptToggle}
-          isPromptToggled={togglePrompt}
-          audio={toggleAudio}
-          video={toggleVideo}
-        />
-      </div>
-    </div>
+    </ChakraProvider>
   );
 };
 

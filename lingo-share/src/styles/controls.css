@@ -5,13 +5,32 @@
   align-items: center;
   margin: 0;
   padding: 0;
-  background-color: grey;
-  height: 60px;
+  background-color: #6b6c72;
+  height: 100px;
+}
+
+.control-toggle {
+  background-color: #d9d9d9;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
 }
 
 .topic-btn {
   margin-right: auto;
   padding-left: 10px;
+  border-radius: 10px;
+}
+
+.inner-topic-btn {
+  margin-right: auto;
+  padding-left: 10px;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+}
+
+.topic-btn-clickable:hover {
+  background-color: #e2e8f0;
 }
 
 .track-btns {
@@ -23,7 +42,7 @@
 }
 
 .close-btn {
-  margin-right: 44px;
+  margin-right: 90px;
 }
 
 .tooltip {

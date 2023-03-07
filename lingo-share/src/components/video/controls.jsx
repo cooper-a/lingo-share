@@ -1,6 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Button, ButtonGroup, CloseButton, Tooltip } from "@chakra-ui/react";
+import { Button, ButtonGroup, Text, Tooltip } from "@chakra-ui/react";
+import Icon from "@adeira/icons";
 import "../../styles/controls.css";
+
+const ControlButton = ({ text, iconName, onClick }) => {
+  return (
+    <div className="control-toggle" marginLeft={"10px"} onClick={onClick}>
+      <Icon name={iconName} width={"40px"} height={"40px"} />
+      <Text>{text}</Text>
+    </div>
+  );
+};
 
 export default function Controls({
   handleCallDisconnect,
@@ -25,26 +35,56 @@ by selecting a topic!"
             color="white"
             placement="top-end"
           >
-            <Button onClick={handlePromptToggle}>Topics</Button>
+            <ControlButton
+              onClick={handlePromptToggle}
+              text={"Choose a Topic"}
+              iconName={"thread"}
+            />
           </Tooltip>
         ) : (
-          <div className="close-btn">
-            <CloseButton
-              onClick={handlePromptToggle}
-              bgColor={"gray.100"}
-              size="lg"
-            />
-          </div>
+          <ControlButton
+            onClick={handlePromptToggle}
+            text={"Choose a Topic"}
+            iconName={"thread"}
+          />
         )}
       </div>
       <ButtonGroup className="track-btns">
-        <Button onClick={handleVideoToggle}>Camera</Button>
-        <Button marginLeft={"10px"} onClick={handleAudioToggle}>
-          Mic
-        </Button>
+        {video ? (
+          <div>
+            <ControlButton
+              text={"Turn off Camera"}
+              iconName={"camera_alt"}
+              onClick={handleVideoToggle}
+            />
+          </div>
+        ) : (
+          <ControlButton
+            text={"Turn on Camera"}
+            iconName={"camera_noflash_alt"}
+            onClick={handleVideoToggle}
+          />
+        )}
+        {audio ? (
+          <ControlButton
+            text={"Turn off Mic"}
+            iconName={"microphone"}
+            onClick={handleAudioToggle}
+          />
+        ) : (
+          <ControlButton
+            text={"Turn on Mic"}
+            iconName={"microphone_disabled"}
+            onClick={handleAudioToggle}
+          />
+        )}
       </ButtonGroup>
       <div className="leave-btn">
-        <Button onClick={handleCallDisconnect}>Leave</Button>
+        <Button onClick={handleCallDisconnect}>
+          <Text fontSize={"1rem"} fontFamily={"Inter"}>
+            Leave Call
+          </Text>
+        </Button>
       </div>
     </div>
   );
