@@ -1,15 +1,6 @@
-import {
-  Box,
-  Button,
-  CloseButton,
-  Flex,
-  IconButton,
-  Text,
-  useDisclosure,
-} from "@chakra-ui/react";
-import { ChevronRightIcon, CloseIcon } from "@chakra-ui/icons";
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { ChevronRightIcon, ChevronLeftIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
-import Icon from "@adeira/icons";
 import { rtdb } from "../../firebase";
 import { ref, set } from "firebase/database";
 import "../../styles/room.css";
@@ -32,18 +23,46 @@ const NavItem = ({ topicName, onClick }) => {
   );
 };
 
+const BackButton = ({ onClick }) => {
+  return (
+    <div className="inner-topic-btn" onClick={onClick}>
+      <Button
+        className="topic-btn-clickable"
+        width={"150px"}
+        height={"50px"}
+        variant={"unstyled"}
+        bgColor={"white"}
+        onClick={onClick}
+        leftIcon={<ChevronLeftIcon alignContent={"left"} />}
+      >
+        Go Back
+      </Button>
+    </div>
+  );
+};
+
 export default function Sidebar({ prompts, handlePromptSelect }) {
-  const [displayList, setDisplayList] = useState([]);
+  const [isHomeList, setIsHomeList] = useState(true);
+  const [homeList, setHomeList] = useState([]);
+  const [displayList, setDiplayList] = useState([]);
+  const [currentTitle, setCurrentTitle] = useState("");
 
   useEffect(() => {
-    setDisplayList(Object.keys(prompts));
+    let hl = Object.keys(prompts);
+    setHomeList(hl);
+    setDiplayList(hl);
   }, [prompts]);
+
+  const setActivePrompt = (promptName) => {
+    let children = prompts[promptName]["Prompts"].map(({ Prompt }) => Prompt);
+    let randomPrompt = children[Math.floor(Math.random() * children.length)];
+    handlePromptSelect(randomPrompt);
+  };
 
   return (
     <div>
       <Box
         className="sidebar"
-        borderRight="1px"
         left={"10px"}
         top={"10px"}
         bottom={"110px"}
@@ -68,7 +87,7 @@ export default function Sidebar({ prompts, handlePromptSelect }) {
           {displayList.map((promptName, i) => (
             <NavItem
               key={i}
-              onClick={() => handlePromptSelect(promptName)}
+              onClick={() => setActivePrompt(promptName)}
               topicName={promptName}
             />
           ))}

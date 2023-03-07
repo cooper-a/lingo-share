@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  ButtonGroup,
-  CloseButton,
-  Text,
-  Tooltip,
-} from "@chakra-ui/react";
+import { Button, ButtonGroup, Text, Tooltip } from "@chakra-ui/react";
 import Icon from "@adeira/icons";
 import "../../styles/controls.css";
 
@@ -57,15 +51,17 @@ by selecting a topic!"
       </div>
       <ButtonGroup className="track-btns">
         {video ? (
-          <ControlButton
-            text={"Turn off Camera"}
-            iconName={"video"}
-            onClick={handleVideoToggle}
-          />
+          <div>
+            <ControlButton
+              text={"Turn off Camera"}
+              iconName={"camera_alt"}
+              onClick={handleVideoToggle}
+            />
+          </div>
         ) : (
           <ControlButton
             text={"Turn on Camera"}
-            iconName={"video"}
+            iconName={"camera_noflash_alt"}
             onClick={handleVideoToggle}
           />
         )}
