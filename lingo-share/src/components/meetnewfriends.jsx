@@ -49,7 +49,11 @@ export default function MeetNewFriends() {
         for (let userDict of newObjectList) {
           for (let [userID, userValue] of Object.entries(userDict)) {
             if (userID === user.uid) {
-              setFriendsObj(userValue.friends);
+              if (userValue.friends) {
+                setFriendsObj(userValue.friends);
+              } else {
+                setFriendsObj({});
+              }
             }
           }
         }
@@ -121,6 +125,7 @@ export default function MeetNewFriends() {
           console.log(error);
         });
       }
+      navigate("/meetnewfriends");
     }
   };
 
