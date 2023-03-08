@@ -26,57 +26,43 @@ export default function MeetNewFriends() {
   const statusRef = ref(rtdb, "/status");
   const { user } = UserAuth();
   const navigate = useNavigate();
-  const friendsRef = ref(rtdb, `/users/${user.uid}/friends`);
   const [statusObj, setStatusObj] = useState([]);
   const [usersObj, setUsersObj] = useState([]);
   const [friendsObj, setFriendsObj] = useState([]);
   const [mergedObj, setMergedObj] = useState([]);
   const { t } = useTranslation();
 
-  const getUsersStatusFriends = (usersRef, statusRef, friendsRef) => {
-    onValue(usersRef, (snapshot) => {
+  const getQuery = (ref) => {
+    onValue(ref, (snapshot) => {
       let newObjectList = [];
       snapshot.forEach((childSnapshot) => {
         let newObject = {};
         newObject[childSnapshot.key] = childSnapshot.val();
         newObjectList.push(newObject);
       });
-
-      setUsersObj(newObjectList);
-    });
-
-    onValue(statusRef, (snapshot) => {
-      let newObjectList = [];
-      snapshot.forEach((childSnapshot) => {
-        let newObject = {};
-        newObject[childSnapshot.key] = childSnapshot.val();
-        newObjectList.push(newObject);
-      });
-
-      setStatusObj(newObjectList);
-    });
-
-    onValue(friendsRef, (snapshot) => {
-      let newObjectList = [];
-      snapshot.forEach((childSnapshot) => {
-        let newObject = {};
-        newObject[childSnapshot.key] = childSnapshot.val();
-        newObjectList.push(newObject);
-      });
-
-      setFriendsObj(newObjectList);
+      if (ref === statusRef) {
+        setStatusObj(newObjectList);
+      }
+      if (ref === usersRef) {
+        setUsersObj(newObjectList);
+        // extract friends list from usersObj
+        for (let userDict of newObjectList) {
+          for (let [userID, userValue] of Object.entries(userDict)) {
+            if (userID === user.uid) {
+              setFriendsObj(userValue.friends);
+            }
+          }
+        }
+      }
     });
   };
 
-  const mergeObj = (statusList, userList, friends) => {
+  const mergeObj = (statusList, userList) => {
     let res = [];
-
     let friendsDict = {};
 
-    for (let friendDict of friends) {
-      for (let [friendID, friendValue] of Object.entries(friendDict)) {
-        friendsDict[friendID] = friendValue;
-      }
+    for (let [friendID, friendValue] of Object.entries(friendsObj)) {
+      friendsDict[friendID] = friendValue;
     }
 
     // loop through each dictionary in userList
@@ -113,10 +99,6 @@ export default function MeetNewFriends() {
         }
       }
     }
-
-    // delete res_filtered[user.uid];
-
-    console.log(res);
     delete res[user.uid];
 
     return res;
@@ -125,12 +107,15 @@ export default function MeetNewFriends() {
   const handleClickManageFriend = async (e, targetID, add) => {
     e.preventDefault();
     if (targetID !== user.uid && targetID !== undefined) {
-      const friendRef = ref(rtdb, `/users/${user.uid}/friends/${targetID}`);
+      let friendRef = ref(rtdb, `/users/${user.uid}/friends/${targetID}`);
       if (add) {
-        set(friendRef, true).catch((error) => {
-          console.log(error);
-        });
-        console.log("friend added");
+        set(friendRef, true)
+          .then(() => {
+            console.log("friend added");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       } else {
         set(friendRef, false).catch((error) => {
           console.log(error);
@@ -144,12 +129,13 @@ export default function MeetNewFriends() {
   };
 
   useEffect(() => {
-    getUsersStatusFriends(usersRef, statusRef, friendsRef);
+    getQuery(statusRef);
+    getQuery(usersRef);
   }, []);
 
   useEffect(() => {
-    setMergedObj(mergeObj(statusObj, usersObj, friendsObj));
-  }, [statusObj, usersObj, friendsObj]);
+    setMergedObj(mergeObj(statusObj, usersObj));
+  }, [statusObj, usersObj]);
 
   return (
     <div>
