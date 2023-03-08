@@ -122,10 +122,20 @@ export default function MeetNewFriends() {
     return res;
   };
 
-  const handleClickAddFriend = (targetID) => {
+  const handleClickManageFriend = async (e, targetID, add) => {
+    e.preventDefault();
     if (targetID !== user.uid && targetID !== undefined) {
       const friendRef = ref(rtdb, `/users/${user.uid}/friends/${targetID}`);
-      set(friendRef, true);
+      if (add) {
+        set(friendRef, true).catch((error) => {
+          console.log(error);
+        });
+        console.log("friend added");
+      } else {
+        set(friendRef, false).catch((error) => {
+          console.log(error);
+        });
+      }
     }
   };
 
@@ -186,9 +196,10 @@ export default function MeetNewFriends() {
                           colorScheme="black"
                           variant="outline"
                           size="xs"
-                          onClick={() => handleClickAddFriend(key)}
+                          onClick={(e) => handleClickManageFriend(e, key, true)}
                         >
-                          {value.isFriend ? t("Friend") : t("Add Friend")}
+                          {t("Add Friend")}
+                          {/* {value.isFriend ? t("Friend") : t("Add Friend")} */}
                         </Button>
                         <Button
                           colorScheme="black"
