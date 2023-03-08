@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import "../../styles/card.css";
 import { rtdb } from "../../firebase";
-import { set, ref, onValue } from "firebase/database";
+import { set, ref, onValue, get } from "firebase/database";
 import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../../contexts/AuthContext";
 import Navbar from "../navbar";
@@ -23,7 +23,8 @@ export default function Dashboard() {
   const [snapshotData, setSnapshotData] = useState({});
   const { user, checkStatus } = UserAuth();
   const user_documents = ref(rtdb, "users/" + user.uid);
-  const { t } = useTranslation();
+  const languageRef = ref(rtdb, `users/${user.uid}/language`);
+  const { t, i18n } = useTranslation();
 
   const handleClick = (path) => {
     navigate("/" + path);
@@ -31,12 +32,19 @@ export default function Dashboard() {
 
   useEffect(() => {
     checkStatus(user);
+    get(languageRef).then((snapshot) => {
+      if (snapshot.exists()) {
+        i18n.changeLanguage(snapshot.val());
+      } else {
+        console.log("No data available");
+      }
+    });
   }, []);
 
   return (
     <div>
       <CallNotification />
-      <Navbar />
+      <Navbar currPage={"/dashboard"} />
       <ChakraProvider>
         <div className="welcome-pg">
           <SimpleGrid columns={2} spacing={10}>

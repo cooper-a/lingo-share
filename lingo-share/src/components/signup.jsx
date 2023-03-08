@@ -77,7 +77,7 @@ export default function Signup() {
 
   return (
     <div>
-      <Navbar />
+      <Navbar currPage={"/signup"} />
       <ChakraProvider>
         <div className="field-pg">
           <Text fontSize="5xl">{t("Sign Up")}</Text>

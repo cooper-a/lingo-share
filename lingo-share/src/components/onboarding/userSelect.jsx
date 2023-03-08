@@ -48,7 +48,7 @@ export default function UserSelect() {
 
   return (
     <div>
-      <Navbar />
+      <Navbar currPage={"/userselect"} />
       <ChakraProvider>
         <div className="field-pg">
           <Text fontSize="4xl">{t("You are...")}</Text>

@@ -41,7 +41,7 @@ export default function WelcomePage() {
 
   return (
     <div>
-      <Navbar />
+      <Navbar currPage={"/welcomepage"} />
       <ChakraProvider>
         <div className="field-pg">
           <Text fontSize="4xl">
