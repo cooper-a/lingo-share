@@ -5,7 +5,7 @@ import "../../styles/controls.css";
 
 const ControlButton = ({ text, iconName, onClick }) => {
   return (
-    <div className="control-toggle" marginLeft={"10px"} onClick={onClick}>
+    <div className="control-toggle" onClick={onClick}>
       <Icon name={iconName} width={"40px"} height={"40px"} />
       <Text>{text}</Text>
     </div>
@@ -25,22 +25,11 @@ export default function Controls({
     <div className="control-btns">
       <div className="topic-btn">
         {!isPromptToggled ? (
-          <Tooltip
-            className="tooltip"
-            hasArrow
-            label="Continue the conversation
-by selecting a topic!"
-            bg="gray.700"
-            fontSize={"l"}
-            color="white"
-            placement="top-end"
-          >
-            <ControlButton
-              onClick={handlePromptToggle}
-              text={"Choose a Topic"}
-              iconName={"thread"}
-            />
-          </Tooltip>
+          <ControlButton
+            onClick={handlePromptToggle}
+            text={"Choose a Topic"}
+            iconName={"thread"}
+          />
         ) : (
           <ControlButton
             onClick={handlePromptToggle}

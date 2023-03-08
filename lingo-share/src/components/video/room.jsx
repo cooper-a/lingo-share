@@ -4,11 +4,11 @@ import Participant from "./participant";
 import Controls from "./controls";
 import "../../styles/room.css";
 import { rtdb } from "../../firebase";
-import { ref, get, set, onValue } from "firebase/database";
+import { ref, get } from "firebase/database";
 import PromptSidebar from "./promptSidebar";
 import Icon from "@adeira/icons";
 
-const Room = ({ roomName, room, handleLogout, callID }) => {
+export default function Room({ roomName, room, handleLogout, callID }) {
   const [participants, setParticipants] = useState([]);
   const [activePrompt, setActivePrompt] = useState("");
   const [toggleAudio, setToggleAudio] = useState(true);
@@ -61,9 +61,9 @@ const Room = ({ roomName, room, handleLogout, callID }) => {
 
     const interval = setInterval(() => {
       get(activePromptRef).then((snapshot) => {
-        console.log("grabbing active prompt");
+        // console.log("grabbing active prompt");
         if (snapshot.exists()) {
-          console.log(snapshot.val());
+          // console.log(snapshot.val());
           const dbPrompt = snapshot.val();
           if (dbPrompt !== activePrompt && dbPrompt !== "none") {
             setActivePrompt(dbPrompt);
@@ -145,7 +145,6 @@ const Room = ({ roomName, room, handleLogout, callID }) => {
   return (
     <ChakraProvider theme={customTheme}>
       <div className="room">
-        {/* <h2>Room: {roomName}</h2> */}
         {togglePrompt && <PromptSidebar roomName={roomName} callID={callID} />}
         <div className="local-participant">
           {room ? (
@@ -156,7 +155,7 @@ const Room = ({ roomName, room, handleLogout, callID }) => {
               isVideoOn={toggleVideo}
             />
           ) : (
-            ""
+            <div></div>
           )}
         </div>
         <div className="remote-participants">{remoteParticipants}</div>
@@ -174,6 +173,4 @@ const Room = ({ roomName, room, handleLogout, callID }) => {
       </div>
     </ChakraProvider>
   );
-};
-
-export default Room;
+}

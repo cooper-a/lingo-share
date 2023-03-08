@@ -14,7 +14,6 @@ const NavItem = ({ topicName, onClick }) => {
         height={"50px"}
         variant={"unstyled"}
         bgColor={"white"}
-        onClick={onClick}
         rightIcon={<ChevronRightIcon alignContent={"right"} />}
       >
         {topicName}
@@ -32,7 +31,6 @@ const BackButton = ({ onClick }) => {
         height={"50px"}
         variant={"unstyled"}
         bgColor={"white"}
-        onClick={onClick}
         leftIcon={<ChevronLeftIcon alignContent={"left"} />}
       >
         Go Back
