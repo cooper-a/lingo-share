@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { UserAuth } from "../../contexts/AuthContext";
 import { rtdb } from "../../firebase";
-import { ref, get, set, onValue } from "firebase/database";
+import { ref, get, set, onValue, child, push } from "firebase/database";
 import Sidebar from "./sidebar";
 import "../../styles/room.css";
 
@@ -12,6 +12,11 @@ export default function PromptSidebar({ roomName, callID }) {
   const activePromptRef = ref(
     rtdb,
     `/calls/${roomName}/${callID}/active_prompt`
+  );
+
+  const promptHistoryRef = ref(
+    rtdb,
+    `/calls/${roomName}/${callID}/prompt_history`
   );
 
   const getPrompts = () => {
@@ -35,6 +40,8 @@ export default function PromptSidebar({ roomName, callID }) {
   const handlePromptSelect = (promptName) => {
     console.log("Prompt Selected");
     set(activePromptRef, promptName);
+    console.log("Pushing prompt to history");
+    push(promptHistoryRef, promptName);
   };
 
   useEffect(() => {

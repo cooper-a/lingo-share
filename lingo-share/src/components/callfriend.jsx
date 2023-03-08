@@ -14,7 +14,14 @@ import { useNavigate } from "react-router-dom";
 import { PhoneIcon } from "@chakra-ui/icons";
 import "../styles/homepage.css";
 import { UserAuth } from "../contexts/AuthContext";
-import { ref, onValue, push, get, set } from "firebase/database";
+import {
+  ref,
+  onValue,
+  push,
+  get,
+  set,
+  serverTimestamp,
+} from "firebase/database";
 import { rtdb } from "../firebase";
 import Navbar from "./navbar";
 import { Button, UnorderedList } from "@chakra-ui/react";
@@ -141,6 +148,8 @@ export default function CallFriend() {
               caller: user.uid,
               callee: callerID,
               active_prompt: "none",
+              prompt_history: [],
+              created_at: serverTimestamp(),
             });
             var endTime = performance.now();
             console.log(
