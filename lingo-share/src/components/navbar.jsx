@@ -19,6 +19,8 @@ import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../contexts/AuthContext";
 import "@fontsource/inter";
 import { useTranslation } from "react-i18next";
+import { ref, onValue, get, set } from "firebase/database";
+import { rtdb } from "../firebase";
 
 export default function Navbar() {
   const { user, logout } = UserAuth();
@@ -28,9 +30,10 @@ export default function Navbar() {
   const [isEnglish, setIsEnglish] = useState(true);
 
   useEffect(() => {
+    setIsEnglish(i18n.language === "en");
     if (user === null || Object.keys(user).length === 0) return;
     setIsLoggedIn(true);
-  }, [user]);
+  }, [user, i18n.language]);
 
   const handleClick = (path) => {
     navigate("/" + path);
@@ -52,6 +55,9 @@ export default function Navbar() {
     // i18n.changeLanguage(i18n.language === "en" ? "zh" : "en");
     setIsEnglish(!isEnglish);
     i18n.changeLanguage(lang);
+    if (user === null || Object.keys(user).length === 0) return;
+    const languageRef = ref(rtdb, `users/${user.uid}/language`);
+    set(languageRef, lang);
   };
 
   return (
