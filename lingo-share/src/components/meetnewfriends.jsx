@@ -29,28 +29,56 @@ export default function MeetNewFriends() {
   const friendsRef = ref(rtdb, `/users/${user.uid}/friends`);
   const [statusObj, setStatusObj] = useState([]);
   const [usersObj, setUsersObj] = useState([]);
+  const [friendsObj, setFriendsObj] = useState([]);
   const [mergedObj, setMergedObj] = useState([]);
   const { t } = useTranslation();
 
-  const getQuery = (ref) => {
-    onValue(ref, (snapshot) => {
+  const getUsersStatusFriends = (usersRef, statusRef, friendsRef) => {
+    onValue(usersRef, (snapshot) => {
       let newObjectList = [];
       snapshot.forEach((childSnapshot) => {
         let newObject = {};
         newObject[childSnapshot.key] = childSnapshot.val();
         newObjectList.push(newObject);
       });
-      if (ref === statusRef) {
-        setStatusObj(newObjectList);
-      } else if (ref === usersRef) {
-        setUsersObj(newObjectList);
-      }
+
+      setUsersObj(newObjectList);
+    });
+
+    onValue(statusRef, (snapshot) => {
+      let newObjectList = [];
+      snapshot.forEach((childSnapshot) => {
+        let newObject = {};
+        newObject[childSnapshot.key] = childSnapshot.val();
+        newObjectList.push(newObject);
+      });
+
+      setStatusObj(newObjectList);
+    });
+
+    onValue(friendsRef, (snapshot) => {
+      let newObjectList = [];
+      snapshot.forEach((childSnapshot) => {
+        let newObject = {};
+        newObject[childSnapshot.key] = childSnapshot.val();
+        newObjectList.push(newObject);
+      });
+
+      setFriendsObj(newObjectList);
     });
   };
 
-  // TODO Refactor this function
-  const mergeObj = (statusList, userList) => {
+  const mergeObj = (statusList, userList, friends) => {
     let res = [];
+
+    let friendsDict = {};
+
+    for (let friendDict of friends) {
+      for (let [friendID, friendValue] of Object.entries(friendDict)) {
+        friendsDict[friendID] = friendValue;
+      }
+    }
+
     // loop through each dictionary in userList
     for (let userDict of userList) {
       // loop through each key-value pair in the current dictionary
@@ -68,28 +96,29 @@ export default function MeetNewFriends() {
           let mergedDict = { ...userValue, ...statusDict[userID] };
 
           // add the merged dictionary to the result object with the userID as the key
+          if (friendsDict.hasOwnProperty(userID)) {
+            mergedDict = { ...mergedDict, isFriend: true };
+          } else {
+            mergedDict = { ...mergedDict, isFriend: false };
+          }
           res[userID] = mergedDict;
         } else {
+          if (friendsDict.hasOwnProperty(userID)) {
+            userValue = { ...userValue, isFriend: true };
+          } else {
+            userValue = { ...userValue, isFriend: false };
+          }
           // if the userID isn't in the statusList, just add the userValue to the result object with the userID as the key
           res[userID] = userValue;
         }
       }
     }
 
-    // brute force for the other way around if userID is found in statusList but not in userList
-    for (let statusDict of statusList) {
-      for (let [userID, statusValue] of Object.entries(statusDict)) {
-        if (userList.some((userDict) => userDict.hasOwnProperty(userID))) {
-          let userDict = userList.find((userDict) =>
-            userDict.hasOwnProperty(userID)
-          );
-          let mergedDict = { ...statusValue, ...userDict[userID] };
-          res[userID] = mergedDict;
-        } else {
-          res[userID] = statusValue;
-        }
-      }
-    }
+    // delete res_filtered[user.uid];
+
+    console.log(res);
+    delete res[user.uid];
+
     return res;
   };
 
@@ -105,13 +134,12 @@ export default function MeetNewFriends() {
   };
 
   useEffect(() => {
-    getQuery(statusRef);
-    getQuery(usersRef);
+    getUsersStatusFriends(usersRef, statusRef, friendsRef);
   }, []);
 
   useEffect(() => {
-    setMergedObj(mergeObj(statusObj, usersObj));
-  }, [statusObj, usersObj]);
+    setMergedObj(mergeObj(statusObj, usersObj, friendsObj));
+  }, [statusObj, usersObj, friendsObj]);
 
   return (
     <div>
@@ -157,13 +185,15 @@ export default function MeetNewFriends() {
                         <Button
                           colorScheme="black"
                           variant="outline"
-                          onClick={(e) => handleClickAddFriend(key)}
+                          size="xs"
+                          onClick={() => handleClickAddFriend(key)}
                         >
-                          {t("Add Friend")}
+                          {value.isFriend ? t("Friend") : t("Add Friend")}
                         </Button>
                         <Button
                           colorScheme="black"
                           variant="outline"
+                          size="xs"
                           onClick={(e) => handleClickViewProfile(key)}
                         >
                           {t("View Profile")}
