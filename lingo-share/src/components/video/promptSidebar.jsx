@@ -5,7 +5,7 @@ import { ref, get, set, onValue, child, push } from "firebase/database";
 import Sidebar from "./sidebar";
 import "../../styles/room.css";
 
-export default function PromptSidebar({ roomName, callID }) {
+export default function PromptSidebar({ roomName, callID, setActivePrompt }) {
   const prompts_ref = ref(rtdb, "/prompts/");
   const [prompts, setPrompts] = useState({});
   const callIDRef = ref(rtdb, `/calls/${roomName}/${callID}`);
@@ -40,21 +40,13 @@ export default function PromptSidebar({ roomName, callID }) {
   const handlePromptSelect = (promptName) => {
     console.log("Prompt Selected");
     set(activePromptRef, promptName);
+    setActivePrompt(promptName);
     console.log("Pushing prompt to history");
     push(promptHistoryRef, promptName);
   };
 
   useEffect(() => {
     getPrompts();
-    // const interval = setInterval(() => {
-    //   get(activePromptRef).then((snapshot) => {
-    //     console.log("grabbing active prompt");
-    //     if (snapshot.exists()) {
-    //       console.log(snapshot.val());
-    //     }
-    //   });
-    // }, 1000);
-    // return () => clearInterval(interval);
   }, [getPrompts]);
 
   return (
