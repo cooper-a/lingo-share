@@ -59,6 +59,11 @@ const resources = {
         "It seems like you don't have any friends yet.",
       "Add as Friend": "Add as Friend",
       "Remove Friend": "Remove Friend",
+      Profile: "Profile",
+      "View Profile": "View Profile",
+      "Add as Friend": "Add as Friend",
+      "These people are also using LingoShare":
+        "These people are also using LingoShare",
     },
   },
   zh: {
@@ -112,8 +117,11 @@ const resources = {
       Call: "呼叫",
       Upload: "上传",
       "It seems like you don't have any friends yet.": "你还没有任何好友呢",
-      "Add as Friend": "添加朋友",
-      "Remove Friend": "删除朋友",
+      "Add as Friend": "添加为好友",
+      "Remove Friend": "删除好友",
+      Profile: "个人资料",
+      "View Profile": "查看用户首页",
+      "These people are also using LingoShare": "这些用户也在使用LingoShare",
     },
   },
 };

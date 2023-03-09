@@ -5,7 +5,8 @@ import {
   ref as storageRef,
   uploadBytes,
 } from "firebase/storage";
-import { storage } from "../firebase";
+import { ref as dbRef, set } from "firebase/database";
+import { rtdb, storage } from "../firebase";
 import React, { useState } from "react";
 import { updateProfile } from "firebase/auth";
 
@@ -34,6 +35,7 @@ export default function ProfilePicture() {
         updateProfile(user, {
           photoURL: url, // save the compressed photo url to auth context
         });
+        set(dbRef(rtdb, `users/${user.uid}/profilePic`), url);
       })
       .catch((error) => {
         console.log(error);

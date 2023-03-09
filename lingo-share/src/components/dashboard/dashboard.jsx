@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../../contexts/AuthContext";
 import Navbar from "../navbar";
 import { useTranslation } from "react-i18next";
-import CallNotification from "../callNotification";
+import CallNotification from "../callnotification";
 import Icon from "@adeira/icons";
 
 export default function Dashboard() {
@@ -68,7 +68,11 @@ export default function Dashboard() {
               iconName={"users"}
               onClick={() => handleClick("meetnewfriends")}
             />
-            <CardItem text={t("Your Profile")} iconName={"user_male"} />
+            <CardItem
+              text={t("Your Profile")}
+              iconName={"user_male"}
+              onClick={() => handleClick(`profile/${user.uid}`)}
+            />
             <CardItem
               text={t("How to Use this App")}
               iconName={"info_circle"}

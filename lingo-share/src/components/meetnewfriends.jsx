@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { ChakraProvider, Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import Navbar from "./navbar";
-import CallNotification from "./callNotification";
+import CallNotification from "./callnotification";
 import ProfileCard from "./lingoshare-components/profilecard";
 import "../styles/meetfriends.css";
 
@@ -150,6 +150,7 @@ export default function MeetNewFriends() {
                     name={value.userDisplayName}
                     userId={key}
                     isFriend={value.isFriend}
+                    profileURL={value.profilePic}
                     handleClickViewProfile={handleClickViewProfile}
                     handleClickManageFriend={handleClickManageFriend}
                   />

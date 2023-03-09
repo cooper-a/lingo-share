@@ -22,7 +22,7 @@ export default function AccountOptions({ user, handleClick, handleLogout }) {
       <Menu>
         <MenuButton>
           <HStack className={"avatar"}>
-            <Avatar size={"sm"} bg="grey" />
+            <Avatar size={"sm"} bg="grey" src={user.photoURL} />
             <VStack
               display={{ base: "none", md: "flex" }}
               alignItems="flex-start"

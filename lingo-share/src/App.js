@@ -18,7 +18,7 @@ import { Routes, Route } from "react-router-dom";
 import Dashboard from "./components/dashboard/dashboard";
 import LanguageProficiency from "./components/onboarding/languageProficiency";
 import MeetNewFriends from "./components/meetnewfriends";
-import PublicProfile from "./components/publicprofile";
+import ProfilePage from "./components/profilepage";
 
 function App() {
   return (
@@ -96,12 +96,11 @@ function App() {
                   </ProtectedRoute>
                 }
               />
-
               <Route
                 path="/profile/:id"
                 element={
                   <ProtectedRoute>
-                    <PublicProfile />
+                    <ProfilePage />
                   </ProtectedRoute>
                 }
               />

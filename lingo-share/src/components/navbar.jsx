@@ -31,9 +31,9 @@ export default function Navbar({ currPage }) {
   const { t, i18n } = useTranslation();
   const [isEnglish, setIsEnglish] = useState(true);
   const pageTitles = {
-    "/callfriend": "Start a Call",
-    "/meetnewfriends": "Meet New Friends",
-    "/account": "My Profile",
+    "/callfriend": t("Call a Friend"),
+    "/meetnewfriends": t("Meet New Friends"),
+    "/account": t("Profile"),
   };
 
   useEffect(() => {
@@ -74,7 +74,9 @@ export default function Navbar({ currPage }) {
       <ChakraProvider>
         <div className="navbar">
           <div className="logo" onClick={() => handleClick("")}>
-            {currPage === "/dashboard" ? (
+            {currPage === "/dashboard" ||
+            currPage === "/login" ||
+            currPage === " /signup" ? (
               <div className="homepage-logo">
                 <span className="title">LingoShare</span>
               </div>

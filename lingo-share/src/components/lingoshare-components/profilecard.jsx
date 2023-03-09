@@ -14,6 +14,7 @@ export default function ProfileCard({
   name,
   userId,
   isFriend,
+  profileURL,
   handleClickViewProfile,
   handleClickManageFriend,
 }) {
@@ -26,7 +27,11 @@ export default function ProfileCard({
           <Flex justify={"center"} mt={7}>
             <Avatar
               size={"xl"}
-              src={"google.com"}
+              src={
+                typeof profileURL !== "undefined"
+                  ? profileURL
+                  : "https://bit.ly/broken-link"
+              }
               alt={"user"}
               bg="#6B6C72"
               css={{

@@ -14,7 +14,7 @@ import {
 import { rtdb } from "../firebase";
 import Navbar from "./navbar";
 import { UnorderedList } from "@chakra-ui/react";
-import CallNotification from "./callNotification";
+import CallNotification from "./callnotification";
 import CallCard from "./lingoshare-components/callcard";
 import { useTranslation } from "react-i18next";
 
