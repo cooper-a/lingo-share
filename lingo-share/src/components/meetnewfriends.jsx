@@ -129,7 +129,7 @@ export default function MeetNewFriends() {
   useEffect(() => {
     getQuery(statusRef);
     getQuery(usersRef);
-  }, []);
+  }, [user.uid]);
 
   useEffect(() => {
     setMergedObj(mergeObj(statusObj, usersObj));

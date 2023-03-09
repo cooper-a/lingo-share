@@ -53,6 +53,7 @@ export default function CallFriend() {
                 setHasNoFriends(false);
               } else {
                 setFriendsObj({});
+                setHasNoFriends(true);
               }
             }
           }
@@ -174,7 +175,7 @@ export default function CallFriend() {
   useEffect(() => {
     getQuery(statusRef);
     getQuery(usersRef);
-  }, []);
+  }, [user.uid]);
 
   useEffect(() => {
     setMergedObj(mergeObj(statusObj, usersObj));
