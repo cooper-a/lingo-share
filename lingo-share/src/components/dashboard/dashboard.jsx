@@ -1,28 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   Card,
   CardBody,
-  CardHeader,
   ChakraProvider,
   Heading,
   SimpleGrid,
+  Stack,
 } from "@chakra-ui/react";
 import "../../styles/card.css";
 import { rtdb } from "../../firebase";
-import { set, ref, onValue, get } from "firebase/database";
+import { ref, get } from "firebase/database";
 import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../../contexts/AuthContext";
 import Navbar from "../navbar";
 import { useTranslation } from "react-i18next";
 import CallNotification from "../callNotification";
+import Icon from "@adeira/icons";
 
 export default function Dashboard() {
-  const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const [userType, setUserType] = useState("");
-  const [snapshotData, setSnapshotData] = useState({});
   const { user, checkStatus } = UserAuth();
-  const user_documents = ref(rtdb, "users/" + user.uid);
   const languageRef = ref(rtdb, `users/${user.uid}/language`);
   const { t, i18n } = useTranslation();
 
@@ -41,51 +38,41 @@ export default function Dashboard() {
     });
   }, []);
 
+  const CardItem = ({ text, iconName, onClick }) => {
+    return (
+      <Card className="card" size={"lg"} bgColor={"gray.200"} onClick={onClick}>
+        <CardBody>
+          <Icon name={iconName} width={"90px"} height={"90px"} />
+          <Stack mt="6" spacing="3">
+            <Heading size="sm">{text}</Heading>
+          </Stack>
+        </CardBody>
+      </Card>
+    );
+  };
+
   return (
     <div>
       <CallNotification />
       <Navbar currPage={"/dashboard"} />
       <ChakraProvider>
-        <div className="welcome-pg">
+        <div className="dash">
           <SimpleGrid columns={2} spacing={10}>
-            <Card
-              className="card"
-              size={"lg"}
-              bgColor={"gray.100"}
+            <CardItem
+              text={t("Call a Friend")}
+              iconName={"video"}
               onClick={() => handleClick("callfriend")}
-            >
-              <CardBody>
-                <Heading as="h4" size="md">
-                  {t("Call a Friend")}
-                </Heading>
-              </CardBody>
-            </Card>
-            <Card
-              className="card"
-              bgColor={"gray.100"}
-              size={"lg"}
+            />
+            <CardItem
+              text={t("Meet New Friends")}
+              iconName={"users"}
               onClick={() => handleClick("meetnewfriends")}
-            >
-              <CardBody className="card-body">
-                <Heading as="h4" size="md">
-                  {t("Meet New Friends")}
-                </Heading>
-              </CardBody>
-            </Card>
-            <Card className="card" bgColor={"gray.100"} size={"lg"}>
-              <CardBody>
-                <Heading as="h4" size="md">
-                  {t("Your Profile")}
-                </Heading>
-              </CardBody>
-            </Card>
-            <Card className="card" bgColor={"gray.100"} size={"lg"}>
-              <CardBody>
-                <Heading as="h4" size="md">
-                  {t("How to Use this App")}
-                </Heading>
-              </CardBody>
-            </Card>
+            />
+            <CardItem text={t("Your Profile")} iconName={"user_male"} />
+            <CardItem
+              text={t("How to Use this App")}
+              iconName={"info_circle"}
+            />
           </SimpleGrid>
         </div>
       </ChakraProvider>

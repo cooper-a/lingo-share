@@ -1,0 +1,14 @@
+.card-display {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  /* width: 100%; */
+  margin-left: 20%;
+  margin-right: 20%;
+}
+
+.card-item {
+  width: 30%;
+  margin-bottom: 10px; /* (100-32*3)/2 */
+  margin-left: 20px;
+}
