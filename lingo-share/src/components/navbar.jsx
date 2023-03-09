@@ -12,15 +12,17 @@ import {
   Text,
   Tag,
 } from "@chakra-ui/react";
-import Icon from "@adeira/icons";
+import { ArrowBackIcon } from "@chakra-ui/icons";
 import React, { useEffect, useState } from "react";
-import "../styles/nav.css";
 import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../contexts/AuthContext";
 import "@fontsource/inter";
 import { useTranslation } from "react-i18next";
 import { ref, onValue, get, set } from "firebase/database";
 import { rtdb } from "../firebase";
+import LanguageToggle from "./lingoshare-components/languagetoggle";
+import AccountOptions from "./lingoshare-components/accountoptions";
+import "../styles/nav.css";
 
 export default function Navbar({ currPage }) {
   const { user, logout } = UserAuth();
@@ -28,6 +30,11 @@ export default function Navbar({ currPage }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { t, i18n } = useTranslation();
   const [isEnglish, setIsEnglish] = useState(true);
+  const pageTitles = {
+    "/callfriend": "Start a Call",
+    "/meetnewfriends": "Meet New Friends",
+    "/account": "My Profile",
+  };
 
   useEffect(() => {
     setIsEnglish(i18n.language === "en");
@@ -67,74 +74,40 @@ export default function Navbar({ currPage }) {
       <ChakraProvider>
         <div className="navbar">
           <div className="logo" onClick={() => handleClick("")}>
-            <div className="homepage-logo">
-              <span className="title">LingoShare</span>
-            </div>
+            {currPage === "/dashboard" ? (
+              <div className="homepage-logo">
+                <span className="title">LingoShare</span>
+              </div>
+            ) : (
+              <div className="homepage-logo">
+                {currPage in pageTitles && (
+                  <span className="nav-title">
+                    {" "}
+                    <ArrowBackIcon
+                      width={"25px"}
+                      height={"25px"}
+                      marginRight={"15px"}
+                    />
+                    {pageTitles[currPage]}
+                  </span>
+                )}
+              </div>
+            )}
           </div>
           <div className="top-right-settings">
             <div className="translate-btn">
-              <Tag
-                onClick={() => handleTranslate("en")}
-                size={"lg"}
-                variant="solid"
-                bgColor={isEnglish ? "black" : "white"}
-                color={isEnglish ? "white" : "black"}
-              >
-                English
-              </Tag>
-              <Tag
-                onClick={() => handleTranslate("zh")}
-                size={"lg"}
-                variant="solid"
-                bgColor={isEnglish ? "white" : "black"}
-                color={isEnglish ? "black" : "white"}
-              >
-                中文
-              </Tag>
+              <LanguageToggle
+                isEnglish={isEnglish}
+                handleTranslate={handleTranslate}
+              />
             </div>
             {isLoggedIn && (
               <div className="logout-btn">
-                <Menu>
-                  <MenuButton>
-                    <HStack className={"avatar"}>
-                      <Avatar size={"sm"} src={user.photoURL} bg="grey" />
-                      <VStack
-                        display={{ base: "none", md: "flex" }}
-                        alignItems="flex-start"
-                        spacing="1px"
-                        ml="2"
-                      >
-                        <Text fontSize="sm">{user.displayName}</Text>
-                        <Text fontSize="xs" color="gray.600">
-                          {user.email}
-                        </Text>
-                      </VStack>
-                      <Box display={{ base: "none", md: "flex" }}>
-                        <Icon
-                          name={"chevron_down"}
-                          width={"30px"}
-                          height={"30px"}
-                        />
-                      </Box>
-                    </HStack>
-                  </MenuButton>
-                  <MenuList>
-                    <MenuItem
-                      icon={<Icon className="menu-user-icon" name="settings" />}
-                      onClick={() => handleClick("account")}
-                    >
-                      {t("Account")}
-                    </MenuItem>
-                    <MenuDivider />
-                    <MenuItem
-                      paddingLeft={"13px"}
-                      icon={<Icon name="lock" width={"19px"} height={"19px"} />}
-                      onClick={() => handleLogout()}
-                    >
-                      {t("Logout")}
-                    </MenuItem>
-                  </MenuList>
-                </Menu>
+                <AccountOptions
+                  user={user}
+                  handleClick={handleClick}
+                  handleLogout={handleLogout}
+                />
               </div>
             )}
           </div>
