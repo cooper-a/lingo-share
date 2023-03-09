@@ -33,6 +33,7 @@ export default function CallFriend() {
   const [usersObj, setUsersObj] = useState([]);
   const [friendsObj, setFriendsObj] = useState([]);
   const [mergedObj, setMergedObj] = useState([]);
+  const [hasNoFriends, setHasNoFriends] = useState(true);
   const { user } = UserAuth();
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -50,13 +51,19 @@ export default function CallFriend() {
       });
       if (ref === statusRef) {
         setStatusObj(newObjectList);
-      } else if (ref === usersRef) {
+      }
+      if (ref === usersRef) {
         setUsersObj(newObjectList);
         // extract friends list from usersObj
         for (let userDict of newObjectList) {
           for (let [userID, userValue] of Object.entries(userDict)) {
             if (userID === user.uid) {
-              setFriendsObj(userValue.friends);
+              if (userValue.friends) {
+                setFriendsObj(userValue.friends);
+                setHasNoFriends(false);
+              } else {
+                setFriendsObj({});
+              }
             }
           }
         }
@@ -183,7 +190,14 @@ export default function CallFriend() {
     <div>
       <CallNotification />
       <Navbar currPage={"/callfriend"} />
-      <Text fontSize="3xl">{t("Who would you like to call?")}</Text>
+      {!hasNoFriends ? (
+        <Text fontSize="3xl">{t("Who would you like to call?")}</Text>
+      ) : (
+        <Text fontSize="3xl">
+          {t("It seems like you don't have any friends yet.")}
+        </Text>
+      )}
+
       <ChakraProvider>
         <div className="field-pg">
           <UnorderedList spacing={5}>

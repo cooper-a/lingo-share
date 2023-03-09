@@ -13,6 +13,7 @@ import { useTranslation } from "react-i18next";
 export default function ProfileCard({
   name,
   userId,
+  isFriend,
   handleClickViewProfile,
   handleClickManageFriend,
 }) {
@@ -25,7 +26,7 @@ export default function ProfileCard({
           <Flex justify={"center"} mt={7}>
             <Avatar
               size={"xl"}
-              src={"https://bit.ly/broken-link"}
+              src={"google.com"}
               alt={"user"}
               bg="#6B6C72"
               css={{
@@ -50,16 +51,29 @@ export default function ProfileCard({
             >
               {t("View Profile")}
             </Button>
-            <Button
-              w={"full"}
-              mt={3}
-              bg={"white"}
-              color={"black"}
-              rounded={"md"}
-              onClick={(e) => handleClickManageFriend(e, userId, true)}
-            >
-              {t("Add as Friend")}
-            </Button>
+            {!isFriend ? (
+              <Button
+                w={"full"}
+                mt={3}
+                bg={"white"}
+                color={"black"}
+                rounded={"md"}
+                onClick={(e) => handleClickManageFriend(e, userId, true)}
+              >
+                {t("Add as Friend")}
+              </Button>
+            ) : (
+              <Button
+                w={"full"}
+                mt={3}
+                bg={"white"}
+                color={"black"}
+                rounded={"md"}
+                onClick={(e) => handleClickManageFriend(e, userId, false)}
+              >
+                {t("Remove Friend")}
+              </Button>
+            )}
           </Box>
         </Box>
       </Center>
