@@ -97,7 +97,7 @@ export default function Navbar({ currPage }) {
                 <Menu>
                   <MenuButton>
                     <HStack className={"avatar"}>
-                      <Avatar size={"sm"} bg="grey" />
+                      <Avatar size={"sm"} src={user.photoURL} bg="grey" />
                       <VStack
                         display={{ base: "none", md: "flex" }}
                         alignItems="flex-start"

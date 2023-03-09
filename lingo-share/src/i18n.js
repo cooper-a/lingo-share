@@ -54,6 +54,7 @@ const resources = {
       Online: "Online",
       Offline: "Offline",
       Call: "Call",
+      Upload: "Upload",
     },
   },
   zh: {
@@ -105,6 +106,7 @@ const resources = {
       Online: "在线",
       Offline: "离线",
       Call: "呼叫",
+      Upload: "上传",
     },
   },
 };
