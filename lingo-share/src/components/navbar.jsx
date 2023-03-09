@@ -76,7 +76,8 @@ export default function Navbar({ currPage }) {
           <div className="logo" onClick={() => handleClick("")}>
             {currPage === "/dashboard" ||
             currPage === "/login" ||
-            currPage === " /signup" ? (
+            currPage === "/signup" ||
+            currPage === "/" ? (
               <div className="homepage-logo">
                 <span className="title">LingoShare</span>
               </div>

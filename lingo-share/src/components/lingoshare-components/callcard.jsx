@@ -18,6 +18,7 @@ export default function CallCard({
   onlineStatus,
   displayName,
   disableButton,
+  profileURL,
   handleClick,
   handleViewProfile,
 }) {
@@ -30,11 +31,11 @@ export default function CallCard({
           <Flex spacing="4">
             <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
               {onlineStatus === "online" ? (
-                <Avatar bg="grey">
+                <Avatar bg="grey" src={profileURL}>
                   <AvatarBadge boxSize="1.25em" bg="green.500" />
                 </Avatar>
               ) : (
-                <Avatar bg="grey" />
+                <Avatar bg="grey" src={profileURL} />
               )}
 
               <Box>
