@@ -56,7 +56,7 @@ const resources = {
       Call: "Call",
       "It seems like you don't have any friends yet.":
         "It seems like you don't have any friends yet.",
-      "Add a Friend": "Add a Friend",
+      "Add as Friend": "Add as Friend",
       "Remove Friend": "Remove Friend",
     },
   },
@@ -110,7 +110,7 @@ const resources = {
       Offline: "离线",
       Call: "呼叫",
       "It seems like you don't have any friends yet.": "你还没有朋友呢",
-      "Add a Friend": "添加朋友",
+      "Add as Friend": "添加朋友",
       "Remove Friend": "删除朋友",
     },
   },
