@@ -70,7 +70,7 @@ export default function Room({ roomName, room, handleLogout, callID }) {
           }
         }
       });
-    }, 2000);
+    }, 1000);
 
     // onValue(activePromptRef, (snapshot) => {
     //   const data = snapshot.val();
@@ -145,7 +145,13 @@ export default function Room({ roomName, room, handleLogout, callID }) {
   return (
     <ChakraProvider theme={customTheme}>
       <div className="room">
-        {togglePrompt && <PromptSidebar roomName={roomName} callID={callID} />}
+        {togglePrompt && (
+          <PromptSidebar
+            roomName={roomName}
+            callID={callID}
+            setActivePrompt={setActivePrompt}
+          />
+        )}
         <div className="local-participant">
           {room ? (
             <Participant
