@@ -55,6 +55,10 @@ const resources = {
       Offline: "Offline",
       Call: "Call",
       Upload: "Upload",
+      "It seems like you don't have any friends yet.":
+        "It seems like you don't have any friends yet.",
+      "Add as Friend": "Add as Friend",
+      "Remove Friend": "Remove Friend",
     },
   },
   zh: {
@@ -107,6 +111,9 @@ const resources = {
       Offline: "离线",
       Call: "呼叫",
       Upload: "上传",
+      "It seems like you don't have any friends yet.": "你还没有任何好友呢",
+      "Add as Friend": "添加朋友",
+      "Remove Friend": "删除朋友",
     },
   },
 };

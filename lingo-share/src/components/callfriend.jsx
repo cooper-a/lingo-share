@@ -1,17 +1,6 @@
 import React, { useState, useEffect } from "react";
-import {
-  Avatar,
-  AvatarBadge,
-  Box,
-  Card,
-  CardHeader,
-  ChakraProvider,
-  Flex,
-  Heading,
-  Text,
-} from "@chakra-ui/react";
+import { ChakraProvider, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { PhoneIcon } from "@chakra-ui/icons";
 import "../styles/homepage.css";
 import { UserAuth } from "../contexts/AuthContext";
 import {
@@ -24,8 +13,9 @@ import {
 } from "firebase/database";
 import { rtdb } from "../firebase";
 import Navbar from "./navbar";
-import { Button, UnorderedList } from "@chakra-ui/react";
-import CallNotification from "./callnotification";
+import { UnorderedList } from "@chakra-ui/react";
+import CallNotification from "./callNotification";
+import CallCard from "./lingoshare-components/callcard";
 import { useTranslation } from "react-i18next";
 
 export default function CallFriend() {
@@ -33,6 +23,7 @@ export default function CallFriend() {
   const [usersObj, setUsersObj] = useState([]);
   const [friendsObj, setFriendsObj] = useState([]);
   const [mergedObj, setMergedObj] = useState([]);
+  const [hasNoFriends, setHasNoFriends] = useState(true);
   const { user } = UserAuth();
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -50,13 +41,19 @@ export default function CallFriend() {
       });
       if (ref === statusRef) {
         setStatusObj(newObjectList);
-      } else if (ref === usersRef) {
+      }
+      if (ref === usersRef) {
         setUsersObj(newObjectList);
         // extract friends list from usersObj
         for (let userDict of newObjectList) {
           for (let [userID, userValue] of Object.entries(userDict)) {
             if (userID === user.uid) {
-              setFriendsObj(userValue.friends);
+              if (userValue.friends) {
+                setFriendsObj(userValue.friends);
+                setHasNoFriends(false);
+              } else {
+                setFriendsObj({});
+              }
             }
           }
         }
@@ -161,6 +158,10 @@ export default function CallFriend() {
     generateCallStatusEntryAndNavigate(callerID);
   };
 
+  const handleClickViewProfile = (targetID) => {
+    navigate(`/profile/${targetID}`);
+  };
+
   const disableButton = (key, state) => {
     if (state === "offline" || typeof state === "undefined") {
       return true;
@@ -183,57 +184,29 @@ export default function CallFriend() {
     <div>
       <CallNotification />
       <Navbar currPage={"/callfriend"} />
-      <Text fontSize="3xl">{t("Who would you like to call?")}</Text>
+      {!hasNoFriends ? (
+        <Text fontSize="3xl">{t("Who would you like to call?")}</Text>
+      ) : (
+        <Text fontSize="3xl">
+          {t("It seems like you don't have any friends yet.")}
+        </Text>
+      )}
+
       <ChakraProvider>
         <div className="field-pg">
           <UnorderedList spacing={5}>
-            {Object.entries(mergedObj).map(([key, value]) => {
+            {Object.entries(mergedObj).map(([key, value], i) => {
               return (
-                <Card maxW="md" key={key} width={"400px"}>
-                  <CardHeader>
-                    <Flex spacing="4">
-                      <Flex
-                        flex="1"
-                        gap="4"
-                        alignItems="center"
-                        flexWrap="wrap"
-                      >
-                        {value.state === "online" ? (
-                          <Avatar bg="grey">
-                            <AvatarBadge boxSize="1.25em" bg="green.500" />
-                          </Avatar>
-                        ) : (
-                          <Avatar bg="grey" />
-                        )}
-
-                        <Box>
-                          {value.userDisplayName ? (
-                            <Heading size="sm">{value.userDisplayName}</Heading>
-                          ) : (
-                            <Heading size="sm">{key}</Heading>
-                          )}
-                          {value.state === "online" ? (
-                            <Text float={"left"}>{t("Online")}</Text>
-                          ) : (
-                            <Text float={"left"}>{t("Offline")}</Text>
-                          )}
-                        </Box>
-                      </Flex>
-                      <Box alignSelf={"center"}>
-                        <Button
-                          onClick={(event) => handleClick(event, key)}
-                          isDisabled={disableButton(key, value.state)}
-                          direction="row"
-                          align="center"
-                          leftIcon={<PhoneIcon w={3} h={3} />}
-                          variant="outline"
-                        >
-                          {t("Call")}
-                        </Button>
-                      </Box>
-                    </Flex>
-                  </CardHeader>
-                </Card>
+                <div key={i}>
+                  <CallCard
+                    userId={key}
+                    onlineStatus={value.state}
+                    displayName={value.userDisplayName}
+                    disableButton={disableButton}
+                    handleClick={handleClick}
+                    handleViewProfile={handleClickViewProfile}
+                  />
+                </div>
               );
             })}
           </UnorderedList>

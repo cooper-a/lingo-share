@@ -110,9 +110,13 @@ export default function MeetNewFriends() {
             console.log(error);
           });
       } else {
-        set(friendRef, false).catch((error) => {
-          console.log(error);
-        });
+        set(friendRef, null)
+          .then(() => {
+            console.log("friend removed");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       }
       navigate("/meetnewfriends");
     }
@@ -129,7 +133,7 @@ export default function MeetNewFriends() {
 
   useEffect(() => {
     setMergedObj(mergeObj(statusObj, usersObj));
-  }, [statusObj, usersObj]);
+  }, [statusObj, usersObj, friendsObj]);
 
   return (
     <div>
@@ -145,6 +149,7 @@ export default function MeetNewFriends() {
                   <ProfileCard
                     name={value.userDisplayName}
                     userId={key}
+                    isFriend={value.isFriend}
                     handleClickViewProfile={handleClickViewProfile}
                     handleClickManageFriend={handleClickManageFriend}
                   />
