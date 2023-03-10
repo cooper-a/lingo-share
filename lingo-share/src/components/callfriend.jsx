@@ -105,6 +105,7 @@ export default function CallFriend() {
   };
 
   async function generateCallStatusEntryAndNavigate(callerID) {
+    console.log("generati");
     var startTime = performance.now();
     get(activeCallsRef)
       .then((snapshot) => {
@@ -155,6 +156,7 @@ export default function CallFriend() {
   }
 
   const handleClick = (event, callerID) => {
+    console.log("hi");
     event.currentTarget.disabled = true;
     generateCallStatusEntryAndNavigate(callerID);
   };
@@ -205,7 +207,7 @@ export default function CallFriend() {
                     displayName={value.userDisplayName}
                     profileURL={value.profilePic}
                     disableButton={disableButton}
-                    handleClick={handleClick}
+                    handleCallClick={handleClick}
                     handleViewProfile={handleClickViewProfile}
                   />
                 </div>

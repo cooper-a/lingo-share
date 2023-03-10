@@ -26,7 +26,6 @@ function App() {
       <AuthContextProvider>
         <Router>
           <div className="App">
-            {/* <h1>LingoShare</h1> */}
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />

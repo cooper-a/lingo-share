@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import {
   AvatarBadge,
   Button,
@@ -9,9 +9,50 @@ import {
   Box,
   Text,
   Flex,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalFooter,
 } from "@chakra-ui/react";
 import { PhoneIcon } from "@chakra-ui/icons";
 import { useTranslation } from "react-i18next";
+
+const ConfirmationModal = ({
+  isOpen,
+  displayName,
+  handleCallConfirm,
+  userId,
+  onClose,
+}) => {
+  return (
+    <div>
+      <Modal isCentered onClose={onClose} size={"xs"} isOpen={isOpen}>
+        <ModalOverlay backdropFilter="blur(10px) hue-rotate(90deg)" />
+        <ModalContent>
+          <ModalHeader alignSelf={"center"}>
+            {"Call " + displayName + "?"}
+          </ModalHeader>
+          <ModalCloseButton />
+          <ModalFooter alignSelf={"center"}>
+            <Button
+              variant={"outline"}
+              onClick={(event) => handleCallConfirm(event, userId)}
+              marginRight={"5px"}
+            >
+              Yes
+            </Button>
+            <Button variant={"outline"} onClick={onClose} marginleft={"5px"}>
+              No
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </div>
+  );
+};
 
 export default function CallCard({
   userId,
@@ -19,13 +60,25 @@ export default function CallCard({
   displayName,
   disableButton,
   profileURL,
-  handleClick,
+  handleCallClick,
   handleViewProfile,
 }) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const { t } = useTranslation();
+
+  const handleConfirmModuleOpen = () => {
+    onOpen();
+  };
 
   return (
     <div>
+      <ConfirmationModal
+        isOpen={isOpen}
+        onClose={onClose}
+        handleCallConfirm={handleCallClick}
+        displayName={displayName}
+        userId={userId}
+      />
       <Card bgColor={"#D9D9D9"} width={"700px"}>
         <CardHeader>
           <Flex spacing="4">
@@ -65,7 +118,7 @@ export default function CallCard({
                 {t("View Profile")}
               </Button>
               <Button
-                onClick={(event) => handleClick(event, userId)}
+                onClick={() => handleConfirmModuleOpen()}
                 isDisabled={disableButton(userId, onlineStatus)}
                 direction="row"
                 align="center"
