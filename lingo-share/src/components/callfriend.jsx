@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ChakraProvider, Text } from "@chakra-ui/react";
+import { Button, ChakraProvider, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import "../styles/homepage.css";
 import { UserAuth } from "../contexts/AuthContext";
@@ -190,9 +190,19 @@ export default function CallFriend() {
       {!hasNoFriends ? (
         <Text fontSize="3xl">{t("Who would you like to call?")}</Text>
       ) : (
-        <Text fontSize="3xl">
-          {t("It seems like you don't have any friends yet.")}
-        </Text>
+        <div className="welcome-pg">
+          <Text fontSize="3xl">
+            {t("You don’t have any LingoShare friends yet!")}
+          </Text>
+          <Button
+            marginTop={"1.5rem"}
+            size={"lg"}
+            variant={"outline"}
+            onClick={() => navigate("/meetnewfriends")}
+          >
+            Meet New Friends
+          </Button>
+        </div>
       )}
 
       <ChakraProvider>
