@@ -4,6 +4,7 @@ import { ref, onValue, get } from "firebase/database";
 import { rtdb } from "../firebase";
 import { Button } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export default function CallNotification() {
   const [callerID, setCallerID] = useState("");
@@ -11,6 +12,7 @@ export default function CallNotification() {
   const [isCallee, setisCallee] = useState(false);
   const [callerDisplayName, setCallerDisplayName] = useState("");
   const { user } = UserAuth();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const activeCallsRef = ref(rtdb, "/active_calls");
   const usersRef = ref(rtdb, "/users");
@@ -76,8 +78,8 @@ export default function CallNotification() {
     render = (
       <div>
         <h1>
-          {callerDisplayName === "" ? callerID : callerDisplayName} is calling
-          you
+          {callerDisplayName === "" ? callerID : callerDisplayName}
+          {t("is calling you")}
         </h1>
         <Button
           onClick={(event) => handleClick(event, callerID)}
@@ -85,7 +87,7 @@ export default function CallNotification() {
           align="center"
           variant="outline"
         >
-          Accept
+          {t("Accept")}
         </Button>
       </div>
     );

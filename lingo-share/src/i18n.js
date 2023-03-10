@@ -64,6 +64,8 @@ const resources = {
       "Add as Friend": "Add as Friend",
       "These people are also using LingoShare":
         "These people are also using LingoShare",
+      "is calling you": "is calling you",
+      Accept: "Accept",
     },
   },
   zh: {
@@ -122,6 +124,8 @@ const resources = {
       Profile: "个人资料",
       "View Profile": "查看用户首页",
       "These people are also using LingoShare": "这些用户也在使用LingoShare",
+      "is calling you": "正在呼叫你",
+      Accept: "接受",
     },
   },
 };
