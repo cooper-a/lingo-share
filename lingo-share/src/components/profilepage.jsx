@@ -5,9 +5,6 @@ import {
   FormLabel,
   Input,
   Badge,
-  Box,
-  Text,
-  Heading,
 } from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
 import { UserAuth } from "../contexts/AuthContext";

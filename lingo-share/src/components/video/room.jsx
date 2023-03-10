@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { ChakraProvider, extendTheme, useToast } from "@chakra-ui/react";
 import Participant from "./participant";
 import Controls from "./controls";
+import { useTranslation } from "react-i18next";
 import "../../styles/room.css";
 import { rtdb } from "../../firebase";
-import { ref, get } from "firebase/database";
+import { ref, get, onValue } from "firebase/database";
 import PromptSidebar from "./promptSidebar";
 import Icon from "@adeira/icons";
 
@@ -19,6 +20,7 @@ export default function Room({ roomName, room, handleLogout, callID }) {
     rtdb,
     `/calls/${roomName}/${callID}/active_prompt`
   );
+  const { t } = useTranslation();
 
   const customTheme = extendTheme({
     components: {
@@ -132,7 +134,7 @@ export default function Room({ roomName, room, handleLogout, callID }) {
     if (activePrompt === "") return;
     toast.closeAll();
     toast({
-      title: `${activePrompt}`,
+      title: `${t(activePrompt)}`,
       variant: "toast",
       isClosable: true,
       containerStyle: {

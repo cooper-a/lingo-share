@@ -1,17 +1,4 @@
-import {
-  Avatar,
-  Box,
-  ChakraProvider,
-  Menu,
-  MenuButton,
-  MenuDivider,
-  MenuItem,
-  MenuList,
-  HStack,
-  VStack,
-  Text,
-  Tag,
-} from "@chakra-ui/react";
+import { ChakraProvider } from "@chakra-ui/react";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
