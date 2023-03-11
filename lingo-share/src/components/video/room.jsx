@@ -3,9 +3,10 @@ import { ChakraProvider, extendTheme, useToast } from "@chakra-ui/react";
 import Participant from "./participant";
 import Controls from "./controls";
 import { useTranslation } from "react-i18next";
+import { UserAuth } from "../../contexts/AuthContext";
 import "../../styles/room.css";
 import { rtdb } from "../../firebase";
-import { ref, get, onValue } from "firebase/database";
+import { ref, get, set, onValue } from "firebase/database";
 import PromptSidebar from "./promptSidebar";
 import Icon from "@adeira/icons";
 
@@ -20,8 +21,10 @@ export default function Room({ roomName, room, handleLogout, callID }) {
     rtdb,
     `/calls/${roomName}/${callID}/active_prompt`
   );
-  const { t } = useTranslation();
-
+  const [preferredLanguage, setPreferredLanguage] = useState("en");
+  const { user } = UserAuth();
+  const targetUserRef = ref(rtdb, "users/" + user.uid);
+  const { t, i18n } = useTranslation();
   const customTheme = extendTheme({
     components: {
       Alert: {
@@ -38,6 +41,19 @@ export default function Room({ roomName, room, handleLogout, callID }) {
       },
     },
   });
+
+  const handleTranslate = (lang) => {
+    console.log("translate");
+    i18n.changeLanguage(lang);
+    setPreferredLanguage(lang);
+  };
+
+  useEffect(() => {
+    onValue(targetUserRef, (snapshot) => {
+      let snapshotVal = snapshot.val();
+      setPreferredLanguage(snapshotVal.language);
+    });
+  }, []);
 
   useEffect(() => {
     // Here we define what happens when a remote participant joins
@@ -88,6 +104,8 @@ export default function Room({ roomName, room, handleLogout, callID }) {
   }, [room]);
 
   const handleCallDisconnect = () => {
+    const languageRef = ref(rtdb, `users/${user.uid}/language`);
+    set(languageRef, preferredLanguage); // set the user's language in DB after leaving call
     room.disconnect();
     handleLogout();
   };
@@ -167,6 +185,9 @@ export default function Room({ roomName, room, handleLogout, callID }) {
             handleAudioToggle={handleAudioToggle}
             handleVideoToggle={handleVideoToggle}
             handlePromptToggle={handlePromptToggle}
+            handleTranslate={handleTranslate}
+            preferredLanguage={preferredLanguage}
+            translator={t}
             isPromptToggled={togglePrompt}
             audio={toggleAudio}
             video={toggleVideo}

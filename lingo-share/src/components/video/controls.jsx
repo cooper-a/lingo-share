@@ -1,10 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { ref, onValue, set } from "firebase/database";
-import { rtdb } from "../../firebase";
-import { UserAuth } from "../../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
+import React from "react";
 import { Button, ButtonGroup, Text, Tooltip } from "@chakra-ui/react";
-import { useTranslation } from "react-i18next";
 import Icon from "@adeira/icons";
 import "../../styles/controls.css";
 
@@ -22,49 +17,32 @@ export default function Controls({
   handleAudioToggle,
   handleVideoToggle,
   handlePromptToggle,
+  handleTranslate,
+  preferredLanguage,
+  translator,
   isPromptToggled,
   audio,
   video,
 }) {
-  const [preferredLanguage, setPreferredLanguage] = useState("English");
-  const { user } = UserAuth();
-  const navigate = useNavigate();
-  const targetUserRef = ref(rtdb, "users/" + user.uid);
-  const { t, i18n } = useTranslation();
-
-  const handleTranslate = (lang) => {
-    console.log("translate");
-    i18n.changeLanguage(lang);
-    if (user === null || Object.keys(user).length === 0) return;
-    const languageRef = ref(rtdb, `users/${user.uid}/language`);
-    set(languageRef, lang);
-    navigate("/callroom");
-  };
-
-  useEffect(() => {
-    onValue(targetUserRef, (snapshot) => {
-      let snapshotVal = snapshot.val();
-      setPreferredLanguage(snapshotVal.language);
-    });
-  }, []);
-
   return (
     <div className="control-btns">
       <div className="topic-btn">
         <ControlButton
           onClick={handlePromptToggle}
-          text={t("Choose a Topic")}
+          text={translator("Choose a Topic")}
           iconName={"thread"}
         />
       </div>
       <ButtonGroup className="track-btns">
         <ControlButton
-          text={video ? t("Turn off Camera") : t("Turn on Camera")}
+          text={
+            video ? translator("Turn off Camera") : translator("Turn on Camera")
+          }
           iconName={video ? "camera_alt" : "camera_noflash_alt"}
           onClick={handleVideoToggle}
         />
         <ControlButton
-          text={audio ? t("Turn off Mic") : t("Turn on Mic")}
+          text={audio ? translator("Turn off Mic") : translator("Turn on Mic")}
           iconName={audio ? "microphone" : "microphone_disabled"}
           onClick={handleAudioToggle}
         />
@@ -87,7 +65,7 @@ export default function Controls({
       <div className="leave-btn">
         <Button onClick={handleCallDisconnect}>
           <Text fontSize={"1rem"} fontFamily={"Inter"}>
-            {t("Leave Call")}
+            {translator("Leave Call")}
           </Text>
         </Button>
       </div>
