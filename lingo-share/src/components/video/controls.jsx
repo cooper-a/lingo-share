@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ref, onValue, set } from "firebase/database";
 import { rtdb } from "../../firebase";
 import { UserAuth } from "../../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 import { Button, ButtonGroup, Text, Tooltip } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import Icon from "@adeira/icons";
@@ -27,6 +28,7 @@ export default function Controls({
 }) {
   const [preferredLanguage, setPreferredLanguage] = useState("English");
   const { user } = UserAuth();
+  const navigate = useNavigate();
   const targetUserRef = ref(rtdb, "users/" + user.uid);
   const { t, i18n } = useTranslation();
 
@@ -36,8 +38,7 @@ export default function Controls({
     if (user === null || Object.keys(user).length === 0) return;
     const languageRef = ref(rtdb, `users/${user.uid}/language`);
     set(languageRef, lang);
-    // console.log(currPage);
-    // navigate(currPage);
+    navigate("/callroom");
   };
 
   useEffect(() => {
