@@ -9,6 +9,7 @@ import Navbar from "./navbar";
 import CallNotification from "./callnotification";
 import ProfileCard from "./lingoshare-components/profilecard";
 import "../styles/meetfriends.css";
+import { mergeObj } from "../utils/userutils";
 
 export default function MeetNewFriends() {
   const usersRef = ref(rtdb, "/users");
@@ -50,53 +51,6 @@ export default function MeetNewFriends() {
     });
   };
 
-  const mergeObj = (statusList, userList) => {
-    let res = [];
-    let friendsDict = {};
-
-    for (let [friendID, friendValue] of Object.entries(friendsObj)) {
-      friendsDict[friendID] = friendValue;
-    }
-
-    // loop through each dictionary in userList
-    for (let userDict of userList) {
-      // loop through each key-value pair in the current dictionary
-      for (let [userID, userValue] of Object.entries(userDict)) {
-        // check if the current userID is in the statusList
-        if (
-          statusList.some((statusDict) => statusDict.hasOwnProperty(userID))
-        ) {
-          // if it is, find the corresponding status dictionary in the statusList
-          let statusDict = statusList.find((statusDict) =>
-            statusDict.hasOwnProperty(userID)
-          );
-
-          // merge the two dictionaries into a new object
-          let mergedDict = { ...userValue, ...statusDict[userID] };
-
-          // add the merged dictionary to the result object with the userID as the key
-          if (friendsDict.hasOwnProperty(userID)) {
-            mergedDict = { ...mergedDict, isFriend: true };
-          } else {
-            mergedDict = { ...mergedDict, isFriend: false };
-          }
-          res[userID] = mergedDict;
-        } else {
-          if (friendsDict.hasOwnProperty(userID)) {
-            userValue = { ...userValue, isFriend: true };
-          } else {
-            userValue = { ...userValue, isFriend: false };
-          }
-          // if the userID isn't in the statusList, just add the userValue to the result object with the userID as the key
-          res[userID] = userValue;
-        }
-      }
-    }
-    delete res[user.uid];
-
-    return res;
-  };
-
   const handleClickManageFriend = async (e, targetID, add) => {
     e.preventDefault();
     if (targetID !== user.uid && targetID !== undefined) {
@@ -132,7 +86,7 @@ export default function MeetNewFriends() {
   }, [user.uid]);
 
   useEffect(() => {
-    setMergedObj(mergeObj(statusObj, usersObj));
+    setMergedObj(mergeObj(statusObj, usersObj, friendsObj, user.uid, false));
   }, [statusObj, usersObj, friendsObj]);
 
   return (
