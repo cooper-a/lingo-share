@@ -10,7 +10,7 @@ import UserSelect from "./components/onboarding/userSelect";
 import WelcomePage from "./components/onboarding/welcomePage";
 import NotFound from "./components/notfound";
 import PromptSidebar from "./components/video/promptSidebar";
-import React, { useEffect } from "react";
+import React from "react";
 import { AuthContextProvider } from "./contexts/AuthContext";
 import { BrowserRouter as Router } from "react-router-dom";
 import { ChakraProvider } from "@chakra-ui/react";
@@ -19,6 +19,7 @@ import Dashboard from "./components/dashboard/dashboard";
 import LanguageProficiency from "./components/onboarding/languageProficiency";
 import MeetNewFriends from "./components/meetnewfriends";
 import ProfilePage from "./components/profilepage";
+import LandingPage from "./components/app-intro/landingpage";
 
 function App() {
   return (
@@ -27,7 +28,8 @@ function App() {
         <Router>
           <div className="App">
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/home" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/prompt" element={<PromptSidebar />} />

@@ -22,6 +22,13 @@ export default function Navbar({ currPage }) {
     "/meetnewfriends": t("Meet New Friends"),
     "/account": t("Profile"),
   };
+  const showLogoPages = new Set([
+    "/dashboard",
+    "/login",
+    "/signup",
+    "/",
+    "/home",
+  ]);
 
   useEffect(() => {
     setIsEnglish(i18n.language === "en");
@@ -61,10 +68,7 @@ export default function Navbar({ currPage }) {
       <ChakraProvider>
         <div className="navbar">
           <div className="logo" onClick={() => handleClick("")}>
-            {currPage === "/dashboard" ||
-            currPage === "/login" ||
-            currPage === "/signup" ||
-            currPage === "/" ? (
+            {showLogoPages.has(currPage) ? (
               <div className="homepage-logo">
                 <span className="title">LingoShare</span>
               </div>
