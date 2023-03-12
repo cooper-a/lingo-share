@@ -17,6 +17,8 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { Routes, Route } from "react-router-dom";
 import Dashboard from "./components/dashboard/dashboard";
 import LanguageProficiency from "./components/onboarding/languageProficiency";
+import MeetNewFriends from "./components/meetnewfriends";
+import ProfilePage from "./components/profilepage";
 
 function App() {
   return (
@@ -24,7 +26,6 @@ function App() {
       <AuthContextProvider>
         <Router>
           <div className="App">
-            {/* <h1>LingoShare</h1> */}
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
@@ -83,6 +84,22 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <VideoChat />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/meetnewfriends"
+                element={
+                  <ProtectedRoute>
+                    <MeetNewFriends />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/profile/:id"
+                element={
+                  <ProtectedRoute>
+                    <ProfilePage />
                   </ProtectedRoute>
                 }
               />

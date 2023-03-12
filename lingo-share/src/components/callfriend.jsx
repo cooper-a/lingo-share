@@ -1,17 +1,6 @@
 import React, { useState, useEffect } from "react";
-import {
-  Avatar,
-  AvatarBadge,
-  Box,
-  Card,
-  CardHeader,
-  ChakraProvider,
-  Flex,
-  Heading,
-  Text,
-} from "@chakra-ui/react";
+import { Button, ChakraProvider, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { PhoneIcon } from "@chakra-ui/icons";
 import "../styles/homepage.css";
 import { UserAuth } from "../contexts/AuthContext";
 import {
@@ -24,23 +13,23 @@ import {
 } from "firebase/database";
 import { rtdb } from "../firebase";
 import Navbar from "./navbar";
-import { Button, UnorderedList } from "@chakra-ui/react";
-import CallNotification from "./callNotification";
+import { UnorderedList } from "@chakra-ui/react";
+import CallNotification from "./callnotification";
+import CallCard from "./lingoshare-components/callcard";
 import { useTranslation } from "react-i18next";
 
 export default function CallFriend() {
   const [statusObj, setStatusObj] = useState([]);
   const [usersObj, setUsersObj] = useState([]);
+  const [friendsObj, setFriendsObj] = useState([]);
   const [mergedObj, setMergedObj] = useState([]);
-  const statusRef = ref(rtdb, "/status");
-  const usersRef = ref(rtdb, "/users");
-  const activeCallsRef = ref(rtdb, "/active_calls");
+  const [hasNoFriends, setHasNoFriends] = useState(true);
   const { user } = UserAuth();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  // console.log(statusObj);
-  // console.log(usersObj);
-  // console.log(mergedObj);
+  const statusRef = ref(rtdb, "/status");
+  const usersRef = ref(rtdb, "/users");
+  const activeCallsRef = ref(rtdb, "/active_calls");
 
   const getQuery = (ref) => {
     onValue(ref, (snapshot) => {
@@ -52,8 +41,23 @@ export default function CallFriend() {
       });
       if (ref === statusRef) {
         setStatusObj(newObjectList);
-      } else if (ref === usersRef) {
+      }
+      if (ref === usersRef) {
         setUsersObj(newObjectList);
+        // extract friends list from usersObj
+        for (let userDict of newObjectList) {
+          for (let [userID, userValue] of Object.entries(userDict)) {
+            if (userID === user.uid) {
+              if (userValue.friends) {
+                setFriendsObj(userValue.friends);
+                setHasNoFriends(false);
+              } else {
+                setFriendsObj({});
+                setHasNoFriends(true);
+              }
+            }
+          }
+        }
       }
     });
   };
@@ -85,35 +89,14 @@ export default function CallFriend() {
       }
     }
 
-    // brute force for the other way around if userID is found in statusList but not in userList
-    for (let statusDict of statusList) {
-      for (let [userID, statusValue] of Object.entries(statusDict)) {
-        if (userList.some((userDict) => userDict.hasOwnProperty(userID))) {
-          let userDict = userList.find((userDict) =>
-            userDict.hasOwnProperty(userID)
-          );
-          let mergedDict = { ...statusValue, ...userDict[userID] };
-          res[userID] = mergedDict;
-        } else {
-          res[userID] = statusValue;
-        }
-      }
+    // remove all users that are not friends
+    let res_filtered = [];
+    for (let [friendID, friendValue] of Object.entries(friendsObj)) {
+      res_filtered[friendID] = res[friendID];
     }
-    // TODO QOL improvement: sort the res object based on if the user is online or offline
-    // sort the res object based on if the user is online or offline
-    // res.sort((a, b) => {
-    //   if (a.state === "online" && b.state === "offline") {
-    //     return -1;
-    //   } else if (a.state === "offline" && b.state === "online") {
-    //     return 1;
-    //   } else {
-    //     return 0;
-    //   }
-    // });
-    //
-    // console.log(res);
 
-    return res;
+    delete res_filtered[user.uid];
+    return res_filtered;
   };
 
   const generateRoomName = (uid, callerID) => {
@@ -122,6 +105,7 @@ export default function CallFriend() {
   };
 
   async function generateCallStatusEntryAndNavigate(callerID) {
+    console.log("generati");
     var startTime = performance.now();
     get(activeCallsRef)
       .then((snapshot) => {
@@ -172,8 +156,13 @@ export default function CallFriend() {
   }
 
   const handleClick = (event, callerID) => {
+    console.log("hi");
     event.currentTarget.disabled = true;
     generateCallStatusEntryAndNavigate(callerID);
+  };
+
+  const handleClickViewProfile = (targetID) => {
+    navigate(`/profile/${targetID}`);
   };
 
   const disableButton = (key, state) => {
@@ -188,7 +177,7 @@ export default function CallFriend() {
   useEffect(() => {
     getQuery(statusRef);
     getQuery(usersRef);
-  }, []);
+  }, [user.uid]);
 
   useEffect(() => {
     setMergedObj(mergeObj(statusObj, usersObj));
@@ -197,58 +186,41 @@ export default function CallFriend() {
   return (
     <div>
       <CallNotification />
-      <Navbar />
-      <Text fontSize="3xl">{t("Who would you like to call?")}</Text>
+      <Navbar currPage={"/callfriend"} />
+      {!hasNoFriends ? (
+        <Text fontSize="3xl">{t("Who would you like to call?")}</Text>
+      ) : (
+        <div className="welcome-pg">
+          <Text fontSize="3xl">
+            {t("You don’t have any LingoShare friends yet!")}
+          </Text>
+          <Button
+            marginTop={"1.5rem"}
+            size={"lg"}
+            variant={"outline"}
+            onClick={() => navigate("/meetnewfriends")}
+          >
+            Meet New Friends
+          </Button>
+        </div>
+      )}
+
       <ChakraProvider>
         <div className="field-pg">
           <UnorderedList spacing={5}>
-            {Object.entries(mergedObj).map(([key, value]) => {
+            {Object.entries(mergedObj).map(([key, value], i) => {
               return (
-                <Card maxW="md" key={key} width={"400px"}>
-                  <CardHeader>
-                    <Flex spacing="4">
-                      <Flex
-                        flex="1"
-                        gap="4"
-                        alignItems="center"
-                        flexWrap="wrap"
-                      >
-                        {value.state === "online" ? (
-                          <Avatar bg="grey">
-                            <AvatarBadge boxSize="1.25em" bg="green.500" />
-                          </Avatar>
-                        ) : (
-                          <Avatar bg="grey" />
-                        )}
-
-                        <Box>
-                          {value.userDisplayName ? (
-                            <Heading size="sm">{value.userDisplayName}</Heading>
-                          ) : (
-                            <Heading size="sm">{key}</Heading>
-                          )}
-                          {value.state === "online" ? (
-                            <Text float={"left"}>{t("Online")}</Text>
-                          ) : (
-                            <Text float={"left"}>{t("Offline")}</Text>
-                          )}
-                        </Box>
-                      </Flex>
-                      <Box alignSelf={"center"}>
-                        <Button
-                          onClick={(event) => handleClick(event, key)}
-                          isDisabled={disableButton(key, value.state)}
-                          direction="row"
-                          align="center"
-                          leftIcon={<PhoneIcon w={3} h={3} />}
-                          variant="outline"
-                        >
-                          {t("Call")}
-                        </Button>
-                      </Box>
-                    </Flex>
-                  </CardHeader>
-                </Card>
+                <div key={i}>
+                  <CallCard
+                    userId={key}
+                    onlineStatus={value.state}
+                    displayName={value.userDisplayName}
+                    profileURL={value.profilePic}
+                    disableButton={disableButton}
+                    handleCallClick={handleClick}
+                    handleViewProfile={handleClickViewProfile}
+                  />
+                </div>
               );
             })}
           </UnorderedList>

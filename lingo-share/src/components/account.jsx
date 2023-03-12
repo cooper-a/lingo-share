@@ -22,7 +22,7 @@ export default function Account() {
 
   return (
     <div>
-      <Navbar />
+      <Navbar currPage={"/account"} />
       <h1>{t("Account")}</h1>
       <h2>
         {t("User Email")}: {user && user.email}

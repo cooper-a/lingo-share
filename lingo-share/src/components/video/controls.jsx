@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Button, ButtonGroup, Text, Tooltip } from "@chakra-ui/react";
 import Icon from "@adeira/icons";
 import "../../styles/controls.css";
@@ -17,6 +17,9 @@ export default function Controls({
   handleAudioToggle,
   handleVideoToggle,
   handlePromptToggle,
+  handleTranslate,
+  preferredLanguage,
+  translator,
   isPromptToggled,
   audio,
   video,
@@ -24,54 +27,45 @@ export default function Controls({
   return (
     <div className="control-btns">
       <div className="topic-btn">
-        {!isPromptToggled ? (
-          <ControlButton
-            onClick={handlePromptToggle}
-            text={"Choose a Topic"}
-            iconName={"thread"}
-          />
-        ) : (
-          <ControlButton
-            onClick={handlePromptToggle}
-            text={"Choose a Topic"}
-            iconName={"thread"}
-          />
-        )}
+        <ControlButton
+          onClick={handlePromptToggle}
+          text={translator("Choose a Topic")}
+          iconName={"thread"}
+        />
       </div>
       <ButtonGroup className="track-btns">
-        {video ? (
-          <div>
-            <ControlButton
-              text={"Turn off Camera"}
-              iconName={"camera_alt"}
-              onClick={handleVideoToggle}
-            />
-          </div>
-        ) : (
-          <ControlButton
-            text={"Turn on Camera"}
-            iconName={"camera_noflash_alt"}
-            onClick={handleVideoToggle}
-          />
-        )}
-        {audio ? (
-          <ControlButton
-            text={"Turn off Mic"}
-            iconName={"microphone"}
-            onClick={handleAudioToggle}
-          />
-        ) : (
-          <ControlButton
-            text={"Turn on Mic"}
-            iconName={"microphone_disabled"}
-            onClick={handleAudioToggle}
-          />
-        )}
+        <ControlButton
+          text={
+            video ? translator("Turn off Camera") : translator("Turn on Camera")
+          }
+          iconName={video ? "camera_alt" : "camera_noflash_alt"}
+          onClick={handleVideoToggle}
+        />
+        <ControlButton
+          text={audio ? translator("Turn off Mic") : translator("Turn on Mic")}
+          iconName={audio ? "microphone" : "microphone_disabled"}
+          onClick={handleAudioToggle}
+        />
+      </ButtonGroup>
+
+      <ButtonGroup className="options-btns">
+        <ControlButton
+          text={preferredLanguage === "en" ? "English" : "中文"}
+          iconName={"translate"}
+          onClick={() =>
+            handleTranslate(preferredLanguage === "en" ? "zh" : "en")
+          }
+        />
+        <ControlButton
+          text={"Text Size"}
+          iconName={"zoom_in"}
+          // onClick={} // TODO: make this functional
+        />
       </ButtonGroup>
       <div className="leave-btn">
         <Button onClick={handleCallDisconnect}>
           <Text fontSize={"1rem"} fontFamily={"Inter"}>
-            Leave Call
+            {translator("Leave Call")}
           </Text>
         </Button>
       </div>

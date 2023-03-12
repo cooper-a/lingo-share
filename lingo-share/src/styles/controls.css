@@ -36,6 +36,10 @@
 .track-btns {
 }
 
+.options-btns {
+  margin-left: 100px;
+}
+
 .leave-btn {
   margin-left: auto;
   padding-right: 10px;

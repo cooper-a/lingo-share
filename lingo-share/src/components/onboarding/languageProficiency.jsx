@@ -42,7 +42,7 @@ export default function LanguageProficiency() {
 
   return (
     <div>
-      <Navbar />
+      <Navbar currPage={"/languageproficiency"} />
       <ChakraProvider>
         <div className="onboard-grid">
           <div className="grid-item">

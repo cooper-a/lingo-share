@@ -45,7 +45,7 @@ export default function Home() {
     <div>
       {showLogin ? (
         <div>
-          <Navbar />
+          <Navbar currPage={"/"} />
           <ChakraProvider>
             <div className="welcome-pg">
               <Text fontSize="5xl">{t("Welcome to LingoShare!")}</Text>

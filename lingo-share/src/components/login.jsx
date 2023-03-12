@@ -50,7 +50,7 @@ export default function Login() {
   return (
     <div>
       <ChakraProvider>
-        <Navbar />
+        <Navbar currPage={"/login"} />
         <div className="field-pg">
           <Text fontSize="5xl">{t("Login")}</Text>
           <Input
