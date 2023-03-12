@@ -17,6 +17,7 @@ import { UnorderedList } from "@chakra-ui/react";
 import CallNotification from "./callnotification";
 import CallCard from "./lingoshare-components/callcard";
 import { useTranslation } from "react-i18next";
+import { mergeObj } from "../utils/userutils";
 
 export default function CallFriend() {
   const [statusObj, setStatusObj] = useState([]);
@@ -62,50 +63,12 @@ export default function CallFriend() {
     });
   };
 
-  const mergeObj = (statusList, userList) => {
-    let res = [];
-    // loop through each dictionary in userList
-    for (let userDict of userList) {
-      // loop through each key-value pair in the current dictionary
-      for (let [userID, userValue] of Object.entries(userDict)) {
-        // check if the current userID is in the statusList
-        if (
-          statusList.some((statusDict) => statusDict.hasOwnProperty(userID))
-        ) {
-          // if it is, find the corresponding status dictionary in the statusList
-          let statusDict = statusList.find((statusDict) =>
-            statusDict.hasOwnProperty(userID)
-          );
-
-          // merge the two dictionaries into a new object
-          let mergedDict = { ...userValue, ...statusDict[userID] };
-
-          // add the merged dictionary to the result object with the userID as the key
-          res[userID] = mergedDict;
-        } else {
-          // if the userID isn't in the statusList, just add the userValue to the result object with the userID as the key
-          res[userID] = userValue;
-        }
-      }
-    }
-
-    // remove all users that are not friends
-    let res_filtered = [];
-    for (let [friendID, friendValue] of Object.entries(friendsObj)) {
-      res_filtered[friendID] = res[friendID];
-    }
-
-    delete res_filtered[user.uid];
-    return res_filtered;
-  };
-
   const generateRoomName = (uid, callerID) => {
     let roomNameInList = [uid, callerID];
     return roomNameInList.sort().join(""); // room name will be the concatenation of the two user IDs sorted alphabetically
   };
 
   async function generateCallStatusEntryAndNavigate(callerID) {
-    console.log("generati");
     var startTime = performance.now();
     get(activeCallsRef)
       .then((snapshot) => {
@@ -180,7 +143,7 @@ export default function CallFriend() {
   }, [user.uid]);
 
   useEffect(() => {
-    setMergedObj(mergeObj(statusObj, usersObj));
+    setMergedObj(mergeObj(statusObj, usersObj, friendsObj, user.uid, true));
   }, [statusObj, usersObj]);
 
   return (
