@@ -3,15 +3,16 @@ import { UserAuth } from "../contexts/AuthContext";
 import { ref, onValue, get, set } from "firebase/database";
 import { rtdb } from "../firebase";
 import { useNavigate } from "react-router-dom";
-import { ChakraProvider, Text } from "@chakra-ui/react";
+import { Button, ChakraProvider, Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import Navbar from "./navbar";
 import CallNotification from "./callnotification";
 import ProfileCard from "./lingoshare-components/profilecard";
 import "../styles/meetfriends.css";
 import { mergeObj } from "../utils/userutils";
+import Input from "./lingoshare-components/input";
 
-export default function MeetNewFriends() {
+export default function YourFriends() {
   const usersRef = ref(rtdb, "/users");
   const statusRef = ref(rtdb, "/status");
   const { user } = UserAuth();
@@ -21,6 +22,8 @@ export default function MeetNewFriends() {
   const [friendsObj, setFriendsObj] = useState([]);
   const [mergedObj, setMergedObj] = useState([]);
   const [blockedObj, setBlockedObj] = useState([]);
+  const [blockedReason, setBlockedReason] = useState("");
+  const [reportUser, setReportUser] = useState("");
   const { t } = useTranslation();
 
   const getQuery = (ref) => {
@@ -57,33 +60,48 @@ export default function MeetNewFriends() {
     });
   };
 
-  const handleClickManageFriend = async (e, targetID, add) => {
+  const handleClickBlockFriend = async (e, targetID) => {
     e.preventDefault();
     if (targetID !== user.uid && targetID !== undefined) {
+      let blockRef = ref(rtdb, `/users/${user.uid}/blocked/${targetID}`);
       let friendRef = ref(rtdb, `/users/${user.uid}/friends/${targetID}`);
-      if (add) {
-        set(friendRef, true)
-          .then(() => {
-            console.log("friend added");
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      } else {
-        set(friendRef, null)
-          .then(() => {
-            console.log("friend removed");
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+      if (blockedReason === "") {
+        setBlockedReason("No reason given");
       }
-      navigate("/meetnewfriends");
+      set(blockRef, blockedReason)
+        .then(() => {
+          console.log("user blocked");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      set(friendRef, null)
+        .then(() => {
+          console.log("user removed from friends list");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      navigate("/yourfriends");
     }
   };
 
-  const handleClickViewProfile = (targetID) => {
-    navigate(`/profile/${targetID}`);
+  const handleClickReportUser = async (e, targetID) => {
+    e.preventDefault();
+    if (targetID !== user.uid && targetID !== undefined) {
+      let reportRef = ref(rtdb, `/reports/${user.uid}/${targetID}`);
+      if (reportUser === "") {
+        setReportUser("No reason given");
+      }
+      set(reportRef, reportUser)
+        .then(() => {
+          console.log("user reported");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      navigate("/yourfriends");
+    }
   };
 
   useEffect(() => {
@@ -93,29 +111,41 @@ export default function MeetNewFriends() {
 
   useEffect(() => {
     setMergedObj(
-      mergeObj(statusObj, usersObj, friendsObj, blockedObj, user.uid, false)
+      mergeObj(statusObj, usersObj, friendsObj, blockedObj, user.uid, true)
     );
   }, [statusObj, usersObj, friendsObj]);
 
   return (
     <div>
       <CallNotification />
-      <Navbar currPage={"/meetnewfriends"} />
-      <Text fontSize="3xl">{t("These people are also using LingoShare")}</Text>
+      <Navbar currPage={"/yourfriends"} />
+      <Text fontSize="3xl">{t("Manage your friends")}</Text>
       <ChakraProvider>
         <div className="field-pg">
           <div className="card-display">
             {Object.entries(mergedObj).map(([key, value], i) => {
               return (
                 <div key={i} className="card-item">
-                  <ProfileCard
-                    name={value.userDisplayName}
-                    userId={key}
-                    isFriend={value.isFriend}
-                    profileURL={value.profilePic}
-                    handleClickViewProfile={handleClickViewProfile}
-                    handleClickManageFriend={handleClickManageFriend}
+                  <h1> {value.userDisplayName} </h1>
+                  <Input
+                    onChange={(e) => setBlockedReason(e.target.value)}
+                    width={"350px"}
+                    placeholder={t("Block Reason")}
+                    height={"50px"}
                   />
+                  <Button onClick={(e) => handleClickBlockFriend(e, key)}>
+                    {t("Block User")}
+                  </Button>
+
+                  <Input
+                    onChange={(e) => setReportUser(e.target.value)}
+                    width={"350px"}
+                    placeholder={t("Report Reason")}
+                    height={"50px"}
+                  />
+                  <Button onClick={(e) => handleClickReportUser(e, key)}>
+                    {t("Report User")}
+                  </Button>
                 </div>
               );
             })}

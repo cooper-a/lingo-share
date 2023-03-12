@@ -1,4 +1,12 @@
-const mergeObj = (statusObj, userObj, friendsObj, uid, friendsOnly) => {
+const mergeObj = (
+  statusObj,
+  userObj,
+  friendsObj,
+  blockedObj,
+  uid,
+  friendsOnly,
+  includeBlocked
+) => {
   let res = [];
   let friendsDict = {};
 
@@ -42,6 +50,13 @@ const mergeObj = (statusObj, userObj, friendsObj, uid, friendsOnly) => {
   }
 
   delete res[uid];
+
+  // always filter out the blocked users
+  if (includeBlocked !== true) {
+    for (let [blockedID, blockedValue] of Object.entries(blockedObj)) {
+      delete res[blockedID];
+    }
+  }
 
   // if for the friends page, filter out the users that are not friends
   if (friendsOnly === true) {

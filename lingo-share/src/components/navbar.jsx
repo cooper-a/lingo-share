@@ -21,6 +21,7 @@ export default function Navbar({ currPage }) {
     "/callfriend": t("Call a Friend"),
     "/meetnewfriends": t("Meet New Friends"),
     "/account": t("Profile"),
+    "/yourfriends": t("Your Friends"),
   };
 
   useEffect(() => {
