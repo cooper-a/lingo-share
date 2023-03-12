@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { UserAuth } from "../../contexts/AuthContext";
 import { rtdb } from "../../firebase";
-import { ref, get, set, onValue, child, push } from "firebase/database";
+import { ref, get, set, push } from "firebase/database";
 import Sidebar from "./sidebar";
 import "../../styles/room.css";
 

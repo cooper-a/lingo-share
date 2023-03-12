@@ -43,7 +43,7 @@ export default function WelcomePage() {
     <div>
       <Navbar currPage={"/welcomepage"} />
       <ChakraProvider>
-        <div className="field-pg">
+        <div className="welcome-pg">
           <Text fontSize="4xl">
             {t("All done! We hope you enjoy LingoShare")}
           </Text>

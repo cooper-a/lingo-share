@@ -20,6 +20,7 @@ import LanguageProficiency from "./components/onboarding/languageProficiency";
 import MeetNewFriends from "./components/meetnewfriends";
 import ProfilePage from "./components/profilepage";
 import LandingPage from "./components/app-intro/landingpage";
+import LanguagePreference from "./components/onboarding/languagePreference";
 
 function App() {
   return (
@@ -46,6 +47,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <LanguageProficiency />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/languagepreference"
+                element={
+                  <ProtectedRoute>
+                    <LanguagePreference />
                   </ProtectedRoute>
                 }
               />

@@ -1,8 +1,6 @@
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { ChevronRightIcon, ChevronLeftIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
-import { rtdb } from "../../firebase";
-import { ref, set } from "firebase/database";
 import "../../styles/room.css";
 
 const NavItem = ({ topicName, onClick }) => {

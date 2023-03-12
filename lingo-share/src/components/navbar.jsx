@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../contexts/AuthContext";
 import "@fontsource/inter";
 import { useTranslation } from "react-i18next";
-import { ref, onValue, get, set } from "firebase/database";
+import { ref, set } from "firebase/database";
 import { rtdb } from "../firebase";
 import LanguageToggle from "./lingoshare-components/languagetoggle";
 import AccountOptions from "./lingoshare-components/accountoptions";
