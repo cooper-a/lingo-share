@@ -17,17 +17,20 @@ export default function Navbar({ currPage }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { t, i18n } = useTranslation();
   const [isEnglish, setIsEnglish] = useState(true);
+
+  console.log(currPage);
   const pageTitles = {
+    "/profile": t("Profile"),
     "/callfriend": t("Call a Friend"),
     "/meetnewfriends": t("Meet New Friends"),
     "/account": t("Profile"),
   };
-  const showLogoPages = new Set([
-    "/dashboard",
-    "/login",
-    "/signup",
-    "/",
-    "/home",
+  const noShowLogoPages = new Set([
+    "/profile",
+    "/callfriend",
+    "/callroom",
+    "/meetnewfriends",
+    "/account",
   ]);
 
   useEffect(() => {
@@ -68,7 +71,7 @@ export default function Navbar({ currPage }) {
       <ChakraProvider>
         <div className="navbar">
           <div className="logo" onClick={() => handleClick("")}>
-            {showLogoPages.has(currPage) ? (
+            {!noShowLogoPages.has(currPage) ? (
               <div className="homepage-logo">
                 <span className="title">LingoShare</span>
               </div>

@@ -95,7 +95,7 @@ export default function ProfilePage() {
     render = (
       <div>
         <CallNotification />
-        <Navbar currPage={`/profile/${params.id}`} />
+        <Navbar currPage={`/account`} />
         <Badge colorScheme={isOnline === "online" ? "green" : ""}>
           {isOnline}
         </Badge>
@@ -137,7 +137,7 @@ export default function ProfilePage() {
     render = (
       <div>
         <CallNotification />
-        <Navbar currPage={`/profile/${params.id}`} />
+        <Navbar currPage={`/profile`} />
         <Badge colorScheme={isOnline === "online" ? "green" : ""}>
           {isOnline}
         </Badge>
