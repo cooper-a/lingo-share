@@ -29,6 +29,7 @@ export default function AboutSection({ setBio, isPrimaryUser, bio }) {
             defaultValue={
               bio ? bio : "Click here to enter a bio about yourself..."
             }
+            fontSize={"xl"}
           >
             <EditablePreview />
             <EditableTextarea

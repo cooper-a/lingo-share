@@ -10,7 +10,7 @@ import LanguageToggle from "./lingoshare-components/languagetoggle";
 import AccountOptions from "./lingoshare-components/accountoptions";
 import "../styles/nav.css";
 
-export default function Navbar({ currPage }) {
+export default function Navbar({ currPage, topLeftDisplay }) {
   const { user, logout } = UserAuth();
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -18,19 +18,6 @@ export default function Navbar({ currPage }) {
   const [isEnglish, setIsEnglish] = useState(true);
 
   console.log(currPage);
-  const pageTitles = {
-    "/profile": t("Profile"),
-    "/callfriend": t("Call a Friend"),
-    "/meetnewfriends": t("Meet New Friends"),
-    "/account": t("Profile"),
-  };
-  const noShowLogoPages = new Set([
-    "/profile",
-    "/callfriend",
-    "/callroom",
-    "/meetnewfriends",
-    "/account",
-  ]);
 
   useEffect(() => {
     setIsEnglish(i18n.language === "en");
@@ -70,23 +57,21 @@ export default function Navbar({ currPage }) {
       <ChakraProvider>
         <div className="navbar">
           <div className="logo" onClick={() => handleClick("")}>
-            {!noShowLogoPages.has(currPage) ? (
+            {!topLeftDisplay ? (
               <div className="homepage-logo">
                 <span className="title">LingoShare</span>
               </div>
             ) : (
               <div className="homepage-logo">
-                {currPage in pageTitles && (
-                  <span className="nav-title">
-                    {" "}
-                    <ArrowBackIcon
-                      width={"25px"}
-                      height={"25px"}
-                      marginRight={"15px"}
-                    />
-                    {pageTitles[currPage]}
-                  </span>
-                )}
+                <span className="nav-title">
+                  {" "}
+                  <ArrowBackIcon
+                    width={"25px"}
+                    height={"25px"}
+                    marginRight={"15px"}
+                  />
+                  {topLeftDisplay}
+                </span>
               </div>
             )}
           </div>

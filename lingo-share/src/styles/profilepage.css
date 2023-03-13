@@ -12,12 +12,39 @@
   position: relative;
   float: left;
   /* left: 1rem; */
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 .user-name {
   display: flex;
   flex-direction: column;
+  text-align: left;
+  gap: 1px;
+}
+
+.heading {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.picture {
+  position: relative;
+}
+
+.picture-upload-btn {
+  margin-top: 5px;
+}
+
+.flex-item-bottom-right {
+  order: 1;
+  flex: 0 1 auto;
+  align-self: flex-end;
+}
+
+.heading-child-online {
+  margin-top: 10px;
+  margin-left: 0.5rem;
 }
 
 .user-info {
@@ -35,6 +62,7 @@
 .tags {
   display: flex;
   gap: 10px;
+  margin-bottom: 1rem;
 }
 
 .edit-icon {
@@ -52,4 +80,13 @@
 
 .editable {
   margin-left: 10px;
+}
+
+.alert-notif {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 2.5rem;
+  margin-left: 25%;
+  margin-right: 25%;
 }

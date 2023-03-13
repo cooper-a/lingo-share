@@ -18,6 +18,11 @@ export default function InterestsSection({
 }) {
   const [currentInterest, setCurrentInterest] = useState("");
 
+  const handleAddInterest = () => {
+    onAddInterest(currentInterest);
+    setCurrentInterest("");
+  };
+
   return (
     <div className="font">
       <Text
@@ -42,14 +47,11 @@ export default function InterestsSection({
             marginBottom={"20px"}
             variant="flushed"
             placeholder="Add an interest"
+            value={currentInterest}
             onChange={(e) => setCurrentInterest(e.target.value)}
           />
           <InputRightElement width="4.5rem">
-            <Button
-              h="1.75rem"
-              size="sm"
-              onClick={() => onAddInterest(currentInterest)}
-            >
+            <Button h="1.75rem" size="sm" onClick={handleAddInterest}>
               Add
             </Button>
           </InputRightElement>

@@ -92,7 +92,10 @@ export default function MeetNewFriends() {
   return (
     <div>
       <CallNotification />
-      <Navbar currPage={"/meetnewfriends"} />
+      <Navbar
+        topLeftDisplay={"Meet New Friends"}
+        currPage={"/meetnewfriends"}
+      />
       <Text className="font" fontSize="3xl">
         {t("These people are also using LingoShare")}
       </Text>

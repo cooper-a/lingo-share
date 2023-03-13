@@ -3,7 +3,7 @@
 }
 
 .avatar {
-  padding-top: 10px;
+  margin-top: 5px;
   padding-right: 10px;
 }
 
@@ -25,7 +25,7 @@
   font-family: "Atkinson Hyperlegible", sans-serif;
   font-weight: bold;
   font-size: 30px;
-  margin-top: 15px;
+  margin-top: 7px;
 }
 
 .homepage-logo {

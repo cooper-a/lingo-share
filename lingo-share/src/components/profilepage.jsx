@@ -1,4 +1,11 @@
-import { Button, Tag, Text, TagLabel } from "@chakra-ui/react";
+import {
+  Button,
+  Tag,
+  Text,
+  TagLabel,
+  TagCloseButton,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
 import { UserAuth } from "../contexts/AuthContext";
 import Navbar from "./navbar";
@@ -7,7 +14,7 @@ import { useTranslation } from "react-i18next";
 import { ref, onValue, set } from "firebase/database";
 import { rtdb } from "../firebase";
 import CallNotification from "./callnotification";
-import ProfilePicture from "./profilepicture";
+import SavedAlert from "./profile/savedalert";
 import UserName from "./profile/username";
 import AboutSection from "./profile/aboutsection";
 import InterestsSection from "./profile/interestssection";
@@ -26,12 +33,15 @@ export default function ProfilePage() {
   const [userType, setUserType] = useState("");
   const [isEditingInterests, setIsEditingInterests] = useState(false);
   const [isOnline, setIsOnline] = useState("offline");
-  // const [profilePicURL, setProfilePicURL] = useState(null);
   const [bio, setBio] = useState("");
-  const [interests, setInterests] = useState([]);
+  const [interests, setInterests] = useState(new Set([]));
   const [userObj, setUserObj] = useState({});
   const [userFriends, setUserFriends] = useState({});
-  // const [bioInput, setBioInput] = useState("");
+  const {
+    isOpen: isVisible,
+    onClose,
+    onOpen,
+  } = useDisclosure({ defaultIsOpen: false });
   const languageMap = {
     learner: "Mandarin",
     native: "English",
@@ -48,20 +58,29 @@ export default function ProfilePage() {
   };
 
   const handleProfileEdit = () => {
+    let interestsArray = Array.from(interests);
     if (bio !== "") {
       setProfileValues("bio", bio);
     }
-    if (interests.length > 0) {
-      setProfileValues("interests", interests);
+    if (interestsArray.length > 0) {
+      setProfileValues("interests", interestsArray);
     }
     setProfileValues("userDisplayName", displayName);
     navigate(`/profile/${params.id}`);
+    onOpen();
   };
 
   const addInterest = (interest) => {
     if (interest === "") return;
-    let newInterests = [...interests];
-    newInterests.push(interest);
+    let newInterests = new Set(interests);
+    newInterests.add(interest);
+    setInterests(newInterests);
+  };
+
+  const removeInterest = (interest) => {
+    if (interest === "") return;
+    let newInterests = new Set(interests);
+    newInterests.delete(interest);
     setInterests(newInterests);
   };
 
@@ -97,13 +116,11 @@ export default function ProfilePage() {
       setDisplayName(snapshotVal.userDisplayName);
       // setProfilePicURL(snapshotVal.profilePic);
       setUserType(snapshotVal.userType);
-      // setPreferredLanguage(snapshotVal.language);
-      // setLocation(snapshotVal.location);
       setBio(snapshotVal.bio);
       setUserObj(snapshotVal);
       setInterests(snapshotVal.interests);
       if (!snapshotVal.interests) {
-        setInterests([]);
+        setInterests(new Set([]));
       }
     });
     onValue(userRef, (snapshot) => {
@@ -124,15 +141,22 @@ export default function ProfilePage() {
     <div>
       <CallNotification />
       <Navbar
+        topLeftDisplay={
+          isPrimaryUser ? "Your Profile" : displayName + "'s Profile"
+        }
         currPage={
           isPrimaryUser ? "/profile/" + user.uid : "/profile/" + params.id
         }
       />
       <div className="primary-user">
         <UserName
+          curPage={
+            isPrimaryUser ? "/profile/" + user.uid : "/profile/" + params.id
+          }
           userType={userType}
           userObj={userObj}
           isPrimaryUser={isPrimaryUser}
+          isOnline={isOnline}
           setDisplayName={setDisplayName}
           proficiencyMap={proficiencyMap}
           params={params}
@@ -155,7 +179,7 @@ export default function ProfilePage() {
           />
           <div className="tags">
             {interests ? (
-              interests.map((interest, i) => (
+              Array.from(interests).map((interest, i) => (
                 <Tag
                   size={"lg"}
                   borderRadius="full"
@@ -165,6 +189,9 @@ export default function ProfilePage() {
                   key={i}
                 >
                   <TagLabel className="heading">{interest}</TagLabel>
+                  {isPrimaryUser && (
+                    <TagCloseButton onClick={() => removeInterest(interest)} />
+                  )}
                 </Tag>
               ))
             ) : (
@@ -174,12 +201,19 @@ export default function ProfilePage() {
             )}
           </div>
         </div>
+      </div>
+      <div className="alert-notif">
+        {isVisible && (
+          <div>
+            <SavedAlert onClose={onClose} />
+          </div>
+        )}
         {isPrimaryUser && (
           <Button
-            marginTop={"3rem"}
-            width={"300px"}
+            width={"100vh"}
             variant={"outline"}
             onClick={handleProfileEdit}
+            marginBottom={"2rem"}
             className="heading"
           >
             Save Changes

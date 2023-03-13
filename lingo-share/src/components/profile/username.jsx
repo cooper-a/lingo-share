@@ -11,12 +11,15 @@ import React from "react";
 import Icon from "@adeira/icons";
 import "@fontsource/atkinson-hyperlegible";
 import "../../styles/profilepage.css";
+import ProfilePicture from "../profilepicture";
 
 export default function UserName({
+  curPage,
   userObj,
   isPrimaryUser,
   setDisplayName,
   userType,
+  isOnline,
   proficiencyMap,
   params,
   userFriends,
@@ -24,14 +27,28 @@ export default function UserName({
 }) {
   return (
     <div className="profile-pic">
-      <Avatar size={"2xl"} bg="grey" src={userObj.profilePic} />
+      <div className="picture">
+        <div>
+          <Avatar
+            width={"150px"}
+            height={"150px"}
+            bg="grey"
+            src={userObj.profilePic}
+          />
+        </div>
+        {isPrimaryUser && (
+          <div className="picture-upload-btn">
+            <ProfilePicture curPage={curPage} />
+          </div>
+        )}
+      </div>
       {isPrimaryUser ? (
         <div className="user-name">
           <div className="heading">
             <Editable
               float={"left"}
               marginLeft={"48px"}
-              marginTop={"27px"}
+              marginTop={"24px"}
               fontSize="4xl"
               fontWeight={"bold"}
               defaultValue={userObj.userDisplayName}
@@ -57,15 +74,28 @@ export default function UserName({
         <div>
           <div className="user-name">
             <div className="heading">
-              <Text
-                float={"left"}
-                marginLeft={"48px"}
-                marginBottom={"5px"}
-                fontSize="4xl"
-                fontWeight={"bold"}
-              >
-                {userObj.userDisplayName}
-              </Text>
+              <div className="heading-child">
+                <Text
+                  float={"left"}
+                  marginLeft={"48px"}
+                  marginBottom={"5px"}
+                  fontSize="4xl"
+                  fontWeight={"bold"}
+                >
+                  {userObj.userDisplayName}
+                </Text>
+              </div>
+              <div className="heading-child-online">
+                {params.id in userFriends && (
+                  <Text
+                    fontSize={"sm"}
+                    fontWeight={"bold"}
+                    alignContent={"center"}
+                  >
+                    {isOnline ? "(Online)" : "(Offline)"}
+                  </Text>
+                )}
+              </div>
             </div>
             <div>
               <Text className="heading" fontSize={"lg"} marginLeft={"48px"}>
@@ -85,8 +115,12 @@ export default function UserName({
             >
               <Button
                 variant={"outline"}
-                onClick={() => handleClickManageFriend(params.id, true)}
-                isDisabled={params.id in userFriends}
+                onClick={() =>
+                  handleClickManageFriend(
+                    params.id,
+                    !(params.id in userFriends)
+                  )
+                }
                 bgColor={params.id in userFriends ? "#D9D9D9" : "white"}
                 rightIcon={
                   params.id in userFriends ? (

@@ -149,7 +149,7 @@ export default function CallFriend() {
   return (
     <div>
       <CallNotification />
-      <Navbar currPage={"/callfriend"} />
+      <Navbar topLeftDisplay={"Start a Call"} currPage={"/callfriend"} />
       {!hasNoFriends ? (
         <Text className="font" fontSize="3xl">
           {t("Who would you like to call?")}
