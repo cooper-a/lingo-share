@@ -109,7 +109,11 @@ export default function ProfilePage() {
     onValue(userRef, (snapshot) => {
       let snapshotVal = snapshot.val();
       console.log(snapshotVal);
+      if (!snapshotVal) return;
       setUserFriends(snapshotVal.friends);
+      if (!snapshotVal.friends) {
+        setUserFriends({});
+      }
     });
     onValue(userStatusRef, (snapshot) => {
       setIsOnline(snapshot.val().state);

@@ -42,8 +42,12 @@
   margin-left: 10px;
 }
 
-.heading {
+.about-section {
   font-family: "Atkinson Hyperlegible", sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
 }
 
 .editable {
