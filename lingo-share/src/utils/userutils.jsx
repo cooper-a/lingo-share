@@ -3,6 +3,7 @@ const mergeObj = (
   userObj,
   friendsObj,
   blockedObj,
+  blockedByObj,
   uid,
   friendsOnly,
   includeBlocked
@@ -52,10 +53,21 @@ const mergeObj = (
 
   delete res[uid];
 
-  // filter the blocked users unless includeBlocked is true
-  if (includeBlocked !== true) {
-    for (let [blockedID, blockedValue] of Object.entries(blockedObj)) {
-      delete res[blockedID];
+  // filter out the users that are blocked by the current user
+  for (let [blockedByID, blockedValue] of Object.entries(blockedByObj)) {
+    delete res[blockedByID];
+    console.log(blockedByID);
+  }
+
+  // filter out the users that are blocked by another user
+  for (let [userID, userValue] of Object.entries(res)) {
+    if (userValue.blockedBy) {
+      for (let [blockedID, blockedValue] of Object.entries(
+        userValue.blockedBy
+      )) {
+        console.log(blockedID);
+        delete res[blockedID];
+      }
     }
   }
 

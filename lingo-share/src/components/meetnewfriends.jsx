@@ -21,6 +21,7 @@ export default function MeetNewFriends() {
   const [friendsObj, setFriendsObj] = useState([]);
   const [mergedObj, setMergedObj] = useState([]);
   const [blockedObj, setBlockedObj] = useState([]);
+  const [blockedByObj, setBlockedByObj] = useState([]);
   const { t } = useTranslation();
 
   const getQuery = (ref) => {
@@ -49,6 +50,11 @@ export default function MeetNewFriends() {
                 setBlockedObj(userValue.blocked);
               } else {
                 setBlockedObj({});
+              }
+              if (userValue.blockedBy) {
+                setBlockedByObj(userValue.blockedBy);
+              } else {
+                setBlockedByObj({});
               }
             }
           }
@@ -93,7 +99,15 @@ export default function MeetNewFriends() {
 
   useEffect(() => {
     setMergedObj(
-      mergeObj(statusObj, usersObj, friendsObj, blockedObj, user.uid, false)
+      mergeObj(
+        statusObj,
+        usersObj,
+        friendsObj,
+        blockedObj,
+        blockedByObj,
+        user.uid,
+        false
+      )
     );
   }, [statusObj, usersObj, friendsObj]);
 

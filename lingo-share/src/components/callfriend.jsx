@@ -25,6 +25,7 @@ export default function CallFriend() {
   const [friendsObj, setFriendsObj] = useState([]);
   const [mergedObj, setMergedObj] = useState([]);
   const [blockedObj, setBlockedObj] = useState([]);
+  const [blockedByObj, setBlockedByObj] = useState([]);
   const [hasNoFriends, setHasNoFriends] = useState(true);
   const { user } = UserAuth();
   const navigate = useNavigate();
@@ -62,6 +63,11 @@ export default function CallFriend() {
                 setBlockedObj(userValue.blocked);
               } else {
                 setBlockedObj({});
+              }
+              if (userValue.blockedBy) {
+                setBlockedByObj(userValue.blockedBy);
+              } else {
+                setBlockedByObj({});
               }
             }
           }
@@ -151,7 +157,15 @@ export default function CallFriend() {
 
   useEffect(() => {
     setMergedObj(
-      mergeObj(statusObj, usersObj, friendsObj, blockedObj, user.uid, true)
+      mergeObj(
+        statusObj,
+        usersObj,
+        friendsObj,
+        blockedObj,
+        blockedByObj,
+        user.uid,
+        true
+      )
     );
   }, [statusObj, usersObj]);
 

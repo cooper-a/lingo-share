@@ -6,18 +6,18 @@ exports.get_token = functions.https.onCall((data, context) => {
   if (!context.auth) {
     // Throwing an HttpsError so that the client gets the error details.
     throw new functions.https.HttpsError(
-      "failed-precondition",
-      "The function must be called " + "while authenticated."
+        "failed-precondition",
+        "The function must be called " + "while authenticated."
     );
   }
 
   const identity = data.identity || "user";
 
   const accessToken = new twilio.jwt.AccessToken(
-    process.env.TWILIO_ACCOUNT_SID,
-    process.env.TWILIO_API_KEY_SID,
-    process.env.TWILIO_API_KEY_SECRET,
-    { identity: identity }
+      process.env.TWILIO_ACCOUNT_SID,
+      process.env.TWILIO_API_KEY_SID,
+      process.env.TWILIO_API_KEY_SECRET,
+      {identity: identity}
   );
 
   // If no room is specified, use the user's uid as the room name
@@ -33,21 +33,27 @@ exports.get_token = functions.https.onCall((data, context) => {
   });
   accessToken.addGrant(videoGrant);
 
-  return { token: accessToken.toJwt() };
+  return {token: accessToken.toJwt()};
 });
 
 exports.block_user = functions.database
-  .ref("/users/{uid}/blocked/{blockedUid}")
-  .onCreate((snapshot, context) => {
-    const uid = context.params.uid;
-    const blockedUid = context.params.blockedUid;
-    functions.logger.log("uid: " + uid);
-    functions.logger.log("blockedUid: " + blockedUid);
-    functions.logger.log("snapshot ref: " + snapshot.ref);
-    const blockedUserFriendsRef = snapshot.ref.parent.parent.parent
-      .child(blockedUid)
-      .child("friends")
-      .child(uid);
-    console.log("blockedUserFriendsRef: " + blockedUserFriendsRef);
-    return blockedUserFriendsRef.set(null);
-  });
+    .ref("/users/{uid}/blocked/{blockedUid}")
+    .onCreate((snapshot, context) => {
+      const uid = context.params.uid;
+      const blockedUid = context.params.blockedUid;
+      functions.logger.log("uid: " + uid);
+      functions.logger.log("blockedUid: " + blockedUid);
+      functions.logger.log("snapshot ref: " + snapshot.ref);
+      const blockedUserFriendsRef = snapshot.ref.parent.parent.parent
+          .child(blockedUid)
+          .child("friends")
+          .child(uid);
+      console.log("blockedUserFriendsRef: " + blockedUserFriendsRef);
+      const blockedUserBlockedByRef = snapshot.ref.parent.parent.parent
+          .child(blockedUid)
+          .child("blockedBy")
+          .child(uid);
+      return blockedUserFriendsRef.set(null).then(() => {
+        blockedUserBlockedByRef.set(true);
+      });
+    });

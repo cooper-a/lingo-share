@@ -22,6 +22,7 @@ export default function YourFriends() {
   const [friendsObj, setFriendsObj] = useState([]);
   const [mergedObj, setMergedObj] = useState([]);
   const [blockedObj, setBlockedObj] = useState([]);
+  const [blockedByObj, setBlockedByObj] = useState([]);
   const [blockedReason, setBlockedReason] = useState("");
   const [reportUser, setReportUser] = useState("");
   const { t } = useTranslation();
@@ -52,6 +53,11 @@ export default function YourFriends() {
                 setBlockedObj(userValue.blocked);
               } else {
                 setBlockedObj({});
+              }
+              if (userValue.blockedBy) {
+                setBlockedByObj(userValue.blockedBy);
+              } else {
+                setBlockedByObj({});
               }
             }
           }
@@ -111,7 +117,15 @@ export default function YourFriends() {
 
   useEffect(() => {
     setMergedObj(
-      mergeObj(statusObj, usersObj, friendsObj, blockedObj, user.uid, true)
+      mergeObj(
+        statusObj,
+        usersObj,
+        friendsObj,
+        blockedObj,
+        blockedByObj,
+        user.uid,
+        true
+      )
     );
   }, [statusObj, usersObj, friendsObj]);
 
