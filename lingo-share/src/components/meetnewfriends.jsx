@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { UserAuth } from "../contexts/AuthContext";
-import { ref, onValue, get, set } from "firebase/database";
+import { ref, onValue, get, set, remove, child } from "firebase/database";
 import { rtdb } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import { ChakraProvider, Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import Navbar from "./navbar";
 import CallNotification from "./callnotification";
+import FriendRequest from "./friendrequest";
 import ProfileCard from "./lingoshare-components/profilecard";
 import "../styles/meetfriends.css";
 import { mergeObj } from "../utils/userutils";
@@ -14,6 +15,7 @@ import { mergeObj } from "../utils/userutils";
 export default function MeetNewFriends() {
   const usersRef = ref(rtdb, "/users");
   const statusRef = ref(rtdb, "/status");
+  const pendingFriendRequestsRef = ref(rtdb, "/pending_friend_requests");
   const { user } = UserAuth();
   const navigate = useNavigate();
   const [statusObj, setStatusObj] = useState([]);
@@ -48,6 +50,56 @@ export default function MeetNewFriends() {
           }
         }
       }
+      if (ref === pendingFriendRequestsRef) {
+        handlePendingFriendRequest(newObjectList);
+      }
+    });
+  };
+
+  const handlePendingFriendRequest = (pendingFriendRequestsObj) => {
+    let targetIDs = [];
+    console.log(pendingFriendRequestsObj);
+    // add user to friend list if they have already sent a friend request
+    Object.values(pendingFriendRequestsObj).forEach((obj) => {
+      for (let [senderID, receiverIDObj] of Object.entries(obj)) {
+        if (senderID === user.uid) {
+          Object.keys(receiverIDObj).forEach((receiverID) => {
+            targetIDs.push(receiverID);
+            let friendRef = ref(
+              rtdb,
+              `/users/${user.uid}/friends/${receiverID}`
+            );
+            set(friendRef, true)
+              .then(() => {
+                console.log("friend added");
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          });
+        }
+      }
+    });
+
+    // remove the entries from /pending_friend_requests obj
+    Object.values(targetIDs).forEach((targetID) => {
+      get(pendingFriendRequestsRef)
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            snapshot.forEach((childSnapshot) => {
+              Object.keys(childSnapshot.val()).forEach((receiverID) => {
+                if (childSnapshot.key === user.uid && receiverID === targetID) {
+                  remove(
+                    child(pendingFriendRequestsRef, `/${user.uid}/${targetID}`)
+                  );
+                }
+              });
+            });
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     });
   };
 
@@ -55,14 +107,12 @@ export default function MeetNewFriends() {
     e.preventDefault();
     if (targetID !== user.uid && targetID !== undefined) {
       let friendRef = ref(rtdb, `/users/${user.uid}/friends/${targetID}`);
+      let friendRequestsRef = ref(
+        rtdb,
+        `/friend_requests/${user.uid}/${targetID}`
+      );
       if (add) {
-        set(friendRef, true)
-          .then(() => {
-            console.log("friend added");
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+        set(friendRequestsRef, "");
       } else {
         set(friendRef, null)
           .then(() => {
@@ -83,6 +133,7 @@ export default function MeetNewFriends() {
   useEffect(() => {
     getQuery(statusRef);
     getQuery(usersRef);
+    getQuery(pendingFriendRequestsRef);
   }, [user.uid]);
 
   useEffect(() => {
@@ -92,6 +143,7 @@ export default function MeetNewFriends() {
   return (
     <div>
       <CallNotification />
+      <FriendRequest />
       <Navbar currPage={"/meetnewfriends"} />
       <Text fontSize="3xl">{t("These people are also using LingoShare")}</Text>
       <ChakraProvider>
