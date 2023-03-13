@@ -12,6 +12,7 @@ import Icon from "@adeira/icons";
 import "@fontsource/atkinson-hyperlegible";
 import "../../styles/profilepage.css";
 import ProfilePicture from "../profilepicture";
+import { useTranslation } from "react-i18next";
 
 export default function UserName({
   curPage,
@@ -25,6 +26,8 @@ export default function UserName({
   userFriends,
   handleClickManageFriend,
 }) {
+  const { t } = useTranslation();
+
   return (
     <div className="profile-pic">
       <div className="picture">
@@ -64,8 +67,8 @@ export default function UserName({
           <div className="heading">
             <Text fontSize={"lg"} marginLeft={"48px"}>
               {userType === "native"
-                ? "Native Mandarin Speaker"
-                : "Mandarin Learner"}{" "}
+                ? t("Native Mandarin Speaker")
+                : t("Mandarin Learner")}{" "}
               • {proficiencyMap[userObj.proficiency]}
             </Text>
           </div>
@@ -100,8 +103,8 @@ export default function UserName({
             <div>
               <Text className="heading" fontSize={"lg"} marginLeft={"48px"}>
                 {userObj.userType === "native"
-                  ? "Native Mandarin Speaker"
-                  : "Mandarin Learner"}{" "}
+                  ? t("Native Mandarin Speaker")
+                  : t("Mandarin Learner")}{" "}
                 • {proficiencyMap[userObj.proficiency]}
               </Text>
             </div>
@@ -130,9 +133,9 @@ export default function UserName({
                   )
                 }
               >
-                {params.id in userFriends ? "Friends" : "Add as Friend"}
+                {params.id in userFriends ? t("Friends") : t("Add as Friend")}
               </Button>
-              <Button variant={"outline"}>Block User</Button>
+              <Button variant={"outline"}>{t("Block User")}</Button>
             </Stack>
           </div>
         </div>

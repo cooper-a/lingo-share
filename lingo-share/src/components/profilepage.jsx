@@ -43,13 +43,13 @@ export default function ProfilePage() {
     onOpen,
   } = useDisclosure({ defaultIsOpen: false });
   const languageMap = {
-    learner: "Mandarin",
-    native: "English",
+    learner: t("Mandarin"),
+    native: t("English"),
   };
   const proficiencyMap = {
-    poor: "Getting started with " + languageMap[userType],
-    okay: "Speaks some " + languageMap[userType],
-    well: "Speaks " + languageMap[userType] + " well",
+    poor: t("Getting started with ") + languageMap[userType],
+    okay: t("Speaks some ") + languageMap[userType],
+    well: t("Speaks ") + languageMap[userType] + t(" well"),
   };
 
   const setProfileValues = (fieldName, val) => {
@@ -196,7 +196,7 @@ export default function ProfilePage() {
               ))
             ) : (
               <div>
-                <Text fontSize={"lg"}>No interests to show yet</Text>
+                <Text fontSize={"lg"}>{t("No interests to show yet")}</Text>
               </div>
             )}
           </div>
@@ -216,7 +216,7 @@ export default function ProfilePage() {
             marginBottom={"2rem"}
             className="heading"
           >
-            Save Changes
+            {t("Save Changes")}
           </Button>
         )}
       </div>

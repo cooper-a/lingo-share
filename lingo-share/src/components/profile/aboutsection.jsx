@@ -8,8 +8,10 @@ import "@fontsource/atkinson-hyperlegible";
 import React from "react";
 import Icon from "@adeira/icons";
 import "../../styles/profilepage.css";
+import { useTranslation } from "react-i18next";
 
 export default function AboutSection({ setBio, isPrimaryUser, bio }) {
+  const { t } = useTranslation();
   return (
     <div className="about-section">
       <div className="sub-heading">
@@ -19,7 +21,7 @@ export default function AboutSection({ setBio, isPrimaryUser, bio }) {
           fontSize="3xl"
           fontWeight={"bold"}
         >
-          {"About"}
+          {t("About")}
           {isPrimaryUser && <Icon className="editable" name="pen" />}
         </Text>
       </div>
@@ -27,7 +29,7 @@ export default function AboutSection({ setBio, isPrimaryUser, bio }) {
         {isPrimaryUser ? (
           <Editable
             defaultValue={
-              bio ? bio : "Click here to enter a bio about yourself..."
+              bio ? bio : t("Click here to enter a bio about yourself...")
             }
             fontSize={"xl"}
           >

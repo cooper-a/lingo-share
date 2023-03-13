@@ -9,6 +9,7 @@ import React from "react";
 import Icon from "@adeira/icons";
 import "../../styles/profilepage.css";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function InterestsSection({
   isPrimaryUser,
@@ -17,6 +18,7 @@ export default function InterestsSection({
   onAddInterest,
 }) {
   const [currentInterest, setCurrentInterest] = useState("");
+  const { t } = useTranslation();
 
   const handleAddInterest = () => {
     onAddInterest(currentInterest);
@@ -32,7 +34,7 @@ export default function InterestsSection({
         fontSize={"3xl"}
         fontWeight={"bold"}
       >
-        {"Interests"}
+        {t("Interests")}
         {isPrimaryUser && (
           <Icon
             onClick={setIsEditingInterests}
@@ -46,13 +48,13 @@ export default function InterestsSection({
           <Input
             marginBottom={"20px"}
             variant="flushed"
-            placeholder="Add an interest"
+            placeholder={t("Add an interest")}
             value={currentInterest}
             onChange={(e) => setCurrentInterest(e.target.value)}
           />
           <InputRightElement width="4.5rem">
             <Button h="1.75rem" size="sm" onClick={handleAddInterest}>
-              Add
+              {t("Add")}
             </Button>
           </InputRightElement>
         </InputGroup>
