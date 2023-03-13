@@ -52,6 +52,7 @@ export default function CallFriend() {
             if (userID === user.uid) {
               if (userValue.friends) {
                 setFriendsObj(userValue.friends);
+                // Edge case: if user has a friend but they are blocked
                 setHasNoFriends(false);
               } else {
                 setFriendsObj({});

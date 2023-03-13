@@ -21,6 +21,7 @@ const mergeObj = (
     // loop through each key-value pair in the current dictionary
     for (let [userID, userValue] of Object.entries(userDict)) {
       // check if the current userID is in the statusList
+
       if (statusObj.some((statusDict) => statusDict.hasOwnProperty(userID))) {
         // if it is, find the corresponding status dictionary in the statusList
         let statusDict = statusObj.find((statusDict) =>
@@ -51,7 +52,7 @@ const mergeObj = (
 
   delete res[uid];
 
-  // always filter out the blocked users
+  // filter the blocked users unless includeBlocked is true
   if (includeBlocked !== true) {
     for (let [blockedID, blockedValue] of Object.entries(blockedObj)) {
       delete res[blockedID];
