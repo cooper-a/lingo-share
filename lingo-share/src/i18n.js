@@ -66,6 +66,7 @@ const resources = {
         "These people are also using LingoShare",
       "is calling you": "is calling you",
       Accept: "Accept",
+      "Friend Request Sent": "Friend Request Sent",
     },
   },
   zh: {
@@ -126,6 +127,7 @@ const resources = {
       "These people are also using LingoShare": "这些用户也在使用LingoShare",
       "is calling you": "正在呼叫你",
       Accept: "接受",
+      "Friend Request Sent": "好友请求已发送",
     },
   },
 };

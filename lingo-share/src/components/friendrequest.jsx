@@ -63,12 +63,12 @@ export default function FriendRequest() {
         console.log(error);
       });
 
-    // copy entry over to pending_friend_requests object upon accept
-    let pendingFriendRequestsRef = ref(
+    // copy entry over to accepted_friend_requests object upon accept
+    let acceptedFriendRequestsRef = ref(
       rtdb,
-      `pending_friend_requests/${targetID}/${user.uid}`
+      `accepted_friend_requests/${targetID}/${user.uid}`
     );
-    set(pendingFriendRequestsRef, "");
+    set(acceptedFriendRequestsRef, "");
 
     // remove the identical entry from friend request object
     get(friendRequestsRef)

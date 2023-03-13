@@ -143,7 +143,7 @@ export default function CallFriend() {
   }, [user.uid]);
 
   useEffect(() => {
-    setMergedObj(mergeObj(statusObj, usersObj, friendsObj, user.uid, true));
+    setMergedObj(mergeObj(statusObj, usersObj, friendsObj, {}, user.uid, true));
   }, [statusObj, usersObj]);
 
   return (

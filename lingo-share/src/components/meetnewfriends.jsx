@@ -15,12 +15,14 @@ import { mergeObj } from "../utils/userutils";
 export default function MeetNewFriends() {
   const usersRef = ref(rtdb, "/users");
   const statusRef = ref(rtdb, "/status");
-  const pendingFriendRequestsRef = ref(rtdb, "/pending_friend_requests");
+  const friendRequestsRef = ref(rtdb, "/friend_requests");
+  const acceptedFriendRequestsRef = ref(rtdb, "/accepted_friend_requests");
   const { user } = UserAuth();
   const navigate = useNavigate();
   const [statusObj, setStatusObj] = useState([]);
   const [usersObj, setUsersObj] = useState([]);
   const [friendsObj, setFriendsObj] = useState([]);
+  const [friendRequestsObj, setFriendRequestsObj] = useState([]);
   const [mergedObj, setMergedObj] = useState([]);
   const { t } = useTranslation();
 
@@ -50,17 +52,19 @@ export default function MeetNewFriends() {
           }
         }
       }
-      if (ref === pendingFriendRequestsRef) {
-        handlePendingFriendRequest(newObjectList);
+      if (ref === friendRequestsRef) {
+        setFriendRequestsObj(newObjectList);
+      }
+      if (ref === acceptedFriendRequestsRef) {
+        handleAcceptedFriendRequest(newObjectList);
       }
     });
   };
 
-  const handlePendingFriendRequest = (pendingFriendRequestsObj) => {
+  const handleAcceptedFriendRequest = (acceptedFriendRequestsObj) => {
     let targetIDs = [];
-    console.log(pendingFriendRequestsObj);
     // add user to friend list if they have already sent a friend request
-    Object.values(pendingFriendRequestsObj).forEach((obj) => {
+    Object.values(acceptedFriendRequestsObj).forEach((obj) => {
       for (let [senderID, receiverIDObj] of Object.entries(obj)) {
         if (senderID === user.uid) {
           Object.keys(receiverIDObj).forEach((receiverID) => {
@@ -76,21 +80,22 @@ export default function MeetNewFriends() {
               .catch((error) => {
                 console.log(error);
               });
+            navigate("/meetnewfriends"); // workaround
           });
         }
       }
     });
 
-    // remove the entries from /pending_friend_requests obj
+    // remove the entries from /accepted_friend_requests obj
     Object.values(targetIDs).forEach((targetID) => {
-      get(pendingFriendRequestsRef)
+      get(acceptedFriendRequestsRef)
         .then((snapshot) => {
           if (snapshot.exists()) {
             snapshot.forEach((childSnapshot) => {
               Object.keys(childSnapshot.val()).forEach((receiverID) => {
                 if (childSnapshot.key === user.uid && receiverID === targetID) {
                   remove(
-                    child(pendingFriendRequestsRef, `/${user.uid}/${targetID}`)
+                    child(acceptedFriendRequestsRef, `/${user.uid}/${targetID}`)
                   );
                 }
               });
@@ -112,8 +117,10 @@ export default function MeetNewFriends() {
         `/friend_requests/${user.uid}/${targetID}`
       );
       if (add) {
+        // add a friend
         set(friendRequestsRef, "");
       } else {
+        // remove a friend
         set(friendRef, null)
           .then(() => {
             console.log("friend removed");
@@ -133,11 +140,21 @@ export default function MeetNewFriends() {
   useEffect(() => {
     getQuery(statusRef);
     getQuery(usersRef);
-    getQuery(pendingFriendRequestsRef);
+    getQuery(acceptedFriendRequestsRef);
+    getQuery(friendRequestsRef);
   }, [user.uid]);
 
   useEffect(() => {
-    setMergedObj(mergeObj(statusObj, usersObj, friendsObj, user.uid, false));
+    setMergedObj(
+      mergeObj(
+        statusObj,
+        usersObj,
+        friendsObj,
+        friendRequestsObj,
+        user.uid,
+        false
+      )
+    );
   }, [statusObj, usersObj, friendsObj]);
 
   return (
@@ -156,6 +173,7 @@ export default function MeetNewFriends() {
                     name={value.userDisplayName}
                     userId={key}
                     isFriend={value.isFriend}
+                    friendRequestSent={value.friendRequestSent}
                     profileURL={value.profilePic}
                     handleClickViewProfile={handleClickViewProfile}
                     handleClickManageFriend={handleClickManageFriend}

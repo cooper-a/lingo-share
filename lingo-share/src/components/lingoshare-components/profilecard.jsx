@@ -14,7 +14,7 @@ export default function ProfileCard({
   name,
   userId,
   isFriend,
-  isPending,
+  friendRequestSent,
   profileURL,
   handleClickViewProfile,
   handleClickManageFriend,
@@ -57,17 +57,19 @@ export default function ProfileCard({
             >
               {t("View Profile")}
             </Button>
-            <Button
-              w={"full"}
-              mt={3}
-              bg={"white"}
-              color={"black"}
-              rounded={"md"}
-              onClick={(e) => handleClickManageFriend(e, userId, true)}
-            >
-              {t("Add as Friend")}
-            </Button>
-            {/* {!isFriend ? (
+            {!isFriend && friendRequestSent && (
+              <Button
+                w={"full"}
+                mt={3}
+                bg={"grey"}
+                color={"black"}
+                rounded={"md"}
+                disabled={true}
+              >
+                {t("Friend Request Sent")}
+              </Button>
+            )}
+            {!isFriend && !friendRequestSent && (
               <Button
                 w={"full"}
                 mt={3}
@@ -78,7 +80,8 @@ export default function ProfileCard({
               >
                 {t("Add as Friend")}
               </Button>
-            ) : (
+            )}
+            {isFriend && !friendRequestSent && (
               <Button
                 w={"full"}
                 mt={3}
@@ -89,7 +92,7 @@ export default function ProfileCard({
               >
                 {t("Remove Friend")}
               </Button>
-            )} */}
+            )}
           </Box>
         </Box>
       </Center>
