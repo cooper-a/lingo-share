@@ -6,7 +6,6 @@ import {
   EditablePreview,
   Text,
   Stack,
-  Heading,
 } from "@chakra-ui/react";
 import React from "react";
 import Icon from "@adeira/icons";
@@ -21,6 +20,7 @@ export default function UserName({
   proficiencyMap,
   params,
   userFriends,
+  handleClickManageFriend,
 }) {
   return (
     <div className="profile-pic">
@@ -85,6 +85,7 @@ export default function UserName({
             >
               <Button
                 variant={"outline"}
+                onClick={() => handleClickManageFriend(params.id, true)}
                 isDisabled={params.id in userFriends}
                 bgColor={params.id in userFriends ? "#D9D9D9" : "white"}
                 rightIcon={

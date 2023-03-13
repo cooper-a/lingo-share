@@ -65,6 +65,30 @@ export default function ProfilePage() {
     setInterests(newInterests);
   };
 
+  const handleClickManageFriend = async (targetID, add) => {
+    if (targetID !== user.uid && targetID !== undefined) {
+      let friendRef = ref(rtdb, `/users/${user.uid}/friends/${targetID}`);
+      if (add) {
+        set(friendRef, true)
+          .then(() => {
+            console.log("friend added");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      } else {
+        set(friendRef, null)
+          .then(() => {
+            console.log("friend removed");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+      navigate(`/profile/${params.id}`);
+    }
+  };
+
   useEffect(() => {
     setIsPrimaryUser(user.uid === params.id);
     onValue(targetUserRef, (snapshot) => {
@@ -109,6 +133,7 @@ export default function ProfilePage() {
           proficiencyMap={proficiencyMap}
           params={params}
           userFriends={userFriends}
+          handleClickManageFriend={handleClickManageFriend}
         />
         <div className="user-info">
           <AboutSection
