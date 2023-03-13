@@ -93,19 +93,26 @@ export default function CallCard({
 
               <Box>
                 {displayName ? (
-                  <Heading size="sm">{displayName}</Heading>
+                  <Text fontWeight={"bold"} fontSize="md">
+                    {displayName}
+                  </Text>
                 ) : (
-                  <Heading size="sm">{userId}</Heading>
+                  <Text fontSize="sm">{userId}</Text>
                 )}
                 {onlineStatus === "online" ? (
-                  <Text float={"left"}>{t("Online")}</Text>
+                  <Text className="font" float={"left"}>
+                    {t("Online")}
+                  </Text>
                 ) : (
-                  <Text float={"left"}>{t("Offline")}</Text>
+                  <Text className="font" float={"left"}>
+                    {t("Offline")}
+                  </Text>
                 )}
               </Box>
             </Flex>
             <Box alignSelf={"center"}>
               <Button
+                className="font"
                 onClick={(event) => handleViewProfile(userId)}
                 isDisabled={false}
                 direction="row"
@@ -118,6 +125,7 @@ export default function CallCard({
                 {t("View Profile")}
               </Button>
               <Button
+                className="font"
                 onClick={() => handleConfirmModuleOpen()}
                 isDisabled={disableButton(userId, onlineStatus)}
                 direction="row"

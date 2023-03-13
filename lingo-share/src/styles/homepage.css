@@ -5,7 +5,7 @@
 }
 
 .welcome-pg {
-  font-family: "Roboto";
+  font-family: "Atkinson Hyperlegible", sans-serif;
   display: flex;
   height: 100%;
   margin-top: 10%;
@@ -17,7 +17,7 @@
 }
 
 .field-pg {
-  font-family: "Roboto";
+  font-family: "Atkinson Hyperlegible", sans-serif;
   display: flex;
   height: 100%;
   margin-top: 4%;
@@ -29,6 +29,7 @@
 }
 
 .btn {
+  font-family: "Atkinson Hyperlegible", sans-serif;
   padding: 10px;
   width: 280px;
 }

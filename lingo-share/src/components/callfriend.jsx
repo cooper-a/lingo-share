@@ -151,10 +151,12 @@ export default function CallFriend() {
       <CallNotification />
       <Navbar currPage={"/callfriend"} />
       {!hasNoFriends ? (
-        <Text fontSize="3xl">{t("Who would you like to call?")}</Text>
+        <Text className="font" fontSize="3xl">
+          {t("Who would you like to call?")}
+        </Text>
       ) : (
         <div className="welcome-pg">
-          <Text fontSize="3xl">
+          <Text className="font" fontSize="3xl">
             {t("You don’t have any LingoShare friends yet!")}
           </Text>
           <Button

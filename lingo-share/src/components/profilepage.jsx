@@ -1,11 +1,4 @@
-import {
-  Button,
-  Avatar,
-  FormControl,
-  FormLabel,
-  Input,
-  Badge,
-} from "@chakra-ui/react";
+import { Button, Tag, Text, TagLabel } from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
 import { UserAuth } from "../contexts/AuthContext";
 import Navbar from "./navbar";
@@ -15,157 +8,155 @@ import { ref, onValue, set } from "firebase/database";
 import { rtdb } from "../firebase";
 import CallNotification from "./callnotification";
 import ProfilePicture from "./profilepicture";
+import UserName from "./profile/username";
+import AboutSection from "./profile/aboutsection";
+import InterestsSection from "./profile/interestssection";
+import "../styles/profilepage.css";
 
 export default function ProfilePage() {
   const { user, logout } = UserAuth();
   const navigate = useNavigate();
   const { t } = useTranslation();
   const params = useParams();
+  const userRef = ref(rtdb, "users/" + user.uid);
   const targetUserRef = ref(rtdb, "users/" + params.id);
   const userStatusRef = ref(rtdb, "status/" + params.id);
   const [isPrimaryUser, setIsPrimaryUser] = useState(false);
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [displayName, setDisplayName] = useState("");
   const [userType, setUserType] = useState("");
+  const [isEditingInterests, setIsEditingInterests] = useState(false);
   const [isOnline, setIsOnline] = useState("offline");
-  const [location, setLocation] = useState("");
-  const [preferredLanguage, setPreferredLanguage] = useState("English");
-  const [profilePicURL, setProfilePicURL] = useState(null);
+  // const [profilePicURL, setProfilePicURL] = useState(null);
   const [bio, setBio] = useState("");
-  const [hobbies, setHobbies] = useState("");
-  const [locationInput, setLocationInput] = useState("");
-  const [bioInput, setBioInput] = useState("");
-  const [hobbiesInput, setHobbiesInput] = useState("");
+  const [interests, setInterests] = useState([]);
+  const [userObj, setUserObj] = useState({});
+  const [userFriends, setUserFriends] = useState({});
+  // const [bioInput, setBioInput] = useState("");
+  const languageMap = {
+    learner: "Mandarin",
+    native: "English",
+  };
+  const proficiencyMap = {
+    poor: "Getting started with " + languageMap[userType],
+    okay: "Speaks some " + languageMap[userType],
+    well: "Speaks " + languageMap[userType] + " well",
+  };
 
   const setProfileValues = (fieldName, val) => {
     let fieldRef = ref(rtdb, "users/" + params.id + "/" + fieldName);
     set(fieldRef, val);
   };
 
-  const handleProfileEdit = (event) => {
-    event.currentTarget.disabled = true;
-    if (locationInput !== "") {
-      setProfileValues("location", locationInput);
+  const handleProfileEdit = () => {
+    if (bio !== "") {
+      setProfileValues("bio", bio);
     }
-    if (bioInput !== "") {
-      setProfileValues("bio", bioInput);
+    if (interests.length > 0) {
+      setProfileValues("interests", interests);
     }
-    if (hobbiesInput !== "") {
-      setProfileValues("hobbies", hobbiesInput);
-    }
+    setProfileValues("userDisplayName", displayName);
     navigate(`/profile/${params.id}`);
-    setLocationInput("");
-    setBioInput("");
-    setHobbiesInput("");
-    event.currentTarget.disabled = false;
   };
 
-  const handleLocationChange = (event) => {
-    setLocationInput(event.target.value);
-  };
-
-  const handleBioChange = (event) => {
-    setBioInput(event.target.value);
-  };
-
-  const handleHobbiesChange = (event) => {
-    setHobbiesInput(event.target.value);
+  const addInterest = (interest) => {
+    if (interest === "") return;
+    let newInterests = [...interests];
+    newInterests.push(interest);
+    setInterests(newInterests);
   };
 
   useEffect(() => {
     setIsPrimaryUser(user.uid === params.id);
     onValue(targetUserRef, (snapshot) => {
       let snapshotVal = snapshot.val();
-      setFirstName(snapshotVal.userDisplayName.split(" ")[0]);
-      setLastName(snapshotVal.userDisplayName.split(" ")[1]);
-      setProfilePicURL(snapshotVal.profilePic);
+      console.log(snapshotVal);
+      setDisplayName(snapshotVal.userDisplayName);
+      // setProfilePicURL(snapshotVal.profilePic);
       setUserType(snapshotVal.userType);
-      setPreferredLanguage(snapshotVal.language);
-      setLocation(snapshotVal.location);
+      // setPreferredLanguage(snapshotVal.language);
+      // setLocation(snapshotVal.location);
       setBio(snapshotVal.bio);
-      setHobbies(snapshotVal.hobbies);
+      setUserObj(snapshotVal);
+      setInterests(snapshotVal.interests);
+      if (!snapshotVal.interests) {
+        setInterests([]);
+      }
+    });
+    onValue(userRef, (snapshot) => {
+      let snapshotVal = snapshot.val();
+      console.log(snapshotVal);
+      setUserFriends(snapshotVal.friends);
     });
     onValue(userStatusRef, (snapshot) => {
       setIsOnline(snapshot.val().state);
     });
   }, []);
 
-  let render;
-  if (isPrimaryUser) {
-    render = (
-      <div>
-        <CallNotification />
-        <Navbar currPage={`/account`} />
-        <Badge colorScheme={isOnline === "online" ? "green" : ""}>
-          {isOnline}
-        </Badge>
-        <Badge colorScheme="green">
-          {userType === "native"
-            ? "Native Mandarin Speaker"
-            : "Mandarin Learner"}
-        </Badge>
-        <FormControl>
-          <FormLabel>First name</FormLabel>
-          <FormLabel>{firstName}</FormLabel>
-          <FormLabel>Last name</FormLabel>
-          <FormLabel>{lastName}</FormLabel>
-          <FormLabel>Location</FormLabel>
-          <Input placeholder={location} onChange={handleLocationChange} />
-          <FormLabel>Preferred Language</FormLabel>
-          <FormLabel>
-            {preferredLanguage === "en" ? "English" : "Mandarin Chinese"}
-          </FormLabel>
-          <FormLabel>Biography</FormLabel>
-          <Input placeholder={bio} onChange={handleBioChange} />
-          <FormLabel>Hobbies</FormLabel>
-          <Input placeholder={hobbies} onChange={handleHobbiesChange} />
+  return (
+    <div>
+      <CallNotification />
+      <Navbar
+        currPage={
+          isPrimaryUser ? "/profile/" + user.uid : "/profile/" + params.id
+        }
+      />
+      <div className="primary-user">
+        <UserName
+          userType={userType}
+          userObj={userObj}
+          isPrimaryUser={isPrimaryUser}
+          setDisplayName={setDisplayName}
+          proficiencyMap={proficiencyMap}
+          params={params}
+          userFriends={userFriends}
+        />
+        <div className="user-info">
+          <AboutSection
+            setBio={setBio}
+            isPrimaryUser={isPrimaryUser}
+            bio={bio}
+          />
+          <InterestsSection
+            isPrimaryUser={isPrimaryUser}
+            setIsEditingInterests={() =>
+              setIsEditingInterests(!isEditingInterests)
+            }
+            isEditingInterests={isEditingInterests}
+            onAddInterest={addInterest}
+          />
+          <div className="tags">
+            {interests ? (
+              interests.map((interest, i) => (
+                <Tag
+                  size={"lg"}
+                  borderRadius="full"
+                  variant="solid"
+                  bgColor="#D9D9D9"
+                  color={"black"}
+                  key={i}
+                >
+                  <TagLabel className="heading">{interest}</TagLabel>
+                </Tag>
+              ))
+            ) : (
+              <div>
+                <Text fontSize={"lg"}>No interests to show yet</Text>
+              </div>
+            )}
+          </div>
+        </div>
+        {isPrimaryUser && (
           <Button
-            mt={4}
-            colorScheme="teal"
-            onClick={(event) => handleProfileEdit(event)}
-            type="submit"
+            marginTop={"3rem"}
+            width={"300px"}
+            variant={"outline"}
+            onClick={handleProfileEdit}
+            className="heading"
           >
             Save Changes
           </Button>
-          <h2>Current Profile Picture</h2>
-          <Avatar size={"sm"} bg="grey" src={profilePicURL} />
-          <ProfilePicture />
-        </FormControl>
+        )}
       </div>
-    );
-  } else {
-    render = (
-      <div>
-        <CallNotification />
-        <Navbar currPage={`/profile`} />
-        <Badge colorScheme={isOnline === "online" ? "green" : ""}>
-          {isOnline}
-        </Badge>
-        <Badge colorScheme="green">
-          {userType === "native"
-            ? "Native Mandarin Speaker"
-            : "Mandarin Learner"}
-        </Badge>
-        <FormControl>
-          <FormLabel>First name</FormLabel>
-          <FormLabel>{firstName}</FormLabel>
-          <FormLabel>Last name</FormLabel>
-          <FormLabel>{lastName}</FormLabel>
-          <FormLabel>Location</FormLabel>
-          <FormLabel>{location}</FormLabel>
-          <FormLabel>Preferred Language</FormLabel>
-          <FormLabel>
-            {preferredLanguage === "en" ? "English" : "Mandarin Chinese"}
-          </FormLabel>
-          <FormLabel>Biography</FormLabel>
-          <FormLabel>{bio}</FormLabel>
-          <FormLabel>Hobbies</FormLabel>
-          <FormLabel>{hobbies}</FormLabel>
-          <h2>Profile Picture</h2>
-          <Avatar size={"sm"} bg="grey" src={profilePicURL} />
-        </FormControl>
-      </div>
-    );
-  }
-  return render;
+    </div>
+  );
 }

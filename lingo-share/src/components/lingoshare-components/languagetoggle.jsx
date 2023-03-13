@@ -5,6 +5,7 @@ export default function LanguageToggle({ isEnglish, handleTranslate }) {
   return (
     <div>
       <Tag
+        className="font"
         onClick={() => handleTranslate("en")}
         size={"lg"}
         variant="solid"
@@ -14,6 +15,7 @@ export default function LanguageToggle({ isEnglish, handleTranslate }) {
         English
       </Tag>
       <Tag
+        className="font"
         onClick={() => handleTranslate("zh")}
         size={"lg"}
         variant="solid"

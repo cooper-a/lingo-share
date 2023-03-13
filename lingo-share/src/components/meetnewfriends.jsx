@@ -93,7 +93,9 @@ export default function MeetNewFriends() {
     <div>
       <CallNotification />
       <Navbar currPage={"/meetnewfriends"} />
-      <Text fontSize="3xl">{t("These people are also using LingoShare")}</Text>
+      <Text className="font" fontSize="3xl">
+        {t("These people are also using LingoShare")}
+      </Text>
       <ChakraProvider>
         <div className="field-pg">
           <div className="card-display">

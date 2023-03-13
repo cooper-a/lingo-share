@@ -6,7 +6,9 @@ export default function LandingWelcome({ t, handleStepChange }) {
     <div>
       <ChakraProvider>
         <div className="welcome-pg">
-          <Text fontSize="5xl">{t("Welcome to LingoShare!")}</Text>
+          <Text className="font" fontSize="5xl">
+            {t("Welcome to LingoShare!")}
+          </Text>
           <Button
             className="btn"
             height={"50px"}

@@ -1,7 +1,7 @@
 import * as React from "react";
 import {
   Button,
-  Heading,
+  Text,
   Avatar,
   Box,
   Center,
@@ -39,11 +39,11 @@ export default function ProfileCard({
               }}
             />
           </Flex>
-          <Box p={6}>
+          <Box p={6} className="font">
             <Stack spacing={0} align={"center"} mb={3}>
-              <Heading fontSize={"lg"} fontWeight={500} fontFamily={"body"}>
+              <Text className="font" fontSize={"lg"} fontWeight={"bold"}>
                 {name}
-              </Heading>
+              </Text>
               {/* <Text color={"gray.500"}>Native Speaker</Text> */}
             </Stack>
             <Button

@@ -1,0 +1,51 @@
+.primary-user {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-top: 3%;
+  margin-left: 25%;
+  margin-right: 25%;
+}
+
+.profile-pic {
+  display: flex;
+  position: relative;
+  float: left;
+  /* left: 1rem; */
+  margin-bottom: 1rem;
+}
+
+.user-name {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.interests {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.tags {
+  display: flex;
+  gap: 10px;
+}
+
+.edit-icon {
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.heading {
+  font-family: "Atkinson Hyperlegible", sans-serif;
+}
+
+.editable {
+  margin-left: 10px;
+}

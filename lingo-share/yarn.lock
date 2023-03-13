@@ -2495,6 +2495,11 @@
   resolved "https://registry.npmjs.org/@firebase/webchannel-wrapper/-/webchannel-wrapper-0.9.0.tgz"
   integrity sha512-BpiZLBWdLFw+qFel9p3Zs1jD6QmH7Ii4aTDu6+vx8ShdidChZUXqDhYJly4ZjSgQh54miXbBgBrk0S+jTIh/Qg==
 
+"@fontsource/atkinson-hyperlegible@^4.5.11":
+  version "4.5.11"
+  resolved "https://registry.npmjs.org/@fontsource/atkinson-hyperlegible/-/atkinson-hyperlegible-4.5.11.tgz"
+  integrity sha512-ounnhVVjseNci+G0dGPBwUY7RYM2h8FsfyhzvpUnQYKeiuUcRtGahCswnrKPrvSXNRCl1uqnRSxP3ahJ4miYIQ==
+
 "@fontsource/inter@^4.5.15":
   version "4.5.15"
   resolved "https://registry.npmjs.org/@fontsource/inter/-/inter-4.5.15.tgz"
@@ -10568,11 +10573,6 @@ typedarray-to-buffer@^3.1.5:
   integrity sha512-zdu8XMNEDepKKR+XYOXAVPtWui0ly0NtohUscw+UmaHiAWT8hrV1rr//H6V+0DvJ3OQ19S979M0laLfX8rm82Q==
   dependencies:
     is-typedarray "^1.0.0"
-
-"typescript@^3.2.1 || ^4", "typescript@>= 2.7", "typescript@>=2.8.0 || >= 3.2.0-dev || >= 3.3.0-dev || >= 3.4.0-dev || >= 3.5.0-dev || >= 3.6.0-dev || >= 3.6.0-beta || >= 3.7.0-dev || >= 3.7.0-beta":
-  version "4.9.5"
-  resolved "https://registry.npmjs.org/typescript/-/typescript-4.9.5.tgz"
-  integrity sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g==
 
 unbox-primitive@^1.0.2:
   version "1.0.2"

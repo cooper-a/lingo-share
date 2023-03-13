@@ -3,7 +3,6 @@ import { ArrowBackIcon } from "@chakra-ui/icons";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../contexts/AuthContext";
-import "@fontsource/inter";
 import { useTranslation } from "react-i18next";
 import { ref, set } from "firebase/database";
 import { rtdb } from "../firebase";
