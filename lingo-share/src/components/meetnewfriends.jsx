@@ -129,7 +129,7 @@ export default function MeetNewFriends() {
             console.log(error);
           });
       }
-      navigate("/meetnewfriends");
+      navigate("/meetnewfriends"); // workaround
     }
   };
 
@@ -155,7 +155,7 @@ export default function MeetNewFriends() {
         false
       )
     );
-  }, [statusObj, usersObj, friendsObj]);
+  }, [statusObj, usersObj, friendsObj, friendRequestsObj]);
 
   return (
     <div>

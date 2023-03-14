@@ -71,6 +71,28 @@ export default function FriendRequest() {
     set(acceptedFriendRequestsRef, "");
 
     // remove the identical entry from friend request object
+    removeEntryFromFriendRequests(targetID);
+
+    // remove the added requestSenderID from the requestSenders object
+    const newRequestSenders = { ...requestSenders };
+    delete newRequestSenders[targetID];
+    setRequestSenders(newRequestSenders);
+
+    navigate("/meetnewfriends"); // workaround
+  };
+
+  const handleIgnoreRequest = (event, targetID) => {
+    event.currentTarget.disabled = true;
+
+    removeEntryFromFriendRequests(targetID);
+
+    // remove the added requestSenderID from the requestSenders object
+    const newRequestSenders = { ...requestSenders };
+    delete newRequestSenders[targetID];
+    setRequestSenders(newRequestSenders);
+  };
+
+  const removeEntryFromFriendRequests = (targetID) => {
     get(friendRequestsRef)
       .then((snapshot) => {
         if (snapshot.exists()) {
@@ -86,13 +108,6 @@ export default function FriendRequest() {
       .catch((error) => {
         console.log(error);
       });
-
-    // remove the added requestSenderID from the requestSenders object
-    const newRequestSenders = { ...requestSenders };
-    delete newRequestSenders[targetID];
-    setRequestSenders(newRequestSenders);
-
-    navigate("/meetnewfriends"); // workaround
   };
 
   useEffect(() => {
@@ -113,7 +128,12 @@ export default function FriendRequest() {
             <div key={senderID}>
               <h1>Incoming Friend Request</h1>
               <p>{senderDisplayName} sent you a friend request!</p>
-              <Button direction="row" align="center" variant="outline">
+              <Button
+                direction="row"
+                align="center"
+                variant="outline"
+                onClick={(event) => handleIgnoreRequest(event, senderID)}
+              >
                 {t("Ignore")}
               </Button>
               <Button
