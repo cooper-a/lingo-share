@@ -1,6 +1,5 @@
 import "../styles/nav.css";
-import { ArrowForwardIcon } from "@chakra-ui/icons";
-import { Button, ChakraProvider, Text } from "@chakra-ui/react";
+import { Button, ChakraProvider, Stack, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../contexts/AuthContext";
 import React, { useEffect, useState } from "react";
@@ -45,29 +44,39 @@ export default function Home() {
     <div>
       {showLogin ? (
         <div>
-          <Navbar currPage={"/"} />
+          <Navbar currPage={"/home"} />
           <ChakraProvider>
             <div className="welcome-pg">
-              <Text fontSize="5xl">{t("Welcome to LingoShare!")}</Text>
-              <Button
-                className="btn"
-                height={"50px"}
+              <Text fontSize="5xl">
+                {t("First, we need to get you set up!")}
+              </Text>
+              <Text fontSize="xl">
+                {t("Log in or create an account below")}
+              </Text>
+              <Stack
+                direction={"row"}
+                spacing={4}
+                align={"center"}
                 marginTop={"50px"}
-                onClick={() => handleClick("signup")}
-                rightIcon={<ArrowForwardIcon />}
-                variant="outline"
               >
-                {t("Sign Up")}
-              </Button>
-              <Button
-                className="btn"
-                height={"50px"}
-                onClick={() => handleClick("login")}
-                rightIcon={<ArrowForwardIcon />}
-                variant="outline"
-              >
-                {t("Login")}
-              </Button>
+                <Button
+                  className="btn"
+                  height={"50px"}
+                  onClick={() => handleClick("login")}
+                  variant="outline"
+                >
+                  {t("Log In")}
+                </Button>
+                <Button
+                  className="btn"
+                  height={"50px"}
+                  marginRight={"10px"}
+                  onClick={() => handleClick("signup")}
+                  variant="outline"
+                >
+                  {t("Create an Account")}
+                </Button>
+              </Stack>
             </div>
           </ChakraProvider>
         </div>

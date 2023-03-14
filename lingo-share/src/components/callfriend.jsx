@@ -149,12 +149,14 @@ export default function CallFriend() {
   return (
     <div>
       <CallNotification />
-      <Navbar currPage={"/callfriend"} />
+      <Navbar topLeftDisplay={t("Call a Friend")} currPage={"/callfriend"} />
       {!hasNoFriends ? (
-        <Text fontSize="3xl">{t("Who would you like to call?")}</Text>
+        <Text className="font" fontSize="3xl">
+          {t("Who would you like to call?")}
+        </Text>
       ) : (
         <div className="welcome-pg">
-          <Text fontSize="3xl">
+          <Text className="font" fontSize="3xl">
             {t("You don’t have any LingoShare friends yet!")}
           </Text>
           <Button
@@ -163,7 +165,7 @@ export default function CallFriend() {
             variant={"outline"}
             onClick={() => navigate("/meetnewfriends")}
           >
-            Meet New Friends
+            {t("Meet New Friends")}
           </Button>
         </div>
       )}

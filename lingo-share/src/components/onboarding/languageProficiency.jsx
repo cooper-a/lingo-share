@@ -9,7 +9,6 @@ import "../../styles/onboarding.css";
 import { useTranslation } from "react-i18next";
 
 export default function LanguageProficiency() {
-  const [error, setError] = useState(null);
   const navigate = useNavigate();
   const [userType, setUserType] = useState("");
   const [snapshotData, setSnapshotData] = useState({});
@@ -18,7 +17,7 @@ export default function LanguageProficiency() {
   const { t } = useTranslation();
 
   const navigateOnboarding = () => {
-    navigate("/welcomepage");
+    navigate("/languagepreference");
   };
 
   const handleSelection = (proficiency) => {

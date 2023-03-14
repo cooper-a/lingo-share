@@ -42,7 +42,7 @@ export default function AccountOptions({ user, handleClick, handleLogout }) {
         <MenuList>
           <MenuItem
             icon={<Icon className="menu-user-icon" name="settings" />}
-            onClick={() => handleClick("account")}
+            onClick={() => handleClick("profile/" + user.uid)}
           >
             {t("Account")}
           </MenuItem>
