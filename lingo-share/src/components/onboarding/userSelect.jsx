@@ -1,4 +1,4 @@
-import { Button, ChakraProvider, Text } from "@chakra-ui/react";
+import { Button, ChakraProvider, Stack, Text } from "@chakra-ui/react";
 import { rtdb } from "../../firebase";
 import { set, ref } from "firebase/database";
 import { useNavigate } from "react-router-dom";
@@ -13,7 +13,6 @@ export default function UserSelect() {
     isOnboarded: false,
     userDisplayName: user.displayName,
   });
-  const [error, setError] = useState(null);
   const navigate = useNavigate();
   const { t } = useTranslation();
 
@@ -50,25 +49,31 @@ export default function UserSelect() {
     <div>
       <Navbar currPage={"/userselect"} />
       <ChakraProvider>
-        <div className="field-pg">
+        <div className="welcome-pg">
           <Text fontSize="4xl">{t("You are...")}</Text>
-          <Button
-            variant="outline"
-            className="selection-btn"
-            height={"50px"}
-            onClick={() => handleSelection("native")}
+          <Stack
+            direction={"row"}
+            spacing={4}
+            align={"center"}
             marginTop={"50px"}
           >
-            {t("A native Mandarin speaker")}
-          </Button>
-          <Button
-            className="selection-btn"
-            variant="outline"
-            height={"50px"}
-            onClick={() => handleSelection("learner")}
-          >
-            {t("Learning to speak Mandarin")}
-          </Button>
+            <Button
+              variant="outline"
+              className="selection-btn"
+              height={"50px"}
+              onClick={() => handleSelection("native")}
+            >
+              {t("A native Mandarin speaker")}
+            </Button>
+            <Button
+              className="selection-btn"
+              variant="outline"
+              height={"50px"}
+              onClick={() => handleSelection("learner")}
+            >
+              {t("Learning to speak Mandarin")}
+            </Button>
+          </Stack>
         </div>
       </ChakraProvider>
     </div>

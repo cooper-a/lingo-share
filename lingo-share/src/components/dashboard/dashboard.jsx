@@ -3,11 +3,12 @@ import {
   Card,
   CardBody,
   ChakraProvider,
-  Heading,
+  Text,
   SimpleGrid,
   Stack,
 } from "@chakra-ui/react";
 import "../../styles/card.css";
+import "@fontsource/atkinson-hyperlegible";
 import { rtdb } from "../../firebase";
 import { ref, get } from "firebase/database";
 import { useNavigate } from "react-router-dom";
@@ -44,7 +45,9 @@ export default function Dashboard() {
         <CardBody>
           <Icon name={iconName} width={"90px"} height={"90px"} />
           <Stack mt="6" spacing="3">
-            <Heading size="sm">{text}</Heading>
+            <Text fontWeight={"bold"} className="font" fontSize="md">
+              {text}
+            </Text>
           </Stack>
         </CardBody>
       </Card>

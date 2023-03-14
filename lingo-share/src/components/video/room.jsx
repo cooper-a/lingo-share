@@ -157,6 +157,7 @@ export default function Room({ roomName, room, handleLogout, callID }) {
       isClosable: true,
       containerStyle: {
         marginBottom: "125px",
+        fontFamily: "Atkinson Hyperlegible",
       },
       icon: <Icon name={"thread"} width={"25px"} height={"25px"} />,
     });
