@@ -57,7 +57,7 @@ export default function Dashboard() {
       <Navbar currPage={"/dashboard"} />
       <ChakraProvider>
         <div className="dash">
-          <SimpleGrid columns={2} spacing={10}>
+          <SimpleGrid columns={3} spacing={10}>
             <CardItem
               text={t("Call a Friend")}
               iconName={"video"}

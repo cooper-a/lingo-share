@@ -126,8 +126,7 @@ const resources = {
       "These people are also using LingoShare": "这些用户也在使用LingoShare",
       "is calling you": "正在呼叫你",
       Accept: "接受",
-      // TODO - translate these
-      "Blocked People": "Blocked People",
+      "Blocked People": "被屏蔽的用户",
     },
   },
 };
