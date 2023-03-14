@@ -181,6 +181,7 @@ export default function CallFriend() {
                     onlineStatus={value.state}
                     displayName={value.userDisplayName}
                     profileURL={value.profilePic}
+                    userType={value.userType}
                     disableButton={disableButton}
                     handleCallClick={handleClick}
                     handleViewProfile={handleClickViewProfile}

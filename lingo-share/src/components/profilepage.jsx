@@ -196,13 +196,23 @@ export default function ProfilePage() {
                   size={"lg"}
                   borderRadius="full"
                   variant="solid"
-                  bgColor="#D9D9D9"
+                  bgColor="white"
                   color={"black"}
+                  borderWidth={"1px"}
+                  height={"50px"}
+                  borderColor={"#393939"}
+                  mr="4"
                   key={i}
                 >
-                  <TagLabel className="heading">{interest}</TagLabel>
+                  <TagLabel p="2" className="heading">
+                    {interest}
+                  </TagLabel>
                   {isPrimaryUser && (
-                    <TagCloseButton onClick={() => removeInterest(interest)} />
+                    <TagCloseButton
+                      pr="3"
+                      color={"#393939"}
+                      onClick={() => removeInterest(interest)}
+                    />
                   )}
                 </Tag>
               ))

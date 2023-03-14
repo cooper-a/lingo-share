@@ -15,6 +15,8 @@ export default function ProfileCard({
   userId,
   isFriend,
   profileURL,
+  userType,
+  interests,
   handleClickViewProfile,
   handleClickManageFriend,
 }) {
@@ -23,7 +25,17 @@ export default function ProfileCard({
   return (
     <div>
       <Center py={6}>
-        <Box maxW={"270px"} w={"full"} bg={"#D9D9D9"} rounded={"lg"}>
+        <Box
+          borderWidth={"1px"}
+          borderColor={"#363636"}
+          maxW={"339px"}
+          height={"380px"}
+          w={"full"}
+          bg={"white"}
+          rounded={"2xl"}
+          position={"relative"}
+          className="profile-card"
+        >
           <Flex justify={"center"} mt={7}>
             <Avatar
               size={"xl"}
@@ -39,19 +51,34 @@ export default function ProfileCard({
               }}
             />
           </Flex>
-          <Box p={6} className="font">
-            <Stack spacing={0} align={"center"} mb={3}>
+          <Box pl={6} pr={6} pt={6} className="font">
+            <Stack spacing={2} align={"center"} mb={3}>
               <Text className="font" fontSize={"lg"} fontWeight={"bold"}>
                 {name}
               </Text>
-              {/* <Text color={"gray.500"}>Native Speaker</Text> */}
+              <Text>
+                {userType === "learner" ? "Language Learner" : "Native Speaker"}
+              </Text>
+              <Text fontSize={"sm"}>
+                {interests ? "Interests: " + interests.join(", ") : ""}
+              </Text>
             </Stack>
+          </Box>
+          <Box
+            position={"absolute"}
+            bottom={"0px"}
+            pl={6}
+            pr={6}
+            pb={6}
+            className="font"
+          >
             <Button
               w={"full"}
+              variant={"link"}
               mt={3}
               bg={"white"}
-              color={"black"}
-              rounded={"md"}
+              color={"#363636"}
+              textDecoration={"underline"}
               onClick={() => handleClickViewProfile(userId)}
             >
               {t("View Profile")}
@@ -60,8 +87,8 @@ export default function ProfileCard({
               <Button
                 w={"full"}
                 mt={3}
-                bg={"white"}
-                color={"black"}
+                bg={"#363636"}
+                color={"white"}
                 rounded={"md"}
                 onClick={(e) => handleClickManageFriend(e, userId, true)}
               >
@@ -72,9 +99,11 @@ export default function ProfileCard({
                 w={"full"}
                 mt={3}
                 bg={"white"}
-                color={"black"}
+                color={"#363636"}
                 rounded={"md"}
                 onClick={(e) => handleClickManageFriend(e, userId, false)}
+                borderWidth={"1px"}
+                borderColor={"#363636"}
               >
                 {t("Remove Friend")}
               </Button>

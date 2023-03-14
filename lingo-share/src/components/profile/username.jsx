@@ -19,6 +19,7 @@ import { rtdb, storage } from "../../firebase";
 import { ref as dbRef, set } from "firebase/database";
 import { updateProfile } from "firebase/auth";
 import { UserAuth } from "../../contexts/AuthContext";
+import EditableControls from "./editablecontrols";
 
 export default function UserName({
   curPage,
@@ -95,7 +96,7 @@ export default function UserName({
                 onChange={(e) => setDisplayName(e.target.value)}
                 maxWidth={"275px"}
               />
-              <Icon className="editable" name="pen" />
+              <EditableControls />
             </Editable>
           </div>
           <div className="heading">
@@ -135,7 +136,7 @@ export default function UserName({
               </div>
             </div>
             <div>
-              <Text className="heading" fontSize={"lg"} marginLeft={"48px"}>
+              <Text className="heading" fontSize={"lg"} marginLeft={"50px"}>
                 {userObj.userType === "native"
                   ? t("Native Mandarin Speaker")
                   : t("Mandarin Learner")}{" "}
@@ -151,25 +152,31 @@ export default function UserName({
               className="heading"
             >
               <Button
-                variant={"outline"}
                 onClick={() =>
                   handleClickManageFriend(
                     params.id,
                     !(params.id in userFriends)
                   )
                 }
-                bgColor={params.id in userFriends ? "#D9D9D9" : "white"}
+                width={"175px"}
+                height={"45px"}
+                bgColor={params.id in userFriends ? "white" : "#393939"}
+                color={params.id in userFriends ? "#393939" : "white"}
                 rightIcon={
-                  params.id in userFriends ? (
-                    <Icon name="check_circle" />
-                  ) : (
-                    <></>
-                  )
+                  params.id in userFriends && <Icon name="check_circle" />
                 }
               >
                 {params.id in userFriends ? t("Friends") : t("Add as Friend")}
               </Button>
-              <Button variant={"outline"}>{t("Block User")}</Button>
+              <Button
+                width={"175px"}
+                height={"45px"}
+                variant={"outline"}
+                borderWidth={"1.5px"}
+                borderColor={"#393939"}
+              >
+                {t("Block User")}
+              </Button>
             </Stack>
           </div>
         </div>

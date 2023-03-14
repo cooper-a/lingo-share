@@ -110,6 +110,8 @@ export default function MeetNewFriends() {
                     userId={key}
                     isFriend={value.isFriend}
                     profileURL={value.profilePic}
+                    userType={value.userType}
+                    interests={value.interests}
                     handleClickViewProfile={handleClickViewProfile}
                     handleClickManageFriend={handleClickManageFriend}
                   />

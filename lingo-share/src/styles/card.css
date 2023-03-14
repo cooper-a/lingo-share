@@ -4,6 +4,7 @@
   height: 200px;
   display: flex;
   align-items: center;
+  filter: drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.25));
 }
 
 .dash {
@@ -20,4 +21,14 @@
 
 .font {
   font-family: "Atkinson Hyperlegible", sans-serif;
+}
+
+.font-heading {
+  font-family: "Atkinson Hyperlegible";
+  font-style: normal;
+  font-weight: 700;
+}
+
+.call-card {
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 }

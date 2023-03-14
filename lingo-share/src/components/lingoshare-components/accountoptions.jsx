@@ -22,21 +22,7 @@ export default function AccountOptions({ user, handleClick, handleLogout }) {
       <Menu>
         <MenuButton>
           <HStack className={"avatar"}>
-            <Avatar size={"sm"} bg="grey" src={user.photoURL} />
-            <VStack
-              display={{ base: "none", md: "flex" }}
-              alignItems="flex-start"
-              spacing="1px"
-              ml="2"
-            >
-              <Text fontSize="sm">{user.displayName}</Text>
-              <Text fontSize="xs" color="gray.600">
-                {user.email}
-              </Text>
-            </VStack>
-            <Box display={{ base: "none", md: "flex" }}>
-              <Icon name={"chevron_down"} width={"30px"} height={"30px"} />
-            </Box>
+            <Avatar size={"md"} bg="grey" src={user.photoURL} />
           </HStack>
         </MenuButton>
         <MenuList>

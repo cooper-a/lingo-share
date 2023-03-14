@@ -4,7 +4,6 @@ import {
   Button,
   Card,
   CardHeader,
-  Heading,
   Avatar,
   Box,
   Text,
@@ -60,6 +59,7 @@ export default function CallCard({
   displayName,
   disableButton,
   profileURL,
+  userType,
   handleCallClick,
   handleViewProfile,
 }) {
@@ -79,13 +79,20 @@ export default function CallCard({
         displayName={displayName}
         userId={userId}
       />
-      <Card bgColor={"#D9D9D9"} width={"700px"}>
+      <Card
+        className="call-card"
+        borderWidth={"1px"}
+        borderColor={"#363636"}
+        width={"700px"}
+        height={"115px"}
+        rounded={"2xl"}
+      >
         <CardHeader>
           <Flex spacing="4">
             <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
               {onlineStatus === "online" ? (
                 <Avatar bg="grey" src={profileURL}>
-                  <AvatarBadge boxSize="1.25em" bg="green.500" />
+                  <AvatarBadge boxSize="0.75em" bg="green.500" />
                 </Avatar>
               ) : (
                 <Avatar bg="grey" src={profileURL} />
@@ -93,15 +100,20 @@ export default function CallCard({
 
               <Box>
                 {displayName ? (
-                  <Text fontWeight={"bold"} fontSize="md">
+                  <Text float={"left"} fontWeight={"bold"} fontSize="lg">
                     {displayName}
                   </Text>
                 ) : (
                   <Text fontSize="sm">{userId}</Text>
                 )}
+                <Text>
+                  {userType === "learner"
+                    ? "Language Learner"
+                    : "Native Speaker"}
+                </Text>
                 {onlineStatus === "online" ? (
                   <Text className="font" float={"left"}>
-                    {t("Online")}
+                    {t("• Online")}
                   </Text>
                 ) : (
                   <Text className="font" float={"left"}>
@@ -114,13 +126,15 @@ export default function CallCard({
               <Button
                 className="font"
                 onClick={(event) => handleViewProfile(userId)}
-                isDisabled={false}
                 direction="row"
                 align="center"
-                variant="outline"
                 bgColor={"white"}
                 marginRight={"15px"}
+                color={"#363636"}
+                rounded={"md"}
+                textDecoration={"underline"}
                 borderRadius={"lg"}
+                variant="link"
               >
                 {t("View Profile")}
               </Button>
@@ -129,11 +143,14 @@ export default function CallCard({
                 onClick={() => handleConfirmModuleOpen()}
                 isDisabled={disableButton(userId, onlineStatus)}
                 direction="row"
+                width={"100px"}
                 align="center"
-                leftIcon={<PhoneIcon w={3} h={3} />}
                 variant="outline"
-                bgColor={"white"}
+                color={"white"}
+                bgColor={"#363636"}
                 borderRadius={"lg"}
+                ml={"20px"}
+                mr={"15px"}
               >
                 {t("Call")}
               </Button>
