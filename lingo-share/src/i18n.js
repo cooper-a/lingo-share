@@ -82,6 +82,14 @@ const resources = {
       "Speaks some ": "Speaks some ",
       "Speaks ": "Speaks ",
       " well": " well",
+      "LingoShare is a place where you can meet Mandarin speakers and learners!":
+        "LingoShare is a place where you can meet Mandarin speakers and learners!",
+      "Connect and form friendships by learning from one another!":
+        "Connect and form friendships by learning from one another!",
+      Next: "Next",
+      "Create an Account": "Create an Account",
+      "First, we need to get you set up!": "First, we need to get you set up!",
+      "Log in or create an account below": "Log in or create an account below",
     },
   },
   zh: {
@@ -158,6 +166,14 @@ const resources = {
       "Speaks some ": "会说一些",
       "Speaks ": "会说流利的",
       " well": " ",
+      "LingoShare is a place where you can meet Mandarin speakers and learners!":
+        "LingoShare是一个让你能与中文学习者和中文母语使用者相遇的地方！",
+      "Connect and form friendships by learning from one another!":
+        "让我们互相学习并结交朋友吧！",
+      Next: "下一步",
+      "Create an Account": "创建账户",
+      "First, we need to get you set up!": "首先，我们需要帮你设立一个账户！",
+      "Log in or create an account below": "登录或者创建一个新账户",
     },
   },
 };
