@@ -13,7 +13,7 @@ import React, { useState } from "react";
 import { updateProfile } from "firebase/auth";
 import Icon from "@adeira/icons";
 
-export default function ProfilePicture({ curPage }) {
+export default function ProfilePicture({ curPage, onOpenSuccessAlert }) {
   const [photoBinary, setPhotoBinary] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -28,6 +28,7 @@ export default function ProfilePicture({ curPage }) {
       setPhotoBinary(null);
       console.log("Uploaded a profile pic!");
       saveCompressedPhotoURL();
+      window.location.reload();
     });
   };
 
@@ -40,7 +41,6 @@ export default function ProfilePicture({ curPage }) {
           photoURL: url, // save the compressed photo url to auth context
         });
         set(dbRef(rtdb, `users/${user.uid}/profilePic`), url);
-        navigate(curPage);
       })
       .catch((error) => {
         console.log(error);

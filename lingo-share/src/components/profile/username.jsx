@@ -16,6 +16,7 @@ import { useTranslation } from "react-i18next";
 
 export default function UserName({
   curPage,
+  displayName,
   userObj,
   isPrimaryUser,
   setDisplayName,
@@ -23,6 +24,7 @@ export default function UserName({
   isOnline,
   proficiencyMap,
   params,
+  profilePic,
   userFriends,
   handleClickManageFriend,
 }) {
@@ -32,12 +34,7 @@ export default function UserName({
     <div className="profile-pic">
       <div className="picture">
         <div>
-          <Avatar
-            width={"150px"}
-            height={"150px"}
-            bg="grey"
-            src={userObj.profilePic}
-          />
+          <Avatar width={"150px"} height={"150px"} bg="grey" src={profilePic} />
         </div>
         {isPrimaryUser && (
           <div className="picture-upload-btn">
@@ -49,12 +46,12 @@ export default function UserName({
         <div className="user-name">
           <div className="heading">
             <Editable
+              value={displayName}
               float={"left"}
               marginLeft={"48px"}
               marginTop={"24px"}
               fontSize="4xl"
               fontWeight={"bold"}
-              defaultValue={userObj.userDisplayName}
             >
               <EditablePreview />
               <EditableInput

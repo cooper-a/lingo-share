@@ -33,6 +33,7 @@ export default function ProfilePage() {
   const [userType, setUserType] = useState("");
   const [isEditingInterests, setIsEditingInterests] = useState(false);
   const [isOnline, setIsOnline] = useState("offline");
+  const [profilePicURL, setProfilePicURL] = useState(null);
   const [bio, setBio] = useState("");
   const [interests, setInterests] = useState(new Set([]));
   const [userObj, setUserObj] = useState({});
@@ -109,12 +110,16 @@ export default function ProfilePage() {
   };
 
   useEffect(() => {
+    console.log(user.uid);
     setIsPrimaryUser(user.uid === params.id);
+  }, [user, params]);
+
+  useEffect(() => {
     onValue(targetUserRef, (snapshot) => {
       let snapshotVal = snapshot.val();
       console.log(snapshotVal);
       setDisplayName(snapshotVal.userDisplayName);
-      // setProfilePicURL(snapshotVal.profilePic);
+      setProfilePicURL(snapshotVal.profilePic);
       setUserType(snapshotVal.userType);
       setBio(snapshotVal.bio);
       setUserObj(snapshotVal);
@@ -153,6 +158,7 @@ export default function ProfilePage() {
           curPage={
             isPrimaryUser ? "/profile/" + user.uid : "/profile/" + params.id
           }
+          displayName={displayName}
           userType={userType}
           userObj={userObj}
           isPrimaryUser={isPrimaryUser}
@@ -160,8 +166,10 @@ export default function ProfilePage() {
           setDisplayName={setDisplayName}
           proficiencyMap={proficiencyMap}
           params={params}
+          profilePic={profilePicURL}
           userFriends={userFriends}
           handleClickManageFriend={handleClickManageFriend}
+          onOpenSuccessAlert={onOpen}
         />
         <div className="user-info">
           <AboutSection
