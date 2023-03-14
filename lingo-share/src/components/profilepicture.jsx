@@ -2,21 +2,14 @@ import { Text } from "@chakra-ui/react";
 import { UserAuth } from "../contexts/AuthContext";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import {
-  getDownloadURL,
-  ref as storageRef,
-  uploadBytes,
-} from "firebase/storage";
-import { ref as dbRef, set } from "firebase/database";
-import { rtdb, storage } from "../firebase";
+import { ref as storageRef, uploadBytes } from "firebase/storage";
+import { storage } from "../firebase";
 import React, { useState } from "react";
-import { updateProfile } from "firebase/auth";
 import Icon from "@adeira/icons";
 
-export default function ProfilePicture({ curPage, onOpenSuccessAlert }) {
+export default function ProfilePicture({ saveCompressedPhotoURL }) {
   const [photoBinary, setPhotoBinary] = useState(null);
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
   const { user } = UserAuth();
   const { t } = useTranslation();
 
@@ -28,23 +21,7 @@ export default function ProfilePicture({ curPage, onOpenSuccessAlert }) {
       setPhotoBinary(null);
       console.log("Uploaded a profile pic!");
       saveCompressedPhotoURL();
-      window.location.reload();
     });
-  };
-
-  const saveCompressedPhotoURL = () => {
-    getDownloadURL(
-      storageRef(storage, `profile_pics/${user.uid}_profile_150x150`)
-    )
-      .then((url) => {
-        updateProfile(user, {
-          photoURL: url, // save the compressed photo url to auth context
-        });
-        set(dbRef(rtdb, `users/${user.uid}/profilePic`), url);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
   };
 
   const handleChange = (event) => {

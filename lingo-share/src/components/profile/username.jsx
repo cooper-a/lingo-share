@@ -7,12 +7,18 @@ import {
   Text,
   Stack,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import Icon from "@adeira/icons";
 import "@fontsource/atkinson-hyperlegible";
 import "../../styles/profilepage.css";
 import ProfilePicture from "../profilepicture";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import { getDownloadURL, ref as storageRef } from "firebase/storage";
+import { rtdb, storage } from "../../firebase";
+import { ref as dbRef, set } from "firebase/database";
+import { updateProfile } from "firebase/auth";
+import { UserAuth } from "../../contexts/AuthContext";
 
 export default function UserName({
   curPage,
@@ -25,20 +31,47 @@ export default function UserName({
   proficiencyMap,
   params,
   profilePic,
+  onOpenSuccessAlert,
   userFriends,
   handleClickManageFriend,
 }) {
   const { t } = useTranslation();
+  const { user } = UserAuth();
+  const [pfp, setPfp] = useState(null);
+  const navigate = useNavigate();
+
+  const saveCompressedPhotoURL = () => {
+    getDownloadURL(
+      storageRef(storage, `profile_pics/${user.uid}_profile_150x150`)
+    )
+      .then((url) => {
+        setPfp(url);
+        set(dbRef(rtdb, `users/${user.uid}/profilePic`), url);
+        updateProfile(user, {
+          photoURL: url, // save the compressed photo url to auth context
+        });
+        navigate(curPage);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    onOpenSuccessAlert();
+  };
 
   return (
     <div className="profile-pic">
       <div className="picture">
         <div>
-          <Avatar width={"150px"} height={"150px"} bg="grey" src={profilePic} />
+          <Avatar
+            width={"150px"}
+            height={"150px"}
+            bg="grey"
+            src={pfp ? pfp : profilePic}
+          />
         </div>
         {isPrimaryUser && (
           <div className="picture-upload-btn">
-            <ProfilePicture curPage={curPage} />
+            <ProfilePicture saveCompressedPhotoURL={saveCompressedPhotoURL} />
           </div>
         )}
       </div>
