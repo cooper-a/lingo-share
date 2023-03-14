@@ -17,3 +17,7 @@
   min-height: 100vh;
   gap: 15px;
 }
+
+.font {
+  font-family: "Atkinson Hyperlegible", sans-serif;
+}

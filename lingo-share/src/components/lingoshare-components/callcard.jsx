@@ -27,13 +27,14 @@ const ConfirmationModal = ({
   userId,
   onClose,
 }) => {
+  const { t } = useTranslation();
   return (
     <div>
       <Modal isCentered onClose={onClose} size={"xs"} isOpen={isOpen}>
         <ModalOverlay backdropFilter="blur(10px) hue-rotate(90deg)" />
         <ModalContent>
           <ModalHeader alignSelf={"center"}>
-            {"Call " + displayName + "?"}
+            {t("Call ") + displayName + "?"}
           </ModalHeader>
           <ModalCloseButton />
           <ModalFooter alignSelf={"center"}>
@@ -42,10 +43,10 @@ const ConfirmationModal = ({
               onClick={(event) => handleCallConfirm(event, userId)}
               marginRight={"5px"}
             >
-              Yes
+              {t("Yes")}
             </Button>
             <Button variant={"outline"} onClick={onClose} marginleft={"5px"}>
-              No
+              {t("No")}
             </Button>
           </ModalFooter>
         </ModalContent>
@@ -93,19 +94,26 @@ export default function CallCard({
 
               <Box>
                 {displayName ? (
-                  <Heading size="sm">{displayName}</Heading>
+                  <Text fontWeight={"bold"} fontSize="md">
+                    {displayName}
+                  </Text>
                 ) : (
-                  <Heading size="sm">{userId}</Heading>
+                  <Text fontSize="sm">{userId}</Text>
                 )}
                 {onlineStatus === "online" ? (
-                  <Text float={"left"}>{t("Online")}</Text>
+                  <Text className="font" float={"left"}>
+                    {t("Online")}
+                  </Text>
                 ) : (
-                  <Text float={"left"}>{t("Offline")}</Text>
+                  <Text className="font" float={"left"}>
+                    {t("Offline")}
+                  </Text>
                 )}
               </Box>
             </Flex>
             <Box alignSelf={"center"}>
               <Button
+                className="font"
                 onClick={(event) => handleViewProfile(userId)}
                 isDisabled={false}
                 direction="row"
@@ -118,6 +126,7 @@ export default function CallCard({
                 {t("View Profile")}
               </Button>
               <Button
+                className="font"
                 onClick={() => handleConfirmModuleOpen()}
                 isDisabled={disableButton(userId, onlineStatus)}
                 direction="row"

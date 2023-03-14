@@ -122,8 +122,10 @@ export default function YourFriends() {
         friendsObj,
         blockedObj,
         blockedByObj,
+        {},
         user.uid,
-        true
+        true,
+        false
       )
     );
   }, [statusObj, usersObj, friendsObj]);

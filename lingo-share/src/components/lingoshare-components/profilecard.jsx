@@ -1,7 +1,7 @@
 import * as React from "react";
 import {
   Button,
-  Heading,
+  Text,
   Avatar,
   Box,
   Center,
@@ -14,6 +14,7 @@ export default function ProfileCard({
   name,
   userId,
   isFriend,
+  friendRequestSent,
   profileURL,
   handleClickViewProfile,
   handleClickManageFriend,
@@ -39,11 +40,11 @@ export default function ProfileCard({
               }}
             />
           </Flex>
-          <Box p={6}>
+          <Box p={6} className="font">
             <Stack spacing={0} align={"center"} mb={3}>
-              <Heading fontSize={"lg"} fontWeight={500} fontFamily={"body"}>
+              <Text className="font" fontSize={"lg"} fontWeight={"bold"}>
                 {name}
-              </Heading>
+              </Text>
               {/* <Text color={"gray.500"}>Native Speaker</Text> */}
             </Stack>
             <Button
@@ -56,7 +57,19 @@ export default function ProfileCard({
             >
               {t("View Profile")}
             </Button>
-            {!isFriend ? (
+            {!isFriend && friendRequestSent && (
+              <Button
+                w={"full"}
+                mt={3}
+                bg={"grey"}
+                color={"black"}
+                rounded={"md"}
+                disabled={true}
+              >
+                {t("Friend Request Sent")}
+              </Button>
+            )}
+            {!isFriend && !friendRequestSent && (
               <Button
                 w={"full"}
                 mt={3}
@@ -67,7 +80,8 @@ export default function ProfileCard({
               >
                 {t("Add as Friend")}
               </Button>
-            ) : (
+            )}
+            {isFriend && !friendRequestSent && (
               <Button
                 w={"full"}
                 mt={3}

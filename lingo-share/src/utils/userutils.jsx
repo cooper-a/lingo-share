@@ -4,12 +4,14 @@ const mergeObj = (
   friendsObj,
   blockedObj,
   blockedByObj,
+  friendRequestsObj,
   uid,
   friendsOnly,
   blockedOnly
 ) => {
   let res = [];
   let friendsDict = {};
+  let pendingFriendRequestList = [];
 
   // Takes in status, friends, and users
 
@@ -18,6 +20,16 @@ const mergeObj = (
   }
 
   // First we merge the status and users objects and add the isFriend key
+  Object.values(friendRequestsObj).forEach((requestsObj) => {
+    for (let [senderID, receiverIDList] of Object.entries(requestsObj)) {
+      if (senderID === uid) {
+        Object.keys(receiverIDList).forEach((receiverID) => {
+          pendingFriendRequestList.push(receiverID);
+        });
+      }
+    }
+  });
+
   // loop through each dictionary in userList
   for (let userDict of userObj) {
     // loop through each key-value pair in the current dictionary
@@ -39,12 +51,22 @@ const mergeObj = (
         } else {
           mergedDict = { ...mergedDict, isFriend: false };
         }
+        if (pendingFriendRequestList.includes(userID)) {
+          mergedDict = { ...mergedDict, friendRequestSent: true };
+        } else {
+          mergedDict = { ...mergedDict, friendRequestSent: false };
+        }
         res[userID] = mergedDict;
       } else {
         if (friendsDict.hasOwnProperty(userID)) {
           userValue = { ...userValue, isFriend: true };
         } else {
           userValue = { ...userValue, isFriend: false };
+        }
+        if (pendingFriendRequestList.includes(userID)) {
+          userValue = { ...userValue, friendRequestSent: true };
+        } else {
+          userValue = { ...userValue, friendRequestSent: false };
         }
         // if the userID isn't in the statusList, just add the userValue to the result object with the userID as the key
         res[userID] = userValue;

@@ -1,17 +1,20 @@
 .onboard-grid {
   display: grid;
+  font-family: "Atkinson Hyperlegible", sans-serif;
   grid-template-columns: auto auto;
   margin-top: 7%;
   column-gap: 100px;
 }
 
 .grid-item {
+  font-family: "Atkinson Hyperlegible", sans-serif;
   display: flex;
   align-items: center;
   justify-content: end;
 }
 
 .grid-btns {
+  font-family: "Atkinson Hyperlegible", sans-serif;
   display: grid;
   grid-template-columns: auto;
   row-gap: 20px;
@@ -19,5 +22,6 @@
 }
 
 .grid-item-btns {
+  font-family: "Atkinson Hyperlegible", sans-serif;
   display: flex;
 }

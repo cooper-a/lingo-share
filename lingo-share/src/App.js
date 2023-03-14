@@ -21,6 +21,8 @@ import MeetNewFriends from "./components/meetnewfriends";
 import ProfilePage from "./components/profilepage";
 import YourFriends from "./components/yourfriends";
 import BlockedPeople from "./components/blockedpeople";
+import LandingPage from "./components/app-intro/landingpage";
+import LanguagePreference from "./components/onboarding/languagePreference";
 
 function App() {
   return (
@@ -29,7 +31,8 @@ function App() {
         <Router>
           <div className="App">
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/home" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/prompt" element={<PromptSidebar />} />
@@ -46,6 +49,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <LanguageProficiency />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/languagepreference"
+                element={
+                  <ProtectedRoute>
+                    <LanguagePreference />
                   </ProtectedRoute>
                 }
               />

@@ -90,6 +90,7 @@ export default function BlockedPeople() {
         friendsObj,
         blockedObj,
         blockedByObj,
+        {},
         user.uid,
         false,
         true
