@@ -22,6 +22,7 @@ export default function Navbar({ currPage }) {
     "/meetnewfriends": t("Meet New Friends"),
     "/account": t("Profile"),
     "/yourfriends": t("Your Friends"),
+    "/blockedpeople": t("Blocked People"),
   };
 
   useEffect(() => {

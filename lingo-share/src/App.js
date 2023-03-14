@@ -20,6 +20,7 @@ import LanguageProficiency from "./components/onboarding/languageProficiency";
 import MeetNewFriends from "./components/meetnewfriends";
 import ProfilePage from "./components/profilepage";
 import YourFriends from "./components/yourfriends";
+import BlockedPeople from "./components/blockedpeople";
 
 function App() {
   return (
@@ -109,6 +110,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <YourFriends />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/blockedpeople"
+                element={
+                  <ProtectedRoute>
+                    <BlockedPeople />
                   </ProtectedRoute>
                 }
               />
