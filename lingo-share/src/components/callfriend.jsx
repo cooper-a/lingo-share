@@ -1,29 +1,30 @@
-import React, { useState, useEffect } from "react";
-import { Button, ChakraProvider, Text } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
-import "../styles/homepage.css";
-import { UserAuth } from "../contexts/AuthContext";
+import { Button, ChakraProvider, Text, UnorderedList } from "@chakra-ui/react";
 import {
-  ref,
+  get,
   onValue,
   push,
-  get,
-  set,
+  ref,
   serverTimestamp,
+  set,
 } from "firebase/database";
+import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import { UserAuth } from "../contexts/AuthContext";
 import { rtdb } from "../firebase";
-import Navbar from "./navbar";
-import { UnorderedList } from "@chakra-ui/react";
+import "../styles/homepage.css";
+import { mergeObj } from "../utils/userutils";
 import CallNotification from "./callnotification";
 import CallCard from "./lingoshare-components/callcard";
-import { useTranslation } from "react-i18next";
-import { mergeObj } from "../utils/userutils";
+import Navbar from "./navbar";
 
 export default function CallFriend() {
   const [statusObj, setStatusObj] = useState([]);
   const [usersObj, setUsersObj] = useState([]);
   const [friendsObj, setFriendsObj] = useState([]);
   const [mergedObj, setMergedObj] = useState([]);
+  const [blockedObj, setBlockedObj] = useState([]);
+  const [blockedByObj, setBlockedByObj] = useState([]);
   const [hasNoFriends, setHasNoFriends] = useState(true);
   const { user } = UserAuth();
   const navigate = useNavigate();
@@ -51,10 +52,21 @@ export default function CallFriend() {
             if (userID === user.uid) {
               if (userValue.friends) {
                 setFriendsObj(userValue.friends);
+                // Edge case: if user has a friend but they are blocked
                 setHasNoFriends(false);
               } else {
                 setFriendsObj({});
                 setHasNoFriends(true);
+              }
+              if (userValue.blocked) {
+                setBlockedObj(userValue.blocked);
+              } else {
+                setBlockedObj({});
+              }
+              if (userValue.blockedBy) {
+                setBlockedByObj(userValue.blockedBy);
+              } else {
+                setBlockedByObj({});
               }
             }
           }
@@ -143,7 +155,18 @@ export default function CallFriend() {
   }, [user.uid]);
 
   useEffect(() => {
-    setMergedObj(mergeObj(statusObj, usersObj, friendsObj, {}, user.uid, true));
+    setMergedObj(
+      mergeObj(
+        statusObj,
+        usersObj,
+        friendsObj,
+        blockedObj,
+        blockedByObj,
+        {},
+        user.uid,
+        true
+      )
+    );
   }, [statusObj, usersObj]);
 
   return (

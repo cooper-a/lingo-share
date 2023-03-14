@@ -65,6 +65,7 @@ const resources = {
         "These people are also using LingoShare",
       " is calling you": " is calling you",
       Accept: "Accept",
+      "Blocked People": "Blocked People",
       "Friend Request Sent": "Friend Request Sent",
       "No interests to show yet": "No interests to show yet",
       "Save Changes": "Save Changes",
@@ -218,6 +219,7 @@ const resources = {
       "Text Size": "字体大小",
       "Leave Call": "结束通话",
       "What do you want to talk about": "你想聊些什么话题",
+      "Blocked People": "屏蔽的用户",
     },
   },
 };
