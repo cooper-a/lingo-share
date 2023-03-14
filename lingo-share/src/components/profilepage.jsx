@@ -38,6 +38,7 @@ export default function ProfilePage() {
   const [interests, setInterests] = useState(new Set([]));
   const [userObj, setUserObj] = useState({});
   const [userFriends, setUserFriends] = useState({});
+  const [alertText, setAlertText] = useState("");
   const {
     isOpen: isVisible,
     onClose,
@@ -68,6 +69,7 @@ export default function ProfilePage() {
     }
     setProfileValues("userDisplayName", displayName);
     navigate(`/profile/${params.id}`);
+    setAlertText("Your profile changes were saved");
     onOpen();
   };
 
@@ -170,6 +172,7 @@ export default function ProfilePage() {
           userFriends={userFriends}
           handleClickManageFriend={handleClickManageFriend}
           onOpenSuccessAlert={onOpen}
+          setAlertText={setAlertText}
         />
         <div className="user-info">
           <AboutSection
@@ -213,7 +216,7 @@ export default function ProfilePage() {
       <div className="alert-notif">
         {isVisible && (
           <div>
-            <SavedAlert onClose={onClose} />
+            <SavedAlert text={alertText} onClose={onClose} />
           </div>
         )}
         {isPrimaryUser && (

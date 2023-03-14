@@ -32,6 +32,7 @@ export default function UserName({
   params,
   profilePic,
   onOpenSuccessAlert,
+  setAlertText,
   userFriends,
   handleClickManageFriend,
 }) {
@@ -55,6 +56,9 @@ export default function UserName({
       .catch((error) => {
         console.log(error);
       });
+    setAlertText(
+      "Your profile picture was updated, please refresh to see changes"
+    );
     onOpenSuccessAlert();
   };
 
@@ -125,7 +129,7 @@ export default function UserName({
                     fontWeight={"bold"}
                     alignContent={"center"}
                   >
-                    {isOnline ? "(Online)" : "(Offline)"}
+                    {isOnline === "online" ? "(Online)" : "(Offline)"}
                   </Text>
                 )}
               </div>

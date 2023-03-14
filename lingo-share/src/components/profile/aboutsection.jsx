@@ -28,9 +28,7 @@ export default function AboutSection({ setBio, isPrimaryUser, bio }) {
       <div className="about-text">
         {isPrimaryUser ? (
           <Editable
-            defaultValue={
-              bio ? bio : t("Click here to enter a bio about yourself...")
-            }
+            value={bio ? bio : t("Click here to enter a bio about yourself...")}
             fontSize={"xl"}
           >
             <EditablePreview />

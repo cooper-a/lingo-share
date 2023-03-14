@@ -10,14 +10,14 @@ import React from "react";
 import "@fontsource/atkinson-hyperlegible";
 import "../../styles/profilepage.css";
 
-export default function SavedAlert({ onClose }) {
+export default function SavedAlert({ onClose, text }) {
   return (
     <div>
       <Alert margin="0px" width={"100vh"} status="success">
         <AlertIcon />
         <Box width={"100vh"}>
           <AlertTitle>Success!</AlertTitle>
-          <AlertDescription>Your profile changes were saved</AlertDescription>
+          <AlertDescription>{text}</AlertDescription>
         </Box>
         <CloseButton
           alignSelf="flex-start"
