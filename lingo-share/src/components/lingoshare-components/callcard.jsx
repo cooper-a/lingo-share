@@ -27,13 +27,14 @@ const ConfirmationModal = ({
   userId,
   onClose,
 }) => {
+  const { t } = useTranslation();
   return (
     <div>
       <Modal isCentered onClose={onClose} size={"xs"} isOpen={isOpen}>
         <ModalOverlay backdropFilter="blur(10px) hue-rotate(90deg)" />
         <ModalContent>
           <ModalHeader alignSelf={"center"}>
-            {"Call " + displayName + "?"}
+            {t("Call ") + displayName + "?"}
           </ModalHeader>
           <ModalCloseButton />
           <ModalFooter alignSelf={"center"}>
@@ -42,10 +43,10 @@ const ConfirmationModal = ({
               onClick={(event) => handleCallConfirm(event, userId)}
               marginRight={"5px"}
             >
-              Yes
+              {t("Yes")}
             </Button>
             <Button variant={"outline"} onClick={onClose} marginleft={"5px"}>
-              No
+              {t("No")}
             </Button>
           </ModalFooter>
         </ModalContent>

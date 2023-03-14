@@ -9,14 +9,16 @@ import {
 import React from "react";
 import "@fontsource/atkinson-hyperlegible";
 import "../../styles/profilepage.css";
+import { useTranslation } from "react-i18next";
 
 export default function SavedAlert({ onClose, text }) {
+  const { t } = useTranslation();
   return (
     <div>
       <Alert margin="0px" width={"100vh"} status="success">
         <AlertIcon />
         <Box width={"100vh"}>
-          <AlertTitle>Success!</AlertTitle>
+          <AlertTitle>{t("Success!")}</AlertTitle>
           <AlertDescription>{text}</AlertDescription>
         </Box>
         <CloseButton

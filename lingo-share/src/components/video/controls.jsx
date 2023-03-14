@@ -57,7 +57,7 @@ export default function Controls({
           }
         />
         <ControlButton
-          text={"Text Size"}
+          text={translator("Text Size")}
           iconName={"zoom_in"}
           // onClick={} // TODO: make this functional
         />
