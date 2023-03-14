@@ -149,7 +149,7 @@ export default function CallFriend() {
   return (
     <div>
       <CallNotification />
-      <Navbar topLeftDisplay={"Start a Call"} currPage={"/callfriend"} />
+      <Navbar topLeftDisplay={t("Call a Friend")} currPage={"/callfriend"} />
       {!hasNoFriends ? (
         <Text className="font" fontSize="3xl">
           {t("Who would you like to call?")}
@@ -165,7 +165,7 @@ export default function CallFriend() {
             variant={"outline"}
             onClick={() => navigate("/meetnewfriends")}
           >
-            Meet New Friends
+            {t("Meet New Friends")}
           </Button>
         </div>
       )}

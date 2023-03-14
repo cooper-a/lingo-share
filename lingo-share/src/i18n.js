@@ -61,7 +61,6 @@ const resources = {
       "Remove Friend": "Remove Friend",
       Profile: "Profile",
       "View Profile": "View Profile",
-      "Add as Friend": "Add as Friend",
       "These people are also using LingoShare":
         "These people are also using LingoShare",
       "is calling you": "is calling you",
@@ -90,6 +89,10 @@ const resources = {
       "Create an Account": "Create an Account",
       "First, we need to get you set up!": "First, we need to get you set up!",
       "Log in or create an account below": "Log in or create an account below",
+      "Upload Photo": "Upload Photo",
+      "'s Profile": "'s Profile",
+      "You don’t have any LingoShare friends yet!":
+        "You don’t have any LingoShare friends yet!",
     },
   },
   zh: {
@@ -136,7 +139,7 @@ const resources = {
       Well: "流利",
       Poorly: "差",
       "Who would you like to call?": "你想与谁通话？",
-      "Welcome to LingoShare!": "欢迎来到LingoShare！",
+      "Welcome to LingoShare!": "欢迎来到LingoShare!",
       // TODO - translate these
       Online: "在线",
       Offline: "离线",
@@ -174,6 +177,9 @@ const resources = {
       "Create an Account": "创建账户",
       "First, we need to get you set up!": "首先，我们需要帮你设立一个账户！",
       "Log in or create an account below": "登录或者创建一个新账户",
+      "Upload Photo": "上传照片",
+      "'s Profile": "的个人资料",
+      "You don’t have any LingoShare friends yet!": "你还没有任何好友！",
     },
   },
 };

@@ -93,7 +93,7 @@ export default function MeetNewFriends() {
     <div>
       <CallNotification />
       <Navbar
-        topLeftDisplay={"Meet New Friends"}
+        topLeftDisplay={t("Meet New Friends")}
         currPage={"/meetnewfriends"}
       />
       <Text className="font" fontSize="3xl">

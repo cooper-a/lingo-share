@@ -37,7 +37,7 @@ export default function ProfilePicture({ saveCompressedPhotoURL }) {
         <input type="file" onChange={handleChange} hidden />
         <Text cursor="pointer" className="font" fontSize={"xs"}>
           <Icon cursor="pointer" width="20px" height="20px" name="upload" />
-          Upload Photo
+          {t("Upload Photo")}
         </Text>
         {/* <Icon cursor="pointer" width="30px" height="30px" name="upload" /> */}
       </label>
