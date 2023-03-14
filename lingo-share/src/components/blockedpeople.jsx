@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { UserAuth } from "../contexts/AuthContext";
-import { ref, onValue, get, set } from "firebase/database";
-import { rtdb } from "../firebase";
-import { useNavigate } from "react-router-dom";
 import { Button, ChakraProvider, Text } from "@chakra-ui/react";
+import { onValue, ref, set } from "firebase/database";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import Navbar from "./navbar";
-import CallNotification from "./callnotification";
+import { useNavigate } from "react-router-dom";
+import { UserAuth } from "../contexts/AuthContext";
+import { rtdb } from "../firebase";
 import "../styles/meetfriends.css";
 import { mergeObj } from "../utils/userutils";
+import CallNotification from "./callnotification";
+import Navbar from "./navbar";
 
 export default function BlockedPeople() {
   const usersRef = ref(rtdb, "/users");

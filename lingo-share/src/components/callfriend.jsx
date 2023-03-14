@@ -1,23 +1,22 @@
-import React, { useState, useEffect } from "react";
-import { Button, ChakraProvider, Text } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
-import "../styles/homepage.css";
-import { UserAuth } from "../contexts/AuthContext";
+import { Button, ChakraProvider, Text, UnorderedList } from "@chakra-ui/react";
 import {
-  ref,
+  get,
   onValue,
   push,
-  get,
-  set,
+  ref,
   serverTimestamp,
+  set,
 } from "firebase/database";
+import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import { UserAuth } from "../contexts/AuthContext";
 import { rtdb } from "../firebase";
-import Navbar from "./navbar";
-import { UnorderedList } from "@chakra-ui/react";
+import "../styles/homepage.css";
+import { mergeObj } from "../utils/userutils";
 import CallNotification from "./callnotification";
 import CallCard from "./lingoshare-components/callcard";
-import { useTranslation } from "react-i18next";
-import { mergeObj } from "../utils/userutils";
+import Navbar from "./navbar";
 
 export default function CallFriend() {
   const [statusObj, setStatusObj] = useState([]);

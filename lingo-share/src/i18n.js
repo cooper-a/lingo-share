@@ -61,7 +61,6 @@ const resources = {
       "Remove Friend": "Remove Friend",
       Profile: "Profile",
       "View Profile": "View Profile",
-      "Add as Friend": "Add as Friend",
       "These people are also using LingoShare":
         "These people are also using LingoShare",
       "is calling you": "is calling you",
