@@ -10,14 +10,12 @@ import LanguageToggle from "./lingoshare-components/languagetoggle";
 import AccountOptions from "./lingoshare-components/accountoptions";
 import "../styles/nav.css";
 
-export default function Navbar({ currPage, topLeftDisplay }) {
+export default function Navbar({ currPage, topLeftDisplay, prevPage }) {
   const { user, logout } = UserAuth();
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { t, i18n } = useTranslation();
   const [isEnglish, setIsEnglish] = useState(true);
-
-  console.log(currPage);
 
   useEffect(() => {
     setIsEnglish(i18n.language === "en");
@@ -25,7 +23,11 @@ export default function Navbar({ currPage, topLeftDisplay }) {
     setIsLoggedIn(true);
   }, [user, i18n.language]);
 
-  const handleClick = (path) => {
+  const handleNavigateClick = (path) => {
+    if (prevPage) {
+      navigate(prevPage);
+      return;
+    }
     navigate("/" + path);
   };
 
@@ -56,7 +58,7 @@ export default function Navbar({ currPage, topLeftDisplay }) {
     <div>
       <ChakraProvider>
         <div className="navbar">
-          <div className="logo" onClick={() => handleClick("")}>
+          <div className="logo" onClick={() => handleNavigateClick("")}>
             {!topLeftDisplay ? (
               <div className="homepage-logo">
                 <span className="title">LingoShare</span>
@@ -86,7 +88,7 @@ export default function Navbar({ currPage, topLeftDisplay }) {
               <div className="logout-btn">
                 <AccountOptions
                   user={user}
-                  handleClick={handleClick}
+                  handleClick={handleNavigateClick}
                   handleLogout={handleLogout}
                 />
               </div>

@@ -154,6 +154,7 @@ export default function ProfilePage() {
         currPage={
           isPrimaryUser ? "/profile/" + user.uid : "/profile/" + params.id
         }
+        prevPage={isPrimaryUser ? "/dashboard" : "/meetnewfriends"}
       />
       <div className="primary-user">
         <UserName
