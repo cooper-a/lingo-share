@@ -2,7 +2,7 @@
 
 Deployed live at [lingoshare.ca](https://lingoshare.ca)
 
-A platform to connect older adult native Mandarin speakers with younger adult language learners through interactive, prompt-based video calls and language learning activities
+Lingoshare is a platform that connects older adult native Mandarin speakers with younger adult language learners through interactive, prompt-based video calls and language learning activities.
 
 Coming soon - Currently in development
 
@@ -13,6 +13,8 @@ Coming soon - Currently in development
 
 ## Development Guide
 
+Dependencies:
+
 Windows: Install Node Version Manager (https://github.com/coreybutler/nvm-windows/releases)
-`nvm install 16`
-Inside the `lingo-share/lingo`-share directory use `npm install`
+`nvm install 16`  
+Inside the `lingo-share/lingo`-share directory use `npm install`  
