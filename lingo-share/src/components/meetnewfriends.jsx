@@ -159,6 +159,7 @@ export default function MeetNewFriends() {
 
   return (
     <div>
+      <FriendRequest />
       <CallNotification />
       <Navbar
         topLeftDisplay={t("Meet New Friends")}

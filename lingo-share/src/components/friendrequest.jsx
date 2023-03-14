@@ -126,8 +126,10 @@ export default function FriendRequest() {
         ([senderID, senderDisplayName], i) => {
           return (
             <div key={senderID}>
-              <h1>Incoming Friend Request</h1>
-              <p>{senderDisplayName} sent you a friend request!</p>
+              <h1>{t("Incoming Friend Request")}</h1>
+              <p>
+                {senderDisplayName} {t("sent you a friend request!")}
+              </p>
               <Button
                 direction="row"
                 align="center"

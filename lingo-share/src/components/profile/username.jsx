@@ -129,7 +129,9 @@ export default function UserName({
                     fontWeight={"bold"}
                     alignContent={"center"}
                   >
-                    {isOnline === "online" ? "(Online)" : "(Offline)"}
+                    {isOnline === "online"
+                      ? `(${t("Online")})`
+                      : `(${t("Offline")})`}
                   </Text>
                 )}
               </div>
