@@ -94,6 +94,10 @@ const resources = {
       "'s Profile": "'s Profile",
       "You don't have any LingoShare friends yet!":
         "You don't have any LingoShare friends yet!",
+      "Your profile changes were saved": "Your profile changes were saved",
+      "Success!": "Success!",
+      "Your profile picture was updated, please refresh to see changes":
+        "Your profile picture was updated, please refresh to see changes",
     },
   },
   zh: {
@@ -182,6 +186,10 @@ const resources = {
       "Upload Photo": "上传照片",
       "'s Profile": "的个人资料",
       "You don't have any LingoShare friends yet!": "你还没有任何好友！",
+      "Your profile changes were saved": "你的个人资料更改已保存",
+      "Success!": "更改成功！",
+      "Your profile picture was updated, please refresh to see changes":
+        "你的个人头像已更新，请刷新页面查看",
     },
   },
 };
