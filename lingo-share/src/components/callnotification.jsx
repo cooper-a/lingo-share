@@ -79,7 +79,7 @@ export default function CallNotification() {
       <div>
         <h1>
           {callerDisplayName === "" ? callerID : callerDisplayName}
-          {t("is calling you")}
+          {t(" is calling you")}
         </h1>
         <Button
           onClick={(event) => handleClick(event, callerID)}

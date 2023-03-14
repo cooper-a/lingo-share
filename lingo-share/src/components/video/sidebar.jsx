@@ -2,6 +2,7 @@ import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { ChevronRightIcon, ChevronLeftIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
 import "../../styles/room.css";
+import { useTranslation } from "react-i18next";
 
 const NavItem = ({ topicName, onClick }) => {
   return (
@@ -38,6 +39,7 @@ const BackButton = ({ onClick }) => {
 };
 
 export default function Sidebar({ prompts, handlePromptSelect }) {
+  const { t } = useTranslation();
   const [isHomeList, setIsHomeList] = useState(true);
   const [homeList, setHomeList] = useState([]);
   const [displayList, setDiplayList] = useState([]);
@@ -67,11 +69,11 @@ export default function Sidebar({ prompts, handlePromptSelect }) {
       >
         <div className="title-sidebar">
           <Text as={"b"} fontSize="xl" fontFamily={"Inter"}>
-            Choose a Topic
+            {t("Choose a Topic")}
           </Text>
         </div>
         <div className="title-description">
-          <Text>What do you want to talk about</Text>
+          <Text>{t("What do you want to talk about")}</Text>
         </div>
         <Flex
           paddingTop={"2rem"}

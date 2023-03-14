@@ -143,7 +143,7 @@ export default function CallFriend() {
   }, [user.uid]);
 
   useEffect(() => {
-    setMergedObj(mergeObj(statusObj, usersObj, friendsObj, user.uid, true));
+    setMergedObj(mergeObj(statusObj, usersObj, friendsObj, {}, user.uid, true));
   }, [statusObj, usersObj]);
 
   return (
@@ -157,7 +157,7 @@ export default function CallFriend() {
       ) : (
         <div className="welcome-pg">
           <Text className="font" fontSize="3xl">
-            {t("You don’t have any LingoShare friends yet!")}
+            {t("You don't have any LingoShare friends yet!")}
           </Text>
           <Button
             marginTop={"1.5rem"}
