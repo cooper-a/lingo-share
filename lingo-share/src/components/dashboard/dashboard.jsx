@@ -57,11 +57,16 @@ export default function Dashboard() {
       <Navbar currPage={"/dashboard"} />
       <ChakraProvider>
         <div className="dash">
-          <SimpleGrid columns={2} spacing={10}>
+          <SimpleGrid columns={3} spacing={10}>
             <CardItem
               text={t("Call a Friend")}
               iconName={"video"}
               onClick={() => handleClick("callfriend")}
+            />
+            <CardItem
+              text={t("Your Friends")}
+              iconName={"contacts"}
+              onClick={() => handleClick(`yourfriends`)}
             />
             <CardItem
               text={t("Meet New Friends")}
@@ -72,6 +77,11 @@ export default function Dashboard() {
               text={t("Your Profile")}
               iconName={"user_male"}
               onClick={() => handleClick(`profile/${user.uid}`)}
+            />
+            <CardItem
+              text={t("Blocked People")}
+              iconName={"no_sign"}
+              onClick={() => handleClick(`blockedpeople`)}
             />
             <CardItem
               text={t("How to Use this App")}

@@ -1,17 +1,16 @@
-import React, { useState, useEffect } from "react";
-import { UserAuth } from "../contexts/AuthContext";
-import { ref, onValue, get, set } from "firebase/database";
-import { rtdb } from "../firebase";
-import { useNavigate } from "react-router-dom";
-import { ChakraProvider, Text } from "@chakra-ui/react";
+import { Button, ChakraProvider, Text } from "@chakra-ui/react";
+import { onValue, ref, set } from "firebase/database";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import Navbar from "./navbar";
-import CallNotification from "./callnotification";
-import ProfileCard from "./lingoshare-components/profilecard";
+import { useNavigate } from "react-router-dom";
+import { UserAuth } from "../contexts/AuthContext";
+import { rtdb } from "../firebase";
 import "../styles/meetfriends.css";
 import { mergeObj } from "../utils/userutils";
+import CallNotification from "./callnotification";
+import Navbar from "./navbar";
 
-export default function MeetNewFriends() {
+export default function BlockedPeople() {
   const usersRef = ref(rtdb, "/users");
   const statusRef = ref(rtdb, "/status");
   const { user } = UserAuth();
@@ -63,33 +62,19 @@ export default function MeetNewFriends() {
     });
   };
 
-  const handleClickManageFriend = async (e, targetID, add) => {
+  const handleClickUnblockFriend = async (e, targetID) => {
     e.preventDefault();
     if (targetID !== user.uid && targetID !== undefined) {
-      let friendRef = ref(rtdb, `/users/${user.uid}/friends/${targetID}`);
-      if (add) {
-        set(friendRef, true)
-          .then(() => {
-            console.log("friend added");
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      } else {
-        set(friendRef, null)
-          .then(() => {
-            console.log("friend removed");
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }
-      navigate("/meetnewfriends");
+      let blockRef = ref(rtdb, `/users/${user.uid}/blocked/${targetID}`);
+      set(blockRef, null)
+        .then(() => {
+          console.log("user blocked");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      navigate("/blockedpeople");
     }
-  };
-
-  const handleClickViewProfile = (targetID) => {
-    navigate(`/profile/${targetID}`);
   };
 
   useEffect(() => {
@@ -106,7 +91,8 @@ export default function MeetNewFriends() {
         blockedObj,
         blockedByObj,
         user.uid,
-        false
+        false,
+        true
       )
     );
   }, [statusObj, usersObj, friendsObj]);
@@ -114,22 +100,19 @@ export default function MeetNewFriends() {
   return (
     <div>
       <CallNotification />
-      <Navbar currPage={"/meetnewfriends"} />
-      <Text fontSize="3xl">{t("These people are also using LingoShare")}</Text>
+      <Navbar currPage={"/blockedpeople"} />
+      <Text fontSize="3xl">{t("Manage your blocklist")}</Text>
       <ChakraProvider>
         <div className="field-pg">
           <div className="card-display">
             {Object.entries(mergedObj).map(([key, value], i) => {
               return (
                 <div key={i} className="card-item">
-                  <ProfileCard
-                    name={value.userDisplayName}
-                    userId={key}
-                    isFriend={value.isFriend}
-                    profileURL={value.profilePic}
-                    handleClickViewProfile={handleClickViewProfile}
-                    handleClickManageFriend={handleClickManageFriend}
-                  />
+                  <Text> {value.userDisplayName} </Text>
+                  <Text>Blocked reason: {value.blockedReason}</Text>
+                  <Button onClick={(e) => handleClickUnblockFriend(e, key)}>
+                    {t("Unblock User")}
+                  </Button>
                 </div>
               );
             })}

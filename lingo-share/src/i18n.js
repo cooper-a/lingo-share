@@ -61,11 +61,11 @@ const resources = {
       "Remove Friend": "Remove Friend",
       Profile: "Profile",
       "View Profile": "View Profile",
-      "Add as Friend": "Add as Friend",
       "These people are also using LingoShare":
         "These people are also using LingoShare",
       "is calling you": "is calling you",
       Accept: "Accept",
+      "Blocked People": "Blocked People",
     },
   },
   zh: {
@@ -113,7 +113,6 @@ const resources = {
       Poorly: "差",
       "Who would you like to call?": "你想与谁通话？",
       "Welcome to LingoShare!": "欢迎来到LingoShare！",
-      // TODO - translate these
       Online: "在线",
       Offline: "离线",
       Call: "呼叫",
@@ -126,6 +125,7 @@ const resources = {
       "These people are also using LingoShare": "这些用户也在使用LingoShare",
       "is calling you": "正在呼叫你",
       Accept: "接受",
+      "Blocked People": "被屏蔽的用户",
     },
   },
 };

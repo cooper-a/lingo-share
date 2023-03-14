@@ -2,7 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore";
-import { getDatabase } from "firebase/database";
+import { getDatabase, connectDatabaseEmulator } from "firebase/database";
 import { getAuth } from "firebase/auth";
 import { getStorage } from "firebase/storage";
 import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
@@ -45,3 +45,6 @@ export const db = getFirestore(app);
 export const storage = getStorage(app);
 export const rtdb = getDatabase(app);
 export const auth = getAuth(app);
+
+// emulator
+// connectDatabaseEmulator(rtdb, "localhost", 9000);
