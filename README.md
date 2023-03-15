@@ -8,7 +8,7 @@ Coming soon - Currently in development
 
 `./lingo-share` contains all the front-end client code (built in React)
 
-`./lingoshare_cloud_functions` contains a Firebase Cloud Function to issue Twilio API tokens for the application
+`./lingoshare_cloud_functions` contains a Firebase Cloud Functions to issue Twilio API tokens for the application, and other functions that do deleting or adding based on database events
 
 
 ## Development Guide
