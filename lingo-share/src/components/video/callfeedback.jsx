@@ -1,4 +1,4 @@
-import { Button, Textarea, Text } from "@chakra-ui/react";
+import { Textarea, Text } from "@chakra-ui/react";
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
