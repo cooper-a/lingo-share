@@ -1,12 +1,12 @@
 import { Button, ChakraProvider, Text } from "@chakra-ui/react";
-import { rtdb } from "../../firebase";
-import { set, ref, onValue } from "firebase/database";
+import { onValue, ref, set } from "firebase/database";
+import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../../contexts/AuthContext";
-import Navbar from "../navbar";
-import React, { useEffect, useState } from "react";
+import { rtdb } from "../../firebase";
 import "../../styles/onboarding.css";
-import { useTranslation } from "react-i18next";
+import Navbar from "../navbar";
 
 export default function LanguageProficiency() {
   const navigate = useNavigate();

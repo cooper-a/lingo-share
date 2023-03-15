@@ -73,6 +73,11 @@ export default function Dashboard() {
               onClick={() => handleClick("callfriend")}
             />
             <CardItem
+              text={t("Your Friends")}
+              iconName={"contacts"}
+              onClick={() => handleClick(`yourfriends`)}
+            />
+            <CardItem
               text={t("Meet New Friends")}
               iconName={"users"}
               onClick={() => handleClick("meetnewfriends")}
@@ -81,6 +86,11 @@ export default function Dashboard() {
               text={t("Your Profile")}
               iconName={"user_male"}
               onClick={() => handleClick(`profile/${user.uid}`)}
+            />
+            <CardItem
+              text={t("Blocked People")}
+              iconName={"no_sign"}
+              onClick={() => handleClick(`blockedpeople`)}
             />
             <CardItem
               text={t("How to Use this App")}

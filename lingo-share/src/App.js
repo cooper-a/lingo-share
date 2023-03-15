@@ -19,6 +19,8 @@ import Dashboard from "./components/dashboard/dashboard";
 import LanguageProficiency from "./components/onboarding/languageProficiency";
 import MeetNewFriends from "./components/meetnewfriends";
 import ProfilePage from "./components/profilepage";
+import YourFriends from "./components/yourfriends";
+import BlockedPeople from "./components/blockedpeople";
 import LandingPage from "./components/app-intro/landingpage";
 import LanguagePreference from "./components/onboarding/languagePreference";
 
@@ -111,6 +113,22 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <ProfilePage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/yourfriends"
+                element={
+                  <ProtectedRoute>
+                    <YourFriends />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/blockedpeople"
+                element={
+                  <ProtectedRoute>
+                    <BlockedPeople />
                   </ProtectedRoute>
                 }
               />

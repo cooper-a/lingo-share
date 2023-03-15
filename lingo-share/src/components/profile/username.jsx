@@ -58,7 +58,7 @@ export default function UserName({
         console.log(error);
       });
     setAlertText(
-      "Your profile picture was updated, please refresh to see changes"
+      t("Your profile picture was updated, please refresh to see changes")
     );
     onOpenSuccessAlert();
   };
@@ -130,7 +130,9 @@ export default function UserName({
                     fontWeight={"bold"}
                     alignContent={"center"}
                   >
-                    {isOnline === "online" ? "(Online)" : "(Offline)"}
+                    {isOnline === "online"
+                      ? `(${t("Online")})`
+                      : `(${t("Offline")})`}
                   </Text>
                 )}
               </div>

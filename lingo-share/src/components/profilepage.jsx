@@ -69,7 +69,7 @@ export default function ProfilePage() {
     }
     setProfileValues("userDisplayName", displayName);
     navigate(`/profile/${params.id}`);
-    setAlertText("Your profile changes were saved");
+    setAlertText(t("Your profile changes were saved"));
     onOpen();
   };
 
@@ -149,7 +149,7 @@ export default function ProfilePage() {
       <CallNotification />
       <Navbar
         topLeftDisplay={
-          isPrimaryUser ? "Your Profile" : displayName + "'s Profile"
+          isPrimaryUser ? t("Your Profile") : displayName + t("'s Profile")
         }
         currPage={
           isPrimaryUser ? "/profile/" + user.uid : "/profile/" + params.id
