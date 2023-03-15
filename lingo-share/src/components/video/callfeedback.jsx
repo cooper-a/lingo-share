@@ -1,9 +1,11 @@
-import { Button, Input, Text } from "@chakra-ui/react";
+import { Button, Textarea, Text } from "@chakra-ui/react";
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import { UserAuth } from "../../contexts/AuthContext";
-import "../../styles/homepage.css";
+import SelectionButton from "../lingoshare-components/selectionbutton";
+import PrimaryButton from "../lingoshare-components/primarybutton";
+import "../../styles/feedback.css";
 import Navbar from "../navbar";
 import { ref, set } from "firebase/database";
 import { rtdb } from "../../firebase";
@@ -44,44 +46,53 @@ export default function CallFeedback() {
   return (
     <div>
       <Navbar currPage="/callfeedback" />
-      <div className="welcome-pg">
+      <div className="feedback-pg">
         <Text className="font" fontSize="3xl">
           {t("How was the call quality?")}
         </Text>
-        <Button h="2.75rem" size="lg" onClick={() => setCallQuality(true)}>
-          {t("Good")}
-        </Button>
-        <Button h="2.75rem" size="lg" onClick={() => setCallQuality(false)}>
-          {t("Bad")}
-        </Button>
-        <Text className="font" fontSize="3xl">
+        <div className="feedback-btn-group">
+          <SelectionButton
+            onClick={() => setCallQuality(true)}
+            isSelected={callQuality}
+            text={t("Good")}
+          />
+          <SelectionButton
+            onClick={() => setCallQuality(false)}
+            isSelected={callQuality !== null && callQuality === false}
+            text={t("Bad")}
+          />
+        </div>
+        <Text marginTop={"2rem"} fontSize="3xl">
           {t("How did your conversation go?")}
         </Text>
-        <Button
-          h="2.75rem"
-          size="lg"
-          onClick={() => setConversationQuality(true)}
-        >
-          {t("Good")}
-        </Button>
-        <Button
-          h="2.75rem"
-          size="lg"
-          onClick={() => setConversationQuality(false)}
-        >
-          {t("Bad")}
-        </Button>
+        <div className="feedback-btn-group">
+          <SelectionButton
+            onClick={() => setConversationQuality(true)}
+            isSelected={conversationQuality}
+            text={t("Good")}
+          />
+          <SelectionButton
+            onClick={() => setConversationQuality(false)}
+            isSelected={
+              conversationQuality !== null && conversationQuality === false
+            }
+            text={t("Bad")}
+          />
+        </div>
         {submit ? (
-          <Input
-            placeholder={t("Can you tell us more? (optional)")}
+          <Textarea
+            marginTop={"3rem"}
+            borderColor={"#393939"}
+            width={"500px"}
+            placeholder="Can you tell us more? (optional)"
             onChange={(e) => setComment(e.target.value)}
           />
         ) : null}
-
-        <div>
-          <Button onClick={() => handleSubmit()}>
-            {submit ? t("Submit") : t("Skip")}
-          </Button>
+        <div className="skip-submit-btn">
+          <PrimaryButton
+            onClick={() => handleSubmit()}
+            text={submit ? t("Submit") : t("Skip")}
+          />
         </div>
       </div>
     </div>
