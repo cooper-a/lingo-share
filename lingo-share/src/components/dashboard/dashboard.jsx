@@ -18,9 +18,6 @@ import { useTranslation } from "react-i18next";
 import CallNotification from "../callnotification";
 import Icon from "@adeira/icons";
 
-//TEMPORARY
-import { Button } from "@chakra-ui/react";
-
 export default function Dashboard() {
   const navigate = useNavigate();
   const { user, checkStatus } = UserAuth();
@@ -93,16 +90,6 @@ export default function Dashboard() {
               text={t("How to Use this App")}
               iconName={"info_circle"}
             />
-            {/* TODO REMOVE THIS - TEMP FOR TESTING*/}
-            <Button
-              onClick={() =>
-                navigate("/callfeedback", {
-                  state: { roomName: "testRoom", callID: "testID" },
-                })
-              }
-            >
-              Test Feedback
-            </Button>
           </SimpleGrid>
         </div>
       </ChakraProvider>
