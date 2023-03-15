@@ -43,13 +43,13 @@ export default function Dashboard() {
     return (
       <Card
         className="card"
-        borderWidth={"1.5px"}
+        borderWidth={"2px"}
         borderColor={"#363636"}
         size={"lg"}
         onClick={onClick}
       >
         <CardBody>
-          <Icon name={iconName} width={"90px"} height={"90px"} />
+          <Icon name={iconName} width={"80px"} height={"80px"} />
           <Stack mt="6" spacing="3">
             <Text fontWeight={"bold"} className="font" fontSize="md">
               {text}

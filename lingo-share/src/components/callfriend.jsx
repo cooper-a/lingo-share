@@ -1,4 +1,4 @@
-import { Button, ChakraProvider, Text, UnorderedList } from "@chakra-ui/react";
+import { ChakraProvider, Text, UnorderedList } from "@chakra-ui/react";
 import {
   get,
   onValue,
@@ -16,6 +16,7 @@ import "../styles/homepage.css";
 import { mergeObj } from "../utils/userutils";
 import CallNotification from "./callnotification";
 import CallCard from "./lingoshare-components/callcard";
+import PrimaryButton from "./lingoshare-components/primarybutton";
 import Navbar from "./navbar";
 
 export default function CallFriend() {
@@ -182,14 +183,12 @@ export default function CallFriend() {
           <Text className="font" fontSize="3xl">
             {t("You don't have any LingoShare friends yet!")}
           </Text>
-          <Button
+          <PrimaryButton
+            text={t("Meet New Friends")}
+            onClick={() => navigate("/meetnewfriends")}
             marginTop={"1.5rem"}
             size={"lg"}
-            variant={"outline"}
-            onClick={() => navigate("/meetnewfriends")}
-          >
-            {t("Meet New Friends")}
-          </Button>
+          />
         </div>
       )}
 

@@ -1,7 +1,6 @@
 import React from "react";
 import {
   AvatarBadge,
-  Button,
   Card,
   CardHeader,
   Avatar,
@@ -13,10 +12,11 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalCloseButton,
   ModalFooter,
 } from "@chakra-ui/react";
-import { PhoneIcon } from "@chakra-ui/icons";
+import PrimaryButton from "./primarybutton";
+import SecondaryButton from "./secondarybutton";
+import TertiaryButton from "./tertiarybutton";
 import { useTranslation } from "react-i18next";
 
 const ConfirmationModal = ({
@@ -29,24 +29,25 @@ const ConfirmationModal = ({
   const { t } = useTranslation();
   return (
     <div>
-      <Modal isCentered onClose={onClose} size={"xs"} isOpen={isOpen}>
-        <ModalOverlay backdropFilter="blur(10px) hue-rotate(90deg)" />
+      <Modal isCentered onClose={onClose} size={"md"} isOpen={isOpen}>
+        <ModalOverlay />
         <ModalContent>
-          <ModalHeader alignSelf={"center"}>
+          <ModalHeader marginTop={"1rem"} className="font" alignSelf={"center"}>
             {t("Call ") + displayName + "?"}
           </ModalHeader>
-          <ModalCloseButton />
-          <ModalFooter alignSelf={"center"}>
-            <Button
-              variant={"outline"}
+          <ModalFooter marginBottom={"1.5rem"} alignSelf={"center"}>
+            <PrimaryButton
+              text={t("Yes")}
+              marginRight={"15px"}
               onClick={(event) => handleCallConfirm(event, userId)}
-              marginRight={"5px"}
-            >
-              {t("Yes")}
-            </Button>
-            <Button variant={"outline"} onClick={onClose} marginleft={"5px"}>
-              {t("No")}
-            </Button>
+              width={"150px"}
+            />
+            <SecondaryButton
+              text={t("No")}
+              onClick={onClose}
+              marginleft={"15px"}
+              width={"150px"}
+            />
           </ModalFooter>
         </ModalContent>
       </Modal>
@@ -93,7 +94,7 @@ export default function CallCard({
             <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
               {onlineStatus === "online" ? (
                 <Avatar bg="grey" src={profileURL}>
-                  <AvatarBadge boxSize="0.75em" bg="green.500" />
+                  <AvatarBadge boxSize="1em" bg="green.500" />
                 </Avatar>
               ) : (
                 <Avatar bg="grey" src={profileURL} />
@@ -114,7 +115,7 @@ export default function CallCard({
                 </Text>
                 {onlineStatus === "online" ? (
                   <Text className="font" float={"left"}>
-                    {t("• Online")}
+                    {t("Online")}
                   </Text>
                 ) : (
                   <Text className="font" float={"left"}>
@@ -124,37 +125,19 @@ export default function CallCard({
               </Box>
             </Flex>
             <Box alignSelf={"center"}>
-              <Button
-                className="font"
-                onClick={(event) => handleViewProfile(userId)}
-                direction="row"
-                align="center"
-                bgColor={"white"}
+              <TertiaryButton
+                onClick={() => handleViewProfile(userId)}
                 marginRight={"15px"}
-                color={"#363636"}
-                rounded={"md"}
-                textDecoration={"underline"}
-                borderRadius={"lg"}
-                variant="link"
-              >
-                {t("View Profile")}
-              </Button>
-              <Button
-                className="font"
+                text={t("View Profile")}
+              />
+              <PrimaryButton
+                marginLeft={"20px"}
+                marginRight={"15px"}
+                width={"105px"}
+                text={t("Call")}
                 onClick={() => handleConfirmModuleOpen()}
-                isDisabled={disableButton(userId, onlineStatus)}
-                direction="row"
-                width={"100px"}
-                align="center"
-                variant="outline"
-                color={"white"}
-                bgColor={"#363636"}
-                borderRadius={"lg"}
-                ml={"20px"}
-                mr={"15px"}
-              >
-                {t("Call")}
-              </Button>
+                isDisabled={onlineStatus === "offline"}
+              />
             </Box>
           </Flex>
         </CardHeader>

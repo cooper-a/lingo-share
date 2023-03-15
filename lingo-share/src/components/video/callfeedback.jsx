@@ -90,6 +90,9 @@ export default function CallFeedback() {
         ) : null}
         <div className="skip-submit-btn">
           <PrimaryButton
+            width={"200px"}
+            height={"45px"}
+            marginTop={"2rem"}
             onClick={() => handleSubmit()}
             text={submit ? t("Submit") : t("Skip")}
           />

@@ -1,7 +1,8 @@
 import * as React from "react";
 import { Button } from "@chakra-ui/react";
 
-export default function PrimaryButton({
+export default function TertiaryButton({
+  className,
   onClick,
   isDisabled,
   text,
@@ -13,17 +14,17 @@ export default function PrimaryButton({
 }) {
   return (
     <Button
-      bgColor={"#363636"}
-      _hover={{ bgColor: "#7d7c7c" }}
-      color={"white"}
+      variant={"link"}
+      className={className}
+      color={"#363636"}
       isDisabled={isDisabled}
       marginTop={marginTop}
       marginLeft={marginLeft}
       marginRight={marginRight}
       width={width}
-      borderRadius={"xl"}
       height={height}
       onClick={onClick}
+      textDecoration={"underline"}
     >
       {text}
     </Button>
