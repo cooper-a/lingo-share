@@ -203,6 +203,7 @@ export default function ProfilePage() {
                   borderColor={"#393939"}
                   mr="4"
                   key={i}
+                  className="font"
                 >
                   <TagLabel p="2" className="heading">
                     {interest}

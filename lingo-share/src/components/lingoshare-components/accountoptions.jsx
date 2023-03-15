@@ -4,12 +4,9 @@ import {
   MenuButton,
   HStack,
   Avatar,
-  VStack,
-  Box,
   MenuDivider,
   MenuList,
   MenuItem,
-  Text,
 } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import Icon from "@adeira/icons";

@@ -162,6 +162,8 @@ export default function UserName({
                 height={"45px"}
                 bgColor={params.id in userFriends ? "white" : "#393939"}
                 color={params.id in userFriends ? "#393939" : "white"}
+                borderWidth={"1.5px"}
+                borderColor={"#393939"}
                 rightIcon={
                   params.id in userFriends && <Icon name="check_circle" />
                 }
