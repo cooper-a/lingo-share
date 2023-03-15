@@ -24,6 +24,9 @@ import BlockedPeople from "./components/blockedpeople";
 import LandingPage from "./components/app-intro/landingpage";
 import LanguagePreference from "./components/onboarding/languagePreference";
 
+// Temp
+import CallFeedback from "./components/video/callfeedback";
+
 function App() {
   return (
     <ChakraProvider>
@@ -132,6 +135,7 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+              <Route path="/callfeedback" element={<CallFeedback />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
