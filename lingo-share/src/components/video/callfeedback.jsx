@@ -28,18 +28,20 @@ export default function CallFeedback() {
   }, [callQuality, conversationQuality]);
 
   const handleSubmit = () => {
-    const feedbackRef = ref(
-      rtdb,
-      `calls/${roomName}/${callID}/feedback/${user.uid}`
-    );
-    const feedbackObj = {
-      callQuality: callQuality,
-      conversationQuality: conversationQuality,
-      comment: comment,
-      displayName: user.displayName,
-    };
-    set(feedbackRef, feedbackObj);
-    console.log(feedbackObj);
+    if (submit === true) {
+      const feedbackRef = ref(
+        rtdb,
+        `calls/${roomName}/${callID}/feedback/${user.uid}`
+      );
+      const feedbackObj = {
+        callQuality: callQuality,
+        conversationQuality: conversationQuality,
+        comment: comment,
+        displayName: user.displayName,
+      };
+      set(feedbackRef, feedbackObj);
+      console.log(feedbackObj);
+    }
     navigate("/dashboard");
   };
 
