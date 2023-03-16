@@ -1,4 +1,4 @@
-import { Button, ChakraProvider, Text } from "@chakra-ui/react";
+import { ChakraProvider, Text } from "@chakra-ui/react";
 import { rtdb } from "../../firebase";
 import { set, ref, onValue } from "firebase/database";
 import { useNavigate } from "react-router-dom";
@@ -7,6 +7,7 @@ import Navbar from "../navbar";
 import React, { useEffect, useState } from "react";
 import "../../styles/homepage.css";
 import { useTranslation } from "react-i18next";
+import PrimaryButton from "../lingoshare-components/primarybutton";
 
 export default function WelcomePage() {
   const [error, setError] = useState(null);
@@ -47,15 +48,13 @@ export default function WelcomePage() {
           <Text fontSize="4xl">
             {t("All done! We hope you enjoy LingoShare")}
           </Text>
-          <Button
-            width={"400px"}
+          <PrimaryButton
+            width={"280px"}
             height={"50px"}
             marginTop={"50px"}
-            variant="outline"
+            text={t("Get Started")}
             onClick={() => handleSelection()}
-          >
-            {t("Get Started")}
-          </Button>
+          />
         </div>
       </ChakraProvider>
     </div>
