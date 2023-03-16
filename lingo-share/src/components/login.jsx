@@ -7,6 +7,7 @@ import Navbar from "./navbar";
 import PasswordInput from "./passwordinput";
 import Input from "./lingoshare-components/input";
 import React from "react";
+import PrimaryButton from "./lingoshare-components/primarybutton";
 import { useTranslation } from "react-i18next";
 
 export default function Login() {
@@ -69,15 +70,14 @@ export default function Login() {
             placeholder={t("password...")}
             width={"300px"}
           />
-          <Button
+          <PrimaryButton
             marginTop={"15px"}
-            variant="outline"
+            width={"200px"}
             onClick={handleSubmit}
             rightIcon={<ArrowForwardIcon />}
             className="btn"
-          >
-            {t("Log In")}
-          </Button>
+            text={t("Log In")}
+          />
         </div>
       </ChakraProvider>
     </div>

@@ -6,6 +6,8 @@ import React, { useEffect, useState } from "react";
 import { rtdb } from "../firebase";
 import { ref, onValue } from "firebase/database";
 import { useTranslation } from "react-i18next";
+import PrimaryButton from "./lingoshare-components/primarybutton";
+import SecondaryButton from "./lingoshare-components/secondarybutton";
 import Navbar from "./navbar";
 
 export default function Home() {
@@ -47,9 +49,7 @@ export default function Home() {
           <Navbar currPage={"/home"} />
           <ChakraProvider>
             <div className="welcome-pg">
-              <Text fontSize="5xl">
-                {t("First, we need to get you set up!")}
-              </Text>
+              <Text fontSize="5xl">{t("Welcome to LingoShare!")}</Text>
               <Text fontSize="xl">
                 {t("Log in or create an account below")}
               </Text>
@@ -59,23 +59,21 @@ export default function Home() {
                 align={"center"}
                 marginTop={"50px"}
               >
-                <Button
+                <PrimaryButton
                   className="btn"
                   height={"50px"}
+                  width={"220px"}
                   onClick={() => handleClick("login")}
-                  variant="outline"
-                >
-                  {t("Log In")}
-                </Button>
-                <Button
+                  text={t("Log In")}
+                />
+                <SecondaryButton
                   className="btn"
                   height={"50px"}
+                  width={"220px"}
                   marginRight={"10px"}
                   onClick={() => handleClick("signup")}
-                  variant="outline"
-                >
-                  {t("Create an Account")}
-                </Button>
+                  text={t("Create an Account")}
+                />
               </Stack>
             </div>
           </ChakraProvider>

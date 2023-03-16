@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
-import { ChevronRightIcon, ChevronLeftIcon } from "@chakra-ui/icons";
+import { ChevronLeftIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
 import "../../styles/room.css";
 import { useTranslation } from "react-i18next";
@@ -13,7 +13,7 @@ const NavItem = ({ topicName, onClick }) => {
         height={"50px"}
         variant={"unstyled"}
         bgColor={"white"}
-        rightIcon={<ChevronRightIcon alignContent={"right"} />}
+        fontSize={"lg"}
       >
         {topicName}
       </Button>
@@ -45,6 +45,8 @@ export default function Sidebar({ prompts, handlePromptSelect }) {
   const [displayList, setDiplayList] = useState([]);
   const [currentTitle, setCurrentTitle] = useState("");
 
+  console.log(homeList);
+
   useEffect(() => {
     let hl = Object.keys(prompts);
     setHomeList(hl);
@@ -68,12 +70,12 @@ export default function Sidebar({ prompts, handlePromptSelect }) {
         w="375px"
       >
         <div className="title-sidebar">
-          <Text as={"b"} fontSize="xl" fontFamily={"Inter"}>
+          <Text color={"white"} as={"b"} fontSize="xl" fontFamily={"Inter"}>
             {t("Choose a Topic")}
           </Text>
         </div>
         <div className="title-description">
-          <Text>{t("What do you want to talk about")}</Text>
+          <Text color={"white"}>{t("What do you want to talk about?")}</Text>
         </div>
         <Flex
           paddingTop={"2rem"}
