@@ -18,6 +18,7 @@ import UserName from "./profile/username";
 import AboutSection from "./profile/aboutsection";
 import InterestsSection from "./profile/interestssection";
 import SecondaryButton from "./lingoshare-components/secondarybutton";
+import { handleAcceptRequest, handleIgnoreRequest } from "../utils/userutils";
 import "../styles/profilepage.css";
 
 export default function ProfilePage() {
@@ -92,54 +93,18 @@ export default function ProfilePage() {
     setInterests(newInterests);
   };
 
-  const handleAcceptRequest = (event, targetID) => {
-    event.currentTarget.disabled = true;
-    // add senderID into user's friend list
-    let friendRef = ref(rtdb, `/users/${user.uid}/friends/${targetID}`);
-    set(friendRef, true)
-      .then(() => {
-        console.log("friend added");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    // copy entry over to accepted_friend_requests object upon accept
-    let acceptedFriendRequestsRef = ref(
-      rtdb,
-      `accepted_friend_requests/${targetID}/${user.uid}`
-    );
-    set(acceptedFriendRequestsRef, "");
-    // remove the identical entry from friend request object
-    removeEntryFromFriendRequests(targetID);
+  const handleAcceptFriendRequest = (event, targetID) => {
+    handleAcceptRequest(event, friendRequestsRef, user, targetID);
     setIncomingRequest(false);
     navigate("/profile/" + params.id); // workaround
   };
 
-  const handleIgnoreRequest = (event, targetID) => {
-    event.currentTarget.disabled = true;
-    removeEntryFromFriendRequests(targetID);
+  const handleIgnoreFriendRequest = (event, targetID) => {
+    handleIgnoreRequest(event, friendRequestsRef, user, targetID);
     setIncomingRequest(false);
   };
 
-  const removeEntryFromFriendRequests = (targetID) => {
-    get(friendRequestsRef)
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          snapshot.forEach((childSnapshot) => {
-            Object.keys(childSnapshot.val()).forEach((receiverID) => {
-              if (childSnapshot.key === targetID && receiverID === user.uid) {
-                remove(child(friendRequestsRef, `/${targetID}/${user.uid}`));
-              }
-            });
-          });
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  const handleClickManageFriend = async (targetID, add) => {
+  const handleManageFriend = async (targetID, add) => {
     if (targetID !== user.uid && targetID !== undefined) {
       let friendRef = ref(rtdb, `/users/${user.uid}/friends/${targetID}`);
       let friendRequestsRef = ref(
@@ -236,8 +201,8 @@ export default function ProfilePage() {
             isPrimaryUser ? "/profile/" + user.uid : "/profile/" + params.id
           }
           displayName={displayName}
-          handleAcceptRequest={handleAcceptRequest}
-          handleIgnoreRequest={handleIgnoreRequest}
+          handleAcceptRequest={handleAcceptFriendRequest}
+          handleIgnoreRequest={handleIgnoreFriendRequest}
           friendRequests={friendRequestsObj}
           isRequestIncoming={incomingRequest}
           userObj={userObj}
@@ -248,7 +213,7 @@ export default function ProfilePage() {
           params={params}
           profilePic={profilePicURL}
           userFriends={userFriends}
-          handleClickManageFriend={handleClickManageFriend}
+          handleClickManageFriend={handleManageFriend}
           onOpenSuccessAlert={onOpen}
           setAlertText={setAlertText}
         />
