@@ -1,6 +1,7 @@
 import * as React from "react";
-import { ChakraProvider, Button, Text } from "@chakra-ui/react";
+import { ChakraProvider, Text } from "@chakra-ui/react";
 import lingoImage from "./landing-page-resources/talkingpeople.png";
+import PrimaryButton from "../lingoshare-components/primarybutton";
 
 export default function DescriptionPage({ t, handleStepChange }) {
   return (
@@ -18,15 +19,14 @@ export default function DescriptionPage({ t, handleStepChange }) {
               "LingoShare is a place where you can meet Mandarin speakers and learners!"
             )}
           </Text>
-          <Button
+          <PrimaryButton
             className="btn"
+            width={"140px"}
             height={"50px"}
             marginTop={"50px"}
+            text={t("Next")}
             onClick={() => handleStepChange("showAction")}
-            variant="outline"
-          >
-            {t("Next")}
-          </Button>
+          />
         </div>
       </ChakraProvider>
     </div>
