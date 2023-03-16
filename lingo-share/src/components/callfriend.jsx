@@ -34,6 +34,8 @@ export default function CallFriend() {
   const usersRef = ref(rtdb, "/users");
   const activeCallsRef = ref(rtdb, "/active_calls");
 
+  console.log(mergedObj);
+
   const getQuery = (ref) => {
     onValue(ref, (snapshot) => {
       let newObjectList = [];
@@ -172,27 +174,26 @@ export default function CallFriend() {
 
   return (
     <div>
-      <CallNotification />
-      <Navbar topLeftDisplay={t("Call a Friend")} currPage={"/callfriend"} />
-      {!hasNoFriends ? (
-        <Text className="font" fontSize="3xl">
-          {t("Who would you like to call?")}
-        </Text>
-      ) : (
-        <div className="welcome-pg">
-          <Text className="font" fontSize="3xl">
-            {t("You don't have any LingoShare friends yet!")}
-          </Text>
-          <PrimaryButton
-            text={t("Meet New Friends")}
-            onClick={() => navigate("/meetnewfriends")}
-            marginTop={"1.5rem"}
-            size={"lg"}
-          />
-        </div>
-      )}
-
       <ChakraProvider>
+        <CallNotification />
+        <Navbar topLeftDisplay={t("Call a Friend")} currPage={"/callfriend"} />
+        {!hasNoFriends ? (
+          <Text className="font" fontSize="3xl">
+            {t("Who would you like to call?")}
+          </Text>
+        ) : (
+          <div className="welcome-pg">
+            <Text className="font" fontSize="3xl">
+              {t("You don't have any LingoShare friends yet!")}
+            </Text>
+            <PrimaryButton
+              text={t("Meet New Friends")}
+              onClick={() => navigate("/meetnewfriends")}
+              marginTop={"1.5rem"}
+              size={"lg"}
+            />
+          </div>
+        )}
         <div className="field-pg">
           <UnorderedList spacing={5}>
             {Object.entries(mergedObj).map(([key, value], i) => {

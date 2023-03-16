@@ -31,7 +31,7 @@ export default function ProfileCard({
         <Box
           borderWidth={"1px"}
           borderColor={"#363636"}
-          maxW={"339px"}
+          width={"339px"}
           height={"380px"}
           w={"full"}
           bg={"white"}
@@ -92,13 +92,15 @@ export default function ProfileCard({
               <SecondaryButton
                 text={t("Friend Request Sent")}
                 width="full"
-                marginTop={5}
+                marginTop={3}
                 isDisabled={true}
               />
             )}
             {!isFriend && !friendRequestSent && (
               <PrimaryButton
                 text={t("Add as Friend")}
+                align={"center"}
+                direction={"row"}
                 width="full"
                 marginTop={3}
                 onClick={(e) => handleClickManageFriend(e, userId, true)}
@@ -108,7 +110,7 @@ export default function ProfileCard({
               <SecondaryButton
                 text={t("Remove Friend")}
                 width="full"
-                marginTop={5}
+                marginTop={3}
                 onClick={(e) => handleClickManageFriend(e, userId, false)}
               />
             )}

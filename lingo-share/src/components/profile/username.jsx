@@ -12,6 +12,7 @@ import Icon from "@adeira/icons";
 import "@fontsource/atkinson-hyperlegible";
 import "../../styles/profilepage.css";
 import ProfilePicture from "../profilepicture";
+import PrimaryButton from "../lingoshare-components/primarybutton";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { getDownloadURL, ref as storageRef } from "firebase/storage";
@@ -162,10 +163,11 @@ export default function UserName({
                 }
                 width={"175px"}
                 height={"45px"}
-                bgColor={params.id in userFriends ? "white" : "#393939"}
-                color={params.id in userFriends ? "#393939" : "white"}
+                _hover={{ bgColor: "#7d7c7c" }}
+                bgColor={params.id in userFriends ? "white" : "#363636"}
+                color={params.id in userFriends ? "#363636" : "white"}
                 borderWidth={"1.5px"}
-                borderColor={"#393939"}
+                borderColor={"#363636"}
                 rightIcon={
                   params.id in userFriends && <Icon name="check_circle" />
                 }

@@ -102,9 +102,9 @@ export default function BlockedPeople() {
     <div>
       <CallNotification />
       <Navbar currPage={"/blockedpeople"} />
-      <Text fontSize="3xl">{t("Manage your blocklist")}</Text>
       <ChakraProvider>
         <div className="field-pg">
+          <Text fontSize="3xl">{t("Manage your blocklist")}</Text>
           <div className="card-display">
             {Object.entries(mergedObj).map(([key, value], i) => {
               return (

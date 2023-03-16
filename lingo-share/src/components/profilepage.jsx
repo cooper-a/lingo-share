@@ -18,6 +18,7 @@ import SavedAlert from "./profile/savedalert";
 import UserName from "./profile/username";
 import AboutSection from "./profile/aboutsection";
 import InterestsSection from "./profile/interestssection";
+import SecondaryButton from "./lingoshare-components/secondarybutton";
 import "../styles/profilepage.css";
 
 export default function ProfilePage() {
@@ -232,15 +233,22 @@ export default function ProfilePage() {
           </div>
         )}
         {isPrimaryUser && (
-          <Button
+          // <Button
+          //   width={"100vh"}
+          //   variant={"outline"}
+          //   onClick={handleProfileEdit}
+          //   marginBottom={"2rem"}
+          //   className="heading"
+          // >
+          //   {t("Save Changes")}
+          // </Button>
+          <SecondaryButton
             width={"100vh"}
-            variant={"outline"}
+            marginBottom="2rem"
             onClick={handleProfileEdit}
-            marginBottom={"2rem"}
             className="heading"
-          >
-            {t("Save Changes")}
-          </Button>
+            text={t("Save Changes")}
+          />
         )}
       </div>
     </div>

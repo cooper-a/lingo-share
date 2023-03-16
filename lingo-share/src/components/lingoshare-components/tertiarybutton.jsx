@@ -3,6 +3,7 @@ import { Button } from "@chakra-ui/react";
 
 export default function TertiaryButton({
   className,
+  align,
   onClick,
   isDisabled,
   text,
@@ -14,6 +15,7 @@ export default function TertiaryButton({
 }) {
   return (
     <Button
+      align={align}
       variant={"link"}
       className={className}
       color={"#363636"}

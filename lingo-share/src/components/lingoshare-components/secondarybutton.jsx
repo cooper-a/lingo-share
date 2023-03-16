@@ -3,6 +3,7 @@ import { Button } from "@chakra-ui/react";
 
 export default function SecondaryButton({
   onClick,
+  align,
   isDisabled,
   text,
   width,
@@ -10,10 +11,12 @@ export default function SecondaryButton({
   marginTop,
   marginLeft,
   marginRight,
+  marginBottom,
   size,
 }) {
   return (
     <Button
+      align={align}
       borderWidth={"1.5px"}
       borderColor={"#393939"}
       bgColor={"white"}
@@ -22,6 +25,7 @@ export default function SecondaryButton({
       marginTop={marginTop}
       marginLeft={marginLeft}
       marginRight={marginRight}
+      marginBottom={marginBottom}
       width={width}
       borderRadius={"xl"}
       height={height}
