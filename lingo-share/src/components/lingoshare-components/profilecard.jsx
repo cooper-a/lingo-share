@@ -31,7 +31,7 @@ export default function ProfileCard({
         <Box
           borderWidth={"1px"}
           borderColor={"#363636"}
-          width={"339px"}
+          maxW={"260px"}
           height={"380px"}
           w={"full"}
           bg={"white"}

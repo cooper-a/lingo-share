@@ -100,7 +100,7 @@ export default function CallCard({
                 <Avatar bg="grey" src={profileURL} />
               )}
 
-              <Box>
+              <div className="card-name-heading">
                 {displayName ? (
                   <Text float={"left"} fontWeight={"bold"} fontSize="lg">
                     {displayName}
@@ -122,7 +122,7 @@ export default function CallCard({
                     {t("Offline")}
                   </Text>
                 )}
-              </Box>
+              </div>
             </Flex>
             <Box alignSelf={"center"}>
               <TertiaryButton

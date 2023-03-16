@@ -48,7 +48,7 @@ export default function InterestsSection({
         )}
       </Text>
       {isEditingInterests && (
-        <InputGroup m="6">
+        <InputGroup mb={"6"} ml={"1"}>
           <Input
             variant="flushed"
             placeholder={t("Add an interest")}

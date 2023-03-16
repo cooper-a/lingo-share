@@ -33,7 +33,11 @@ export default function AboutSection({ setBio, isPrimaryUser, bio }) {
       <div className="about-text">
         {isPrimaryUser ? (
           <Editable
-            value={bio ? bio : t("Click here to enter a bio about yourself...")}
+            value={
+              bio !== null
+                ? bio
+                : t("Click here to enter a bio about yourself...")
+            }
             fontSize={"xl"}
           >
             {aboutRender}

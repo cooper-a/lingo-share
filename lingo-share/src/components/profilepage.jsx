@@ -163,7 +163,6 @@ export default function ProfilePage() {
             isPrimaryUser ? "/profile/" + user.uid : "/profile/" + params.id
           }
           displayName={displayName}
-          userType={userType}
           userObj={userObj}
           isPrimaryUser={isPrimaryUser}
           isOnline={isOnline}
@@ -233,15 +232,6 @@ export default function ProfilePage() {
           </div>
         )}
         {isPrimaryUser && (
-          // <Button
-          //   width={"100vh"}
-          //   variant={"outline"}
-          //   onClick={handleProfileEdit}
-          //   marginBottom={"2rem"}
-          //   className="heading"
-          // >
-          //   {t("Save Changes")}
-          // </Button>
           <SecondaryButton
             width={"100vh"}
             marginBottom="2rem"

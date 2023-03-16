@@ -19,6 +19,12 @@
   gap: 15px;
 }
 
+.card-name-heading {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
 .font {
   font-family: "Atkinson Hyperlegible", sans-serif;
 }
