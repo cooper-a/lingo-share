@@ -72,10 +72,13 @@ export default function ProfileCard({
           <Box
             position={"absolute"}
             bottom={"0px"}
-            pl={6}
-            pr={6}
+            left={"0px"}
+            right={"0px"}
+            pl={7}
+            pr={7}
             pb={6}
-            className="font"
+            className="bottom-btns"
+            margin={"auto"}
           >
             <Button
               w={"full"}
