@@ -47,7 +47,7 @@ export default function CallFeedback() {
 
   return (
     <div>
-      <Navbar currPage="/callfeedback" />
+      <Navbar currPage="/callfeedback" callID={callID} roomName={roomName} />
       <div className="feedback-pg">
         <Text className="font" fontSize="3xl">
           {t("How was the call quality?")}
