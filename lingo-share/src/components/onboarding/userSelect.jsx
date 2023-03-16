@@ -1,4 +1,4 @@
-import { Button, ChakraProvider, Stack, Text } from "@chakra-ui/react";
+import { ChakraProvider, Stack, Text } from "@chakra-ui/react";
 import { rtdb } from "../../firebase";
 import { set, ref } from "firebase/database";
 import { useNavigate } from "react-router-dom";
@@ -6,6 +6,7 @@ import { UserAuth } from "../../contexts/AuthContext";
 import Navbar from "../navbar";
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import PrimaryButton from "../lingoshare-components/primarybutton";
 
 export default function UserSelect() {
   const { user } = UserAuth();
@@ -57,22 +58,20 @@ export default function UserSelect() {
             align={"center"}
             marginTop={"50px"}
           >
-            <Button
-              variant="outline"
+            <PrimaryButton
               className="selection-btn"
+              width={"260px"}
               height={"50px"}
+              text={t("A native Mandarin speaker")}
               onClick={() => handleSelection("native")}
-            >
-              {t("A native Mandarin speaker")}
-            </Button>
-            <Button
+            />
+            <PrimaryButton
               className="selection-btn"
-              variant="outline"
+              width={"260px"}
               height={"50px"}
+              text={t("Learning to speak Mandarin")}
               onClick={() => handleSelection("learner")}
-            >
-              {t("Learning to speak Mandarin")}
-            </Button>
+            />
           </Stack>
         </div>
       </ChakraProvider>
