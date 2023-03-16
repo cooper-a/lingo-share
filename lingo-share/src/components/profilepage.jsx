@@ -1,5 +1,4 @@
 import {
-  Button,
   Tag,
   Text,
   TagLabel,
@@ -11,7 +10,7 @@ import { UserAuth } from "../contexts/AuthContext";
 import Navbar from "./navbar";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ref, onValue, set } from "firebase/database";
+import { ref, onValue, set, get, remove, child } from "firebase/database";
 import { rtdb } from "../firebase";
 import CallNotification from "./callnotification";
 import SavedAlert from "./profile/savedalert";
@@ -29,6 +28,11 @@ export default function ProfilePage() {
   const userRef = ref(rtdb, "users/" + user.uid);
   const targetUserRef = ref(rtdb, "users/" + params.id);
   const userStatusRef = ref(rtdb, "status/" + params.id);
+  const friendRequestsRef = ref(rtdb, "/friend_requests");
+  const userFriendRequestsRef = ref(rtdb, "/friend_requests/" + user.uid);
+  const incomingRequestsRef = ref(rtdb, "/friend_requests/" + params.id);
+  const [incomingRequest, setIncomingRequest] = useState(false);
+  const [friendRequestsObj, setFriendRequestsObj] = useState([]);
   const [isPrimaryUser, setIsPrimaryUser] = useState(false);
   const [displayName, setDisplayName] = useState("");
   const [userType, setUserType] = useState("");
@@ -88,18 +92,65 @@ export default function ProfilePage() {
     setInterests(newInterests);
   };
 
+  const handleAcceptRequest = (event, targetID) => {
+    event.currentTarget.disabled = true;
+    // add senderID into user's friend list
+    let friendRef = ref(rtdb, `/users/${user.uid}/friends/${targetID}`);
+    set(friendRef, true)
+      .then(() => {
+        console.log("friend added");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    // copy entry over to accepted_friend_requests object upon accept
+    let acceptedFriendRequestsRef = ref(
+      rtdb,
+      `accepted_friend_requests/${targetID}/${user.uid}`
+    );
+    set(acceptedFriendRequestsRef, "");
+    // remove the identical entry from friend request object
+    removeEntryFromFriendRequests(targetID);
+    setIncomingRequest(false);
+    navigate("/profile/" + params.id); // workaround
+  };
+
+  const handleIgnoreRequest = (event, targetID) => {
+    event.currentTarget.disabled = true;
+    removeEntryFromFriendRequests(targetID);
+    setIncomingRequest(false);
+  };
+
+  const removeEntryFromFriendRequests = (targetID) => {
+    get(friendRequestsRef)
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          snapshot.forEach((childSnapshot) => {
+            Object.keys(childSnapshot.val()).forEach((receiverID) => {
+              if (childSnapshot.key === targetID && receiverID === user.uid) {
+                remove(child(friendRequestsRef, `/${targetID}/${user.uid}`));
+              }
+            });
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   const handleClickManageFriend = async (targetID, add) => {
     if (targetID !== user.uid && targetID !== undefined) {
       let friendRef = ref(rtdb, `/users/${user.uid}/friends/${targetID}`);
+      let friendRequestsRef = ref(
+        rtdb,
+        `/friend_requests/${user.uid}/${targetID}`
+      );
       if (add) {
-        set(friendRef, true)
-          .then(() => {
-            console.log("friend added");
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+        // add a friend
+        set(friendRequestsRef, "");
       } else {
+        // remove a friend
         set(friendRef, null)
           .then(() => {
             console.log("friend removed");
@@ -108,7 +159,7 @@ export default function ProfilePage() {
             console.log(error);
           });
       }
-      navigate(`/profile/${params.id}`);
+      navigate("/profile/" + params.id); // workaround
     }
   };
 
@@ -140,8 +191,30 @@ export default function ProfilePage() {
         setUserFriends({});
       }
     });
+    onValue(userFriendRequestsRef, (snapshot) => {
+      let newObjectList = [];
+      snapshot.forEach((childSnapshot) => {
+        let newObject = {};
+        newObject[childSnapshot.key] = childSnapshot.val();
+        newObjectList.push(newObject);
+      });
+      setFriendRequestsObj(newObjectList);
+    });
     onValue(userStatusRef, (snapshot) => {
       setIsOnline(snapshot.val().state);
+    });
+    onValue(incomingRequestsRef, (snapshot) => {
+      // responsible for checking whether params.id is requesting
+      // user.uid to be their friend (e.g. incoming request from the
+      // profile that they are viewing)
+      let isRequestIncoming = false;
+      snapshot.forEach((childSnapshot) => {
+        console.log(childSnapshot.key);
+        if (childSnapshot.key === user.uid) {
+          isRequestIncoming = true;
+        }
+      });
+      setIncomingRequest(isRequestIncoming);
     });
   }, []);
 
@@ -163,6 +236,10 @@ export default function ProfilePage() {
             isPrimaryUser ? "/profile/" + user.uid : "/profile/" + params.id
           }
           displayName={displayName}
+          handleAcceptRequest={handleAcceptRequest}
+          handleIgnoreRequest={handleIgnoreRequest}
+          friendRequests={friendRequestsObj}
+          isRequestIncoming={incomingRequest}
           userObj={userObj}
           isPrimaryUser={isPrimaryUser}
           isOnline={isOnline}

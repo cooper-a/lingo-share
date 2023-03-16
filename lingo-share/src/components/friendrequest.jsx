@@ -40,7 +40,6 @@ export default function FriendRequest() {
         snapshot.forEach((userChildSnapshot) => {
           if (userChildSnapshot.key === targetID) {
             // append friend request sender to requestSenders
-            console.log(userChildSnapshot.val());
             const { interests, userType, userDisplayName, profilePic } =
               userChildSnapshot.val();
             let newObj = {

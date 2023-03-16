@@ -21,29 +21,10 @@ const NavItem = ({ topicName, onClick }) => {
   );
 };
 
-const BackButton = ({ onClick }) => {
-  return (
-    <div className="inner-topic-btn" onClick={onClick}>
-      <Button
-        className="topic-btn-clickable"
-        width={"150px"}
-        height={"50px"}
-        variant={"unstyled"}
-        bgColor={"white"}
-        leftIcon={<ChevronLeftIcon alignContent={"left"} />}
-      >
-        Go Back
-      </Button>
-    </div>
-  );
-};
-
 export default function Sidebar({ prompts, handlePromptSelect }) {
   const { t } = useTranslation();
-  const [isHomeList, setIsHomeList] = useState(true);
   const [homeList, setHomeList] = useState([]);
   const [displayList, setDiplayList] = useState([]);
-  const [currentTitle, setCurrentTitle] = useState("");
 
   console.log(homeList);
 

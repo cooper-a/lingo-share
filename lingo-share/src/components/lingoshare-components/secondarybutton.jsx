@@ -12,6 +12,7 @@ export default function SecondaryButton({
   marginLeft,
   marginRight,
   marginBottom,
+  rightIcon,
   size,
 }) {
   return (
@@ -30,6 +31,7 @@ export default function SecondaryButton({
       borderRadius={"xl"}
       height={height}
       onClick={onClick}
+      rightIcon={rightIcon}
       size={size}
     >
       {text}

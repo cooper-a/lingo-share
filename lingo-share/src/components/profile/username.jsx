@@ -1,18 +1,16 @@
 import {
-  Button,
   Avatar,
   Editable,
   EditableInput,
   EditablePreview,
   Text,
-  Stack,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import Icon from "@adeira/icons";
 import "@fontsource/atkinson-hyperlegible";
 import "../../styles/profilepage.css";
 import ProfilePicture from "../profilepicture";
-import PrimaryButton from "../lingoshare-components/primarybutton";
+import ButtonGroup from "../lingoshare-components/buttongroup";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { getDownloadURL, ref as storageRef } from "firebase/storage";
@@ -25,6 +23,10 @@ import EditableControls from "./editablecontrols";
 export default function UserName({
   curPage,
   displayName,
+  handleAcceptRequest,
+  handleIgnoreRequest,
+  friendRequests,
+  isRequestIncoming,
   userObj,
   isPrimaryUser,
   setDisplayName,
@@ -42,6 +44,15 @@ export default function UserName({
   const { user } = UserAuth();
   const [pfp, setPfp] = useState(null);
   const navigate = useNavigate();
+  let isUserFriendRequested = false;
+  friendRequests.forEach((request) => {
+    if (request.hasOwnProperty(params.id)) {
+      isUserFriendRequested = true;
+      return;
+    }
+  });
+
+  console.log(userFriends);
 
   const saveCompressedPhotoURL = () => {
     getDownloadURL(
@@ -64,6 +75,71 @@ export default function UserName({
     onOpenSuccessAlert();
   };
 
+  let buttonGroupRender = <div></div>;
+  if (isRequestIncoming) {
+    buttonGroupRender = (
+      <ButtonGroup
+        buttonTypeList={["primary", "secondary"]}
+        textList={["Accept Friend Request", "Ignore Friend Request"]}
+        onClickList={[
+          (event) => handleAcceptRequest(event, params.id),
+          (event) => handleIgnoreRequest(event, params.id),
+        ]}
+        spacing={4}
+        width={"200px"}
+        height={"45px"}
+        marginTop={"10px"}
+        marginLeft={"48px"}
+      />
+    );
+  } else if (isUserFriendRequested) {
+    buttonGroupRender = (
+      <ButtonGroup
+        buttonTypeList={["secondary", "secondary"]}
+        textList={[t("Friend Request Sent"), t("Block User")]}
+        onClickList={[() => {}, () => {}]}
+        isDisabledList={[true, false]}
+        spacing={4}
+        width={"200px"}
+        height={"45px"}
+        marginTop={"10px"}
+        marginLeft={"48px"}
+      />
+    );
+  } else if (params.id in userFriends) {
+    buttonGroupRender = (
+      <ButtonGroup
+        buttonTypeList={["secondary", "secondary"]}
+        textList={[t("Friends"), t("Block User")]}
+        onClickList={[
+          () => handleClickManageFriend(params.id, !(params.id in userFriends)),
+          () => {},
+        ]} // TODO: block user button functional
+        rightIconList={[<Icon name="check_circle" />, <></>]}
+        spacing={4}
+        width={"200px"}
+        height={"45px"}
+        marginTop={"10px"}
+        marginLeft={"48px"}
+      />
+    );
+  } else {
+    buttonGroupRender = (
+      <ButtonGroup
+        buttonTypeList={["primary", "secondary"]}
+        textList={[t("Add as Friend"), t("Block User")]}
+        onClickList={[
+          () => handleClickManageFriend(params.id, !(params.id in userFriends)),
+          () => {},
+        ]}
+        spacing={4}
+        width={"200px"}
+        height={"45px"}
+        marginTop={"10px"}
+        marginLeft={"48px"}
+      />
+    );
+  }
   return (
     <div className="profile-pic">
       <div className="picture">
@@ -146,44 +222,7 @@ export default function UserName({
                 • {proficiencyMap[userObj.proficiency]}
               </Text>
             </div>
-            <Stack
-              direction={"row"}
-              spacing={4}
-              align={"center"}
-              marginTop={"10px"}
-              marginLeft={"48px"}
-              className="heading"
-            >
-              <Button
-                onClick={() =>
-                  handleClickManageFriend(
-                    params.id,
-                    !(params.id in userFriends)
-                  )
-                }
-                width={"175px"}
-                height={"45px"}
-                _hover={{ bgColor: "#7d7c7c" }}
-                bgColor={params.id in userFriends ? "white" : "#363636"}
-                color={params.id in userFriends ? "#363636" : "white"}
-                borderWidth={"1.5px"}
-                borderColor={"#363636"}
-                rightIcon={
-                  params.id in userFriends && <Icon name="check_circle" />
-                }
-              >
-                {params.id in userFriends ? t("Friends") : t("Add as Friend")}
-              </Button>
-              <Button
-                width={"175px"}
-                height={"45px"}
-                variant={"outline"}
-                borderWidth={"1.5px"}
-                borderColor={"#393939"}
-              >
-                {t("Block User")}
-              </Button>
-            </Stack>
+            {buttonGroupRender}
           </div>
         </div>
       )}

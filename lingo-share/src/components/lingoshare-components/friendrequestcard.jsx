@@ -30,7 +30,7 @@ export default function FriendRequestCard({
         borderWidth={"1px"}
         borderColor={"#363636"}
         width={"820px"}
-        height={"120px"}
+        maxH={"120px"}
         left={"20px"}
         rounded={"2xl"}
       >
@@ -51,9 +51,11 @@ export default function FriendRequestCard({
                     ? "Language Learner"
                     : "Native Speaker"}
                 </Text>
-                <Text marginTop={"0.25rem"} fontSize={"sm"}>
-                  {interests ? "Interests: " + interests.join(", ") : ""}
-                </Text>
+                {interests && (
+                  <Text marginTop={"0.25rem"} fontSize={"sm"}>
+                    {"Interests: " + interests.join(", ")}
+                  </Text>
+                )}
               </div>
             </Flex>
             <Box alignSelf={"center"}>
