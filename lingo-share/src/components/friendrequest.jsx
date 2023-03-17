@@ -7,7 +7,11 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import FriendRequestCard from "./lingoshare-components/friendrequestcard";
 import "../styles/meetfriends.css";
-import { handleAcceptRequest, handleIgnoreRequest } from "../utils/userutils";
+import {
+  handleAcceptRequest,
+  handleIgnoreRequest,
+  extractRequestSenderID,
+} from "../utils/userutils";
 
 export default function FriendRequest() {
   const [friendRequestSnapshot, setFriendRequestSnapshot] = useState([]);
@@ -20,46 +24,14 @@ export default function FriendRequest() {
   // console.log(friendRequestSnapshot);
   // console.log(requestSenders);
 
-  const extractRequestSenderID = () => {
-    friendRequestSnapshot.forEach((requestChildSnapshot) => {
-      Object.keys(requestChildSnapshot.val()).forEach((receiverID) => {
-        if (
-          user.uid === receiverID &&
-          !requestSenders.hasOwnProperty(requestChildSnapshot.key)
-        ) {
-          let senderUid = requestChildSnapshot.key;
-          appendRequestSender(senderUid);
-        }
-      });
-    });
-  };
-
-  const appendRequestSender = (targetID) => {
-    // extract sender's display name
-    get(usersRef)
-      .then((snapshot) => {
-        snapshot.forEach((userChildSnapshot) => {
-          if (userChildSnapshot.key === targetID) {
-            // append friend request sender to requestSenders
-            const { interests, userType, userDisplayName, profilePic } =
-              userChildSnapshot.val();
-            let newObj = {
-              userId: targetID,
-              interests: interests,
-              userType: userType,
-              userDisplayName: userDisplayName,
-              profilePic: profilePic,
-            };
-            setRequestSenders((requestSenders) => ({
-              ...requestSenders,
-              [userChildSnapshot.key]: newObj,
-            }));
-          }
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  const extractRequestSenderIDFromSnapshot = () => {
+    extractRequestSenderID(
+      friendRequestSnapshot,
+      user,
+      requestSenders,
+      usersRef,
+      setRequestSenders
+    );
   };
 
   const handleAcceptFriendRequest = (event, targetID) => {
@@ -87,7 +59,7 @@ export default function FriendRequest() {
   }, []);
 
   useEffect(() => {
-    extractRequestSenderID();
+    extractRequestSenderIDFromSnapshot();
   }, [friendRequestSnapshot]);
 
   return (
@@ -103,10 +75,11 @@ export default function FriendRequest() {
         </Text>
       )}
       {Object.entries(requestSenders).map(([senderID, senderInfo], i) => {
-        console.log(senderInfo);
+        console.log(i);
         return (
-          <div key={i} className="friend-request">
+          <div key={senderID} className="friend-request">
             <FriendRequestCard
+              key={i}
               userId={senderInfo.userId}
               displayName={senderInfo.userDisplayName}
               interests={senderInfo.interests}
