@@ -43,7 +43,7 @@ export default function InterestsSection({
             fontSize={"lg"}
             onClick={setIsEditingInterests}
           >
-            Edit
+            {t("Edit")}
           </Button>
         )}
       </Text>
