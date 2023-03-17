@@ -18,6 +18,7 @@ export default function Room({ roomName, room, handleLogout, callID }) {
   const [toggleVideo, setToggleVideo] = useState(true);
   const [togglePrompt, setTogglePrompt] = useState(false);
   const toast = useToast();
+  const toastIdRef = React.useRef();
   const activePromptRef = ref(
     rtdb,
     `/calls/${roomName}/${callID}/active_prompt`
@@ -85,28 +86,15 @@ export default function Room({ roomName, room, handleLogout, callID }) {
           // console.log(snapshot.val());
           let dbPromptObj = snapshot.val();
           // let dbPromptInLang = snapshot.val()[preferredLanguage];
-          // console.log(activePrompt !== dbPromptObj);
-          // console.log(activePrompt !== undefined);
-          // console.log(activePrompt !== "");
           if (
-            activePrompt !== "" &&
-            activePrompt !== undefined &&
+            dbPromptObj !== undefined &&
             activePrompt[preferredLanguage] !== dbPromptObj[preferredLanguage]
           ) {
             setActivePrompt(dbPromptObj);
-            console.log("here");
-            console.log(dbPromptObj);
-            console.log(activePrompt);
           }
         }
       });
     }, 1000);
-
-    // onValue(activePromptRef, (snapshot) => {
-    //   const data = snapshot.val();
-    //   console.log(data);
-    //   console.log("change detected");
-    // });
 
     return () => {
       room.off("participantConnected", participantConnected);
@@ -161,10 +149,11 @@ export default function Room({ roomName, room, handleLogout, callID }) {
   ));
 
   useEffect(() => {
-    if (localActivePrompt === "") return;
+    if (localActivePrompt === "" || localActivePrompt === undefined) return;
+    // when our active prompt changes, we want to display a toast
     toast.closeAll();
     console.log(localActivePrompt);
-    toast({
+    toastIdRef.current = toast({
       title: `${localActivePrompt}`,
       variant: "toast",
       isClosable: true,
@@ -177,9 +166,17 @@ export default function Room({ roomName, room, handleLogout, callID }) {
   }, [localActivePrompt, toast]);
 
   useEffect(() => {
-    if (localActivePrompt === "") return;
-    localActivePrompt = activePrompt[preferredLanguage];
-  }, [activePrompt, preferredLanguage]);
+    // when our preferred language changes, we want to change the language of the toast but only if it exists
+    if (toast.isActive(toastIdRef.current)) {
+      console.log(localActivePrompt);
+      setLocalActivePrompt(activePrompt[preferredLanguage]);
+    }
+  }, [preferredLanguage]);
+
+  useEffect(() => {
+    // when our active prompt changes we always want to update the local active prompt
+    setLocalActivePrompt(activePrompt[preferredLanguage]);
+  }, [activePrompt]);
 
   return (
     <ChakraProvider theme={customTheme}>

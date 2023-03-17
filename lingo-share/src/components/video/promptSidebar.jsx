@@ -27,8 +27,6 @@ export default function PromptSidebar({
         if (snapshot.exists()) {
           // console.log(snapshot.val());
           const data = snapshot.val();
-          // const prompts = JSON.stringify(data);
-          // console.log(prompts);
           setPrompts(data);
         } else {
           console.log("No data available");
