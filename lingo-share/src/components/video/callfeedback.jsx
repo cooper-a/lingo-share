@@ -1,14 +1,14 @@
-import { Textarea, Text } from "@chakra-ui/react";
-import React, { useEffect, useRef, useState } from "react";
+import { Text, Textarea } from "@chakra-ui/react";
+import { ref, set } from "firebase/database";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import { UserAuth } from "../../contexts/AuthContext";
-import SelectionButton from "../lingoshare-components/selectionbutton";
-import PrimaryButton from "../lingoshare-components/primarybutton";
-import "../../styles/feedback.css";
-import Navbar from "../navbar";
-import { ref, set } from "firebase/database";
 import { rtdb } from "../../firebase";
+import "../../styles/feedback.css";
+import PrimaryButton from "../lingoshare-components/primarybutton";
+import SelectionButton from "../lingoshare-components/selectionbutton";
+import Navbar from "../navbar";
 
 export default function CallFeedback() {
   const { user } = UserAuth();
@@ -40,9 +40,10 @@ export default function CallFeedback() {
         displayName: user.displayName,
       };
       set(feedbackRef, feedbackObj);
-      console.log(feedbackObj);
+      navigate("/thanksfeedback");
+    } else {
+      navigate("/dashboard");
     }
-    navigate("/dashboard");
   };
 
   return (
@@ -86,7 +87,7 @@ export default function CallFeedback() {
             marginTop={"3rem"}
             borderColor={"#393939"}
             width={"500px"}
-            placeholder="Can you tell us more? (optional)"
+            placeholder={t("Can you tell us more? (optional)")}
             onChange={(e) => setComment(e.target.value)}
           />
         ) : null}

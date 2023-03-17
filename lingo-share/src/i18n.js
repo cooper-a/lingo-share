@@ -120,6 +120,8 @@ const resources = {
       "Can you tell us more? (optional)": "Can you tell us more? (optional)",
       Skip: "Skip",
       Submit: "Submit",
+      "Thanks for your feedback!": "Thanks for your feedback!",
+      "Back to LingoShare": "Back to LingoShare",
     },
   },
   zh: {
@@ -233,6 +235,8 @@ const resources = {
       "How was the call quality?": "How was the call quality?",
       "How did your conversation go?": "How did your conversation go?",
       "Can you tell us more? (optional)": "Can you tell us more? (optional)",
+      "Thank you for your feedback!": "Thank you for your feedback!",
+      "Back to LingoShare": "Back to LingoShare",
     },
   },
 };
