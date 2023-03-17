@@ -1,3 +1,6 @@
+import { ref, onValue, set, get, remove, child } from "firebase/database";
+import { rtdb } from "../firebase";
+
 const mergeObj = (
   statusObj,
   userObj,
@@ -115,4 +118,51 @@ const mergeObj = (
   return res;
 };
 
-export { mergeObj };
+const handleAcceptRequest = (event, friendRequestsRef, user, targetID) => {
+  event.currentTarget.disabled = true;
+  // add senderID into user's friend list
+  let friendRef = ref(rtdb, `/users/${user.uid}/friends/${targetID}`);
+  set(friendRef, true)
+    .then(() => {
+      console.log("friend added");
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  // copy entry over to accepted_friend_requests object upon accept
+  let acceptedFriendRequestsRef = ref(
+    rtdb,
+    `accepted_friend_requests/${targetID}/${user.uid}`
+  );
+  set(acceptedFriendRequestsRef, "");
+  // remove the identical entry from friend request object
+  removeEntryFromFriendRequests(friendRequestsRef, user, targetID);
+  // setIncomingRequest(false);
+  // navigate("/profile/" + params.id); // workaround
+};
+
+const handleIgnoreRequest = (event, friendRequestsRef, user, targetID) => {
+  event.currentTarget.disabled = true;
+  removeEntryFromFriendRequests(friendRequestsRef, user, targetID);
+  // setIncomingRequest(false);
+};
+
+const removeEntryFromFriendRequests = (friendRequestsRef, user, targetID) => {
+  get(friendRequestsRef)
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        snapshot.forEach((childSnapshot) => {
+          Object.keys(childSnapshot.val()).forEach((receiverID) => {
+            if (childSnapshot.key === targetID && receiverID === user.uid) {
+              remove(child(friendRequestsRef, `/${targetID}/${user.uid}`));
+            }
+          });
+        });
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
+export { mergeObj, handleAcceptRequest, handleIgnoreRequest };

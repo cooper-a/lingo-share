@@ -41,9 +41,15 @@ export default function Dashboard() {
 
   const CardItem = ({ text, iconName, onClick }) => {
     return (
-      <Card className="card" size={"lg"} bgColor={"gray.200"} onClick={onClick}>
+      <Card
+        className="card"
+        borderWidth={"2px"}
+        borderColor={"#363636"}
+        size={"lg"}
+        onClick={onClick}
+      >
         <CardBody>
-          <Icon name={iconName} width={"90px"} height={"90px"} />
+          <Icon name={iconName} width={"80px"} height={"80px"} />
           <Stack mt="6" spacing="3">
             <Text fontWeight={"bold"} className="font" fontSize="md">
               {text}
