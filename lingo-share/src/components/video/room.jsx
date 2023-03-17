@@ -13,6 +13,7 @@ import Icon from "@adeira/icons";
 export default function Room({ roomName, room, handleLogout, callID }) {
   const [participants, setParticipants] = useState([]);
   const [activePrompt, setActivePrompt] = useState("");
+  const [localActivePrompt, setLocalActivePrompt] = useState("");
   const [toggleAudio, setToggleAudio] = useState(true);
   const [toggleVideo, setToggleVideo] = useState(true);
   const [togglePrompt, setTogglePrompt] = useState(false);
@@ -82,13 +83,20 @@ export default function Room({ roomName, room, handleLogout, callID }) {
         // console.log("grabbing active prompt");
         if (snapshot.exists()) {
           // console.log(snapshot.val());
-          let dbPromptDict = snapshot.val();
-          let dbPromptInLang = snapshot.val()[preferredLanguage];
+          let dbPromptObj = snapshot.val();
+          // let dbPromptInLang = snapshot.val()[preferredLanguage];
+          // console.log(activePrompt !== dbPromptObj);
+          // console.log(activePrompt !== undefined);
+          // console.log(activePrompt !== "");
           if (
-            !Object.values(dbPromptDict).includes(activePrompt) &&
-            dbPromptInLang !== undefined
+            activePrompt !== "" &&
+            activePrompt !== undefined &&
+            activePrompt[preferredLanguage] !== dbPromptObj[preferredLanguage]
           ) {
-            setActivePrompt(dbPromptInLang);
+            setActivePrompt(dbPromptObj);
+            console.log("here");
+            console.log(dbPromptObj);
+            console.log(activePrompt);
           }
         }
       });
@@ -153,10 +161,11 @@ export default function Room({ roomName, room, handleLogout, callID }) {
   ));
 
   useEffect(() => {
-    if (activePrompt === "") return;
+    if (localActivePrompt === "") return;
     toast.closeAll();
+    console.log(localActivePrompt);
     toast({
-      title: `${activePrompt}`,
+      title: `${localActivePrompt}`,
       variant: "toast",
       isClosable: true,
       containerStyle: {
@@ -165,7 +174,12 @@ export default function Room({ roomName, room, handleLogout, callID }) {
       },
       icon: <Icon name={"thread"} width={"25px"} height={"25px"} />,
     });
-  }, [activePrompt, toast]);
+  }, [localActivePrompt, toast]);
+
+  useEffect(() => {
+    if (localActivePrompt === "") return;
+    localActivePrompt = activePrompt[preferredLanguage];
+  }, [activePrompt, preferredLanguage]);
 
   return (
     <ChakraProvider theme={customTheme}>

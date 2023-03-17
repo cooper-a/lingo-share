@@ -12,12 +12,10 @@ export default function PromptSidebar({
 }) {
   const prompts_ref = ref(rtdb, "/prompts/");
   const [prompts, setPrompts] = useState({});
-  const callIDRef = ref(rtdb, `/calls/${roomName}/${callID}`);
   const activePromptRef = ref(
     rtdb,
     `/calls/${roomName}/${callID}/active_prompt`
   );
-
   const promptHistoryRef = ref(
     rtdb,
     `/calls/${roomName}/${callID}/prompt_history`
@@ -41,12 +39,13 @@ export default function PromptSidebar({
       });
   };
 
-  const handlePromptSelect = (promptName) => {
+  const handlePromptSelect = (promptObj) => {
     console.log("Prompt Selected");
-    set(activePromptRef, promptName);
-    setActivePrompt(promptName[preferredLanguage]);
+    set(activePromptRef, promptObj);
+    console.log("promptName: " + promptObj);
+    setActivePrompt(promptObj);
     console.log("Pushing prompt to history");
-    push(promptHistoryRef, promptName);
+    push(promptHistoryRef, promptObj);
   };
 
   useEffect(() => {
