@@ -1,7 +1,18 @@
 import React from "react";
-import { Button, ButtonGroup, Text, Tooltip } from "@chakra-ui/react";
+import {
+  Button,
+  ButtonGroup,
+  Text,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverArrow,
+  PopoverCloseButton,
+  PopoverBody,
+} from "@chakra-ui/react";
 import Icon from "@adeira/icons";
 import "../../styles/controls.css";
+import { t } from "i18next";
 
 const ControlButton = ({ text, iconName, onClick }) => {
   return (
@@ -17,22 +28,47 @@ export default function Controls({
   handleAudioToggle,
   handleVideoToggle,
   handlePromptToggle,
+  handleLeaveToggle,
   handleTranslate,
   preferredLanguage,
   translator,
   isPromptToggled,
+  isOpen,
+  onClose,
   audio,
   video,
 }) {
   return (
     <div className="control-btns">
-      <div className="topic-btn">
-        <ControlButton
-          onClick={handlePromptToggle}
-          text={translator("Choose a Topic")}
-          iconName={"thread"}
-        />
-      </div>
+      <Popover
+        returnFocusOnClose={false}
+        isOpen={isOpen}
+        onClose={onClose}
+        placement="top"
+        closeOnBlur={false}
+      >
+        <PopoverTrigger>
+          <div className="topic-btn">
+            <ControlButton
+              onClick={handlePromptToggle}
+              text={translator("Choose a Topic")}
+              iconName={"thread"}
+            />
+          </div>
+        </PopoverTrigger>
+        <PopoverContent
+          margin="12px"
+          padding={"2px"}
+          bg={"#363636"}
+          color="white"
+        >
+          <PopoverArrow bg={"#363636"} />
+          <PopoverCloseButton />
+          <PopoverBody>
+            {t("Find something to talk about by choosing a topic!")}
+          </PopoverBody>
+        </PopoverContent>
+      </Popover>
       <ButtonGroup className="track-btns">
         <ControlButton
           text={
@@ -48,23 +84,22 @@ export default function Controls({
         />
       </ButtonGroup>
 
-      <ButtonGroup className="options-btns">
-        <ControlButton
-          text={preferredLanguage === "en" ? "中文" : "English"}
-          iconName={"translate"}
-          onClick={() =>
-            handleTranslate(preferredLanguage === "en" ? "zh" : "en")
-          }
-        />
-        <ControlButton
-          text={translator("Text Size")}
-          iconName={"zoom_in"}
-          // onClick={} // TODO: make this functional
-        />
-      </ButtonGroup>
       <div className="leave-btn">
-        <Button onClick={handleCallDisconnect}>
-          <Text fontSize={"1rem"} fontFamily={"Inter"}>
+        <ButtonGroup className="options-btns">
+          <ControlButton
+            text={preferredLanguage === "en" ? "English" : "中文"}
+            iconName={"translate"}
+            onClick={() =>
+              handleTranslate(preferredLanguage === "en" ? "zh" : "en")
+            }
+          />
+        </ButtonGroup>
+        <Button
+          marginTop={"15px"}
+          bgColor={"white"}
+          onClick={handleLeaveToggle}
+        >
+          <Text margin={"5px"} fontSize={"1rem"} fontFamily={"Inter"}>
             {translator("Leave Call")}
           </Text>
         </Button>

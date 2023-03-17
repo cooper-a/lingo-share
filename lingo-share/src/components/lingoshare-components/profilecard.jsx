@@ -8,6 +8,8 @@ import {
   Flex,
   Stack,
 } from "@chakra-ui/react";
+import PrimaryButton from "./primarybutton.jsx";
+import SecondaryButton from "./secondarybutton.jsx";
 import { useTranslation } from "react-i18next";
 
 export default function ProfileCard({
@@ -16,6 +18,8 @@ export default function ProfileCard({
   isFriend,
   friendRequestSent,
   profileURL,
+  userType,
+  interests,
   handleClickViewProfile,
   handleClickManageFriend,
 }) {
@@ -24,7 +28,17 @@ export default function ProfileCard({
   return (
     <div>
       <Center py={6}>
-        <Box maxW={"270px"} w={"full"} bg={"#D9D9D9"} rounded={"lg"}>
+        <Box
+          borderWidth={"1px"}
+          borderColor={"#363636"}
+          maxW={"260px"}
+          height={"380px"}
+          w={"full"}
+          bg={"white"}
+          rounded={"2xl"}
+          position={"relative"}
+          className="profile-card"
+        >
           <Flex justify={"center"} mt={7}>
             <Avatar
               size={"xl"}
@@ -40,58 +54,70 @@ export default function ProfileCard({
               }}
             />
           </Flex>
-          <Box p={6} className="font">
-            <Stack spacing={0} align={"center"} mb={3}>
+          <Box pl={6} pr={6} pt={6} className="font">
+            <Stack spacing={2} align={"center"} mb={3}>
               <Text className="font" fontSize={"lg"} fontWeight={"bold"}>
                 {name}
               </Text>
-              {/* <Text color={"gray.500"}>Native Speaker</Text> */}
+              <Text>
+                {userType === "learner" ? "Language Learner" : "Native Speaker"}
+              </Text>
             </Stack>
+          </Box>
+          <Box pl={6} pr={6} pt={0.5} className="font">
+            <Text fontSize={"sm"}>
+              {interests
+                ? "Interests: " + interests.slice(0, 3).join(", ") // display the top 3 interests for styling
+                : ""}
+            </Text>
+          </Box>
+          <Box
+            position={"absolute"}
+            bottom={"0px"}
+            left={"0px"}
+            right={"0px"}
+            pl={7}
+            pr={7}
+            pb={6}
+            className="bottom-btns"
+            margin={"auto"}
+          >
             <Button
               w={"full"}
+              variant={"link"}
               mt={3}
               bg={"white"}
-              color={"black"}
-              rounded={"md"}
+              color={"#363636"}
+              textDecoration={"underline"}
               onClick={() => handleClickViewProfile(userId)}
             >
               {t("View Profile")}
             </Button>
             {!isFriend && friendRequestSent && (
-              <Button
-                w={"full"}
-                mt={3}
-                bg={"grey"}
-                color={"black"}
-                rounded={"md"}
-                disabled={true}
-              >
-                {t("Friend Request Sent")}
-              </Button>
+              <SecondaryButton
+                text={t("Friend Request Sent")}
+                width="full"
+                marginTop={3}
+                isDisabled={true}
+              />
             )}
             {!isFriend && !friendRequestSent && (
-              <Button
-                w={"full"}
-                mt={3}
-                bg={"white"}
-                color={"black"}
-                rounded={"md"}
+              <PrimaryButton
+                text={t("Add as Friend")}
+                align={"center"}
+                direction={"row"}
+                width="full"
+                marginTop={3}
                 onClick={(e) => handleClickManageFriend(e, userId, true)}
-              >
-                {t("Add as Friend")}
-              </Button>
+              />
             )}
             {isFriend && !friendRequestSent && (
-              <Button
-                w={"full"}
-                mt={3}
-                bg={"white"}
-                color={"black"}
-                rounded={"md"}
+              <SecondaryButton
+                text={t("Remove Friend")}
+                width="full"
+                marginTop={3}
                 onClick={(e) => handleClickManageFriend(e, userId, false)}
-              >
-                {t("Remove Friend")}
-              </Button>
+              />
             )}
           </Box>
         </Box>

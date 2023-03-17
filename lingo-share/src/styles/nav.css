@@ -4,7 +4,7 @@
 
 .avatar {
   margin-top: 5px;
-  padding-right: 10px;
+  padding-right: 15px;
 }
 
 .logo {
@@ -53,7 +53,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-right: 1.5rem;
+  margin-right: 0.5rem;
 }
 
 .top-right-settings {

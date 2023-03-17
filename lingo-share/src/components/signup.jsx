@@ -8,6 +8,7 @@ import { UserAuth } from "../contexts/AuthContext";
 import "../styles/homepage.css";
 import Navbar from "./navbar";
 import CustomInput from "./lingoshare-components/input";
+import PrimaryButton from "./lingoshare-components/primarybutton";
 import { updateProfile, getAuth } from "firebase/auth";
 import { useTranslation } from "react-i18next";
 
@@ -120,15 +121,14 @@ export default function Signup() {
             placeholder={t("pasword...")}
             width={"350px"}
           />
-          <Button
-            variant="outline"
+          <PrimaryButton
+            marginTop={"15px"}
+            width={"200px"}
             onClick={handleSubmit}
             rightIcon={<ArrowForwardIcon />}
-            marginTop={"15px"}
             className="btn"
-          >
-            {t("Sign Up")}
-          </Button>
+            text={t("Sign Up")}
+          />
         </div>
       </ChakraProvider>
     </div>

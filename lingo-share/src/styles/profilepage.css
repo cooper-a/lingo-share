@@ -13,13 +13,14 @@
   float: left;
   /* left: 1rem; */
   margin-bottom: 0.5rem;
+  font-family: "Atkinson Hyperlegible", sans-serif;
 }
 
 .user-name {
   display: flex;
   flex-direction: column;
   text-align: left;
-  gap: 1px;
+  gap: 4px;
 }
 
 .heading {

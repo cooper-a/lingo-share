@@ -37,3 +37,9 @@
 .selection-btn {
   width: 400px;
 }
+
+.btn-lingoshare-black {
+  font-family: "Atkinson Hyperlegible", sans-serif;
+  background-color: #393939;
+  color: white;
+}

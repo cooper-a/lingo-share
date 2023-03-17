@@ -5,12 +5,12 @@
   align-items: center;
   margin: 0;
   padding: 0;
-  background-color: #6b6c72;
+  background-color: #363636;
   height: 100px;
 }
 
 .control-toggle {
-  background-color: #d9d9d9;
+  background-color: white;
   padding: 10px;
   border-radius: 10px;
   cursor: pointer;
@@ -37,7 +37,7 @@
 }
 
 .options-btns {
-  margin-left: 100px;
+  margin-right: 20px;
 }
 
 .leave-btn {

@@ -1,4 +1,4 @@
-import { Button, ChakraProvider, Text } from "@chakra-ui/react";
+import { ChakraProvider, Text } from "@chakra-ui/react";
 import { onValue, ref, set } from "firebase/database";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../../contexts/AuthContext";
 import { rtdb } from "../../firebase";
 import "../../styles/onboarding.css";
+import PrimaryButton from "../lingoshare-components/primarybutton";
 import Navbar from "../navbar";
 
 export default function LanguageProficiency() {
@@ -52,35 +53,28 @@ export default function LanguageProficiency() {
           </div>
           <div className="grid-btns">
             <div className="grid-item-btn">
-              <Button
-                variant="outline"
-                marginTop={"50px"}
+              <PrimaryButton
+                width={"280px"}
+                height={"50px"}
+                text={t("Can speak it well")}
                 onClick={() => handleSelection("well")}
-                width={"400px"}
-                height={"50px"}
-              >
-                {t("Well")}
-              </Button>
+              />
             </div>
             <div className="grid-item-btn">
-              <Button
-                width={"400px"}
+              <PrimaryButton
+                width={"280px"}
                 height={"50px"}
-                variant="outline"
+                text={t("Can speak some of it")}
                 onClick={() => handleSelection("okay")}
-              >
-                {t("Okay")}
-              </Button>
+              />
             </div>
             <div className="grid-item-btn">
-              <Button
-                width={"400px"}
+              <PrimaryButton
+                width={"280px"}
                 height={"50px"}
-                variant="outline"
+                text={t("Getting started with it")}
                 onClick={() => handleSelection("poor")}
-              >
-                {t("Poorly")}
-              </Button>
+              />
             </div>
           </div>
         </div>

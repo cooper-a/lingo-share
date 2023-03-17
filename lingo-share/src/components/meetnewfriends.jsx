@@ -174,17 +174,21 @@ export default function MeetNewFriends() {
 
   return (
     <div>
-      <FriendRequest />
       <CallNotification />
       <Navbar
         topLeftDisplay={t("Meet New Friends")}
         currPage={"/meetnewfriends"}
       />
-      <Text className="font" fontSize="3xl">
-        {t("These people are also using LingoShare")}
-      </Text>
       <ChakraProvider>
-        <div className="field-pg">
+        <div className="meet-friends-pg">
+          <div className="friend-requests">
+            <FriendRequest />
+          </div>
+          <div className="also-users-text">
+            <Text className="font" fontSize="3xl">
+              {t("These people are also using LingoShare")}
+            </Text>
+          </div>
           <div className="card-display">
             {Object.entries(mergedObj).map(([key, value], i) => {
               return (
@@ -195,6 +199,8 @@ export default function MeetNewFriends() {
                     isFriend={value.isFriend}
                     friendRequestSent={value.friendRequestSent}
                     profileURL={value.profilePic}
+                    userType={value.userType}
+                    interests={value.interests}
                     handleClickViewProfile={handleClickViewProfile}
                     handleClickManageFriend={handleClickManageFriend}
                   />

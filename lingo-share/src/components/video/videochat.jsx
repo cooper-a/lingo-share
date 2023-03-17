@@ -1,10 +1,9 @@
-import React, { useState, useCallback, useEffect } from "react";
-import { get_token } from "../../firebase";
-import { UserAuth } from "../../contexts/AuthContext";
-import { useNavigate, useLocation } from "react-router-dom";
-import { ref, onValue, get, child, remove, set, push } from "firebase/database";
-import { rtdb } from "../../firebase";
+import { child, ref, remove } from "firebase/database";
+import React, { useCallback, useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import Video from "twilio-video";
+import { UserAuth } from "../../contexts/AuthContext";
+import { get_token, rtdb } from "../../firebase";
 import Room from "./room";
 
 export default function VideoChat() {
@@ -33,7 +32,11 @@ export default function VideoChat() {
       }
       return null;
     });
-    navigate("/dashboard");
+
+    // TODO add a feedback screen here
+    navigate("/callfeedback", {
+      state: { roomName: roomName, callID: callID },
+    });
   }, []);
 
   // const getRoomName = (uid, callerID) => {
@@ -53,8 +56,6 @@ export default function VideoChat() {
         room: roomName,
       });
       const data = result.data;
-      // console.log(data.token);
-      console.log("HERE");
       Video.connect(data.token, {
         name: roomName,
       })

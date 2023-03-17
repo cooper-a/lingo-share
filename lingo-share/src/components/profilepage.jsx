@@ -1,5 +1,4 @@
 import {
-  Button,
   Tag,
   Text,
   TagLabel,
@@ -11,13 +10,15 @@ import { UserAuth } from "../contexts/AuthContext";
 import Navbar from "./navbar";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ref, onValue, set } from "firebase/database";
+import { ref, onValue, set, get, remove, child } from "firebase/database";
 import { rtdb } from "../firebase";
 import CallNotification from "./callnotification";
 import SavedAlert from "./profile/savedalert";
 import UserName from "./profile/username";
 import AboutSection from "./profile/aboutsection";
 import InterestsSection from "./profile/interestssection";
+import SecondaryButton from "./lingoshare-components/secondarybutton";
+import { handleAcceptRequest, handleIgnoreRequest } from "../utils/userutils";
 import "../styles/profilepage.css";
 
 export default function ProfilePage() {
@@ -28,6 +29,11 @@ export default function ProfilePage() {
   const userRef = ref(rtdb, "users/" + user.uid);
   const targetUserRef = ref(rtdb, "users/" + params.id);
   const userStatusRef = ref(rtdb, "status/" + params.id);
+  const friendRequestsRef = ref(rtdb, "/friend_requests");
+  const userFriendRequestsRef = ref(rtdb, "/friend_requests/" + user.uid);
+  const incomingRequestsRef = ref(rtdb, "/friend_requests/" + params.id);
+  const [incomingRequest, setIncomingRequest] = useState(false);
+  const [friendRequestsObj, setFriendRequestsObj] = useState([]);
   const [isPrimaryUser, setIsPrimaryUser] = useState(false);
   const [displayName, setDisplayName] = useState("");
   const [userType, setUserType] = useState("");
@@ -87,18 +93,29 @@ export default function ProfilePage() {
     setInterests(newInterests);
   };
 
-  const handleClickManageFriend = async (targetID, add) => {
+  const handleAcceptFriendRequest = (event, targetID) => {
+    handleAcceptRequest(event, friendRequestsRef, user, targetID);
+    setIncomingRequest(false);
+    navigate("/profile/" + params.id); // workaround
+  };
+
+  const handleIgnoreFriendRequest = (event, targetID) => {
+    handleIgnoreRequest(event, friendRequestsRef, user, targetID);
+    setIncomingRequest(false);
+  };
+
+  const handleManageFriend = async (targetID, add) => {
     if (targetID !== user.uid && targetID !== undefined) {
       let friendRef = ref(rtdb, `/users/${user.uid}/friends/${targetID}`);
+      let friendRequestsRef = ref(
+        rtdb,
+        `/friend_requests/${user.uid}/${targetID}`
+      );
       if (add) {
-        set(friendRef, true)
-          .then(() => {
-            console.log("friend added");
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+        // add a friend
+        set(friendRequestsRef, "");
       } else {
+        // remove a friend
         set(friendRef, null)
           .then(() => {
             console.log("friend removed");
@@ -107,7 +124,7 @@ export default function ProfilePage() {
             console.log(error);
           });
       }
-      navigate(`/profile/${params.id}`);
+      navigate("/profile/" + params.id); // workaround
     }
   };
 
@@ -139,8 +156,30 @@ export default function ProfilePage() {
         setUserFriends({});
       }
     });
+    onValue(userFriendRequestsRef, (snapshot) => {
+      let newObjectList = [];
+      snapshot.forEach((childSnapshot) => {
+        let newObject = {};
+        newObject[childSnapshot.key] = childSnapshot.val();
+        newObjectList.push(newObject);
+      });
+      setFriendRequestsObj(newObjectList);
+    });
     onValue(userStatusRef, (snapshot) => {
       setIsOnline(snapshot.val().state);
+    });
+    onValue(incomingRequestsRef, (snapshot) => {
+      // responsible for checking whether params.id is requesting
+      // user.uid to be their friend (e.g. incoming request from the
+      // profile that they are viewing)
+      let isRequestIncoming = false;
+      snapshot.forEach((childSnapshot) => {
+        console.log(childSnapshot.key);
+        if (childSnapshot.key === user.uid) {
+          isRequestIncoming = true;
+        }
+      });
+      setIncomingRequest(isRequestIncoming);
     });
   }, []);
 
@@ -162,7 +201,10 @@ export default function ProfilePage() {
             isPrimaryUser ? "/profile/" + user.uid : "/profile/" + params.id
           }
           displayName={displayName}
-          userType={userType}
+          handleAcceptRequest={handleAcceptFriendRequest}
+          handleIgnoreRequest={handleIgnoreFriendRequest}
+          friendRequests={friendRequestsObj}
+          isRequestIncoming={incomingRequest}
           userObj={userObj}
           isPrimaryUser={isPrimaryUser}
           isOnline={isOnline}
@@ -171,7 +213,7 @@ export default function ProfilePage() {
           params={params}
           profilePic={profilePicURL}
           userFriends={userFriends}
-          handleClickManageFriend={handleClickManageFriend}
+          handleClickManageFriend={handleManageFriend}
           onOpenSuccessAlert={onOpen}
           setAlertText={setAlertText}
         />
@@ -196,13 +238,24 @@ export default function ProfilePage() {
                   size={"lg"}
                   borderRadius="full"
                   variant="solid"
-                  bgColor="#D9D9D9"
+                  bgColor="white"
                   color={"black"}
+                  borderWidth={"1px"}
+                  height={"50px"}
+                  borderColor={"#393939"}
+                  mr="4"
                   key={i}
+                  className="font"
                 >
-                  <TagLabel className="heading">{interest}</TagLabel>
+                  <TagLabel p="2" className="heading">
+                    {interest}
+                  </TagLabel>
                   {isPrimaryUser && (
-                    <TagCloseButton onClick={() => removeInterest(interest)} />
+                    <TagCloseButton
+                      pr="3"
+                      color={"#393939"}
+                      onClick={() => removeInterest(interest)}
+                    />
                   )}
                 </Tag>
               ))
@@ -221,15 +274,13 @@ export default function ProfilePage() {
           </div>
         )}
         {isPrimaryUser && (
-          <Button
+          <SecondaryButton
             width={"100vh"}
-            variant={"outline"}
+            marginBottom="2rem"
             onClick={handleProfileEdit}
-            marginBottom={"2rem"}
             className="heading"
-          >
-            {t("Save Changes")}
-          </Button>
+            text={t("Save Changes")}
+          />
         )}
       </div>
     </div>

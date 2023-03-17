@@ -1,17 +1,16 @@
 import {
-  Button,
   Avatar,
   Editable,
   EditableInput,
   EditablePreview,
   Text,
-  Stack,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import Icon from "@adeira/icons";
 import "@fontsource/atkinson-hyperlegible";
 import "../../styles/profilepage.css";
 import ProfilePicture from "../profilepicture";
+import ButtonGroup from "../lingoshare-components/buttongroup";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { getDownloadURL, ref as storageRef } from "firebase/storage";
@@ -19,10 +18,15 @@ import { rtdb, storage } from "../../firebase";
 import { ref as dbRef, set } from "firebase/database";
 import { updateProfile } from "firebase/auth";
 import { UserAuth } from "../../contexts/AuthContext";
+import EditableControls from "./editablecontrols";
 
 export default function UserName({
   curPage,
   displayName,
+  handleAcceptRequest,
+  handleIgnoreRequest,
+  friendRequests,
+  isRequestIncoming,
   userObj,
   isPrimaryUser,
   setDisplayName,
@@ -40,6 +44,15 @@ export default function UserName({
   const { user } = UserAuth();
   const [pfp, setPfp] = useState(null);
   const navigate = useNavigate();
+  let isUserFriendRequested = false;
+  friendRequests.forEach((request) => {
+    if (request.hasOwnProperty(params.id)) {
+      isUserFriendRequested = true;
+      return;
+    }
+  });
+
+  console.log(userFriends);
 
   const saveCompressedPhotoURL = () => {
     getDownloadURL(
@@ -62,6 +75,79 @@ export default function UserName({
     onOpenSuccessAlert();
   };
 
+  let buttonGroupRender = <div></div>;
+  if (isRequestIncoming) {
+    buttonGroupRender = (
+      <ButtonGroup
+        buttonTypeList={["primary", "secondary"]}
+        textList={["Accept Friend Request", "Ignore Friend Request"]}
+        isDisabledList={[false, false]}
+        onClickList={[
+          (event) => handleAcceptRequest(event, params.id),
+          (event) => handleIgnoreRequest(event, params.id),
+        ]}
+        spacing={4}
+        width={"200px"}
+        height={"45px"}
+        marginTop={"10px"}
+        marginLeft={"48px"}
+      />
+    );
+  } else if (isUserFriendRequested) {
+    buttonGroupRender = (
+      <ButtonGroup
+        buttonTypeList={["secondary", "secondary"]}
+        textList={[t("Friend Request Sent"), t("Block User")]}
+        onClickList={[
+          () => {},
+          () => {
+            console.log("TODO: block user button functional");
+          },
+        ]}
+        isDisabledList={[true, false]}
+        spacing={4}
+        width={"200px"}
+        height={"45px"}
+        marginTop={"10px"}
+        marginLeft={"48px"}
+      />
+    );
+  } else if (params.id in userFriends) {
+    buttonGroupRender = (
+      <ButtonGroup
+        buttonTypeList={["secondary", "secondary"]}
+        textList={[t("Friends"), t("Block User")]}
+        isDisabledList={[false, false]}
+        onClickList={[
+          () => handleClickManageFriend(params.id, !(params.id in userFriends)),
+          () => {},
+        ]} // TODO: block user button functional
+        rightIconList={[<Icon name="check_circle" />, <></>]}
+        spacing={4}
+        width={"200px"}
+        height={"45px"}
+        marginTop={"10px"}
+        marginLeft={"48px"}
+      />
+    );
+  } else {
+    buttonGroupRender = (
+      <ButtonGroup
+        buttonTypeList={["primary", "secondary"]}
+        textList={[t("Add as Friend"), t("Block User")]}
+        isDisabledList={[false, false]}
+        onClickList={[
+          () => handleClickManageFriend(params.id, !(params.id in userFriends)),
+          () => {},
+        ]}
+        spacing={4}
+        width={"200px"}
+        height={"45px"}
+        marginTop={"10px"}
+        marginLeft={"48px"}
+      />
+    );
+  }
   return (
     <div className="profile-pic">
       <div className="picture">
@@ -95,7 +181,7 @@ export default function UserName({
                 onChange={(e) => setDisplayName(e.target.value)}
                 maxWidth={"275px"}
               />
-              <Icon className="editable" name="pen" />
+              <EditableControls />
             </Editable>
           </div>
           <div className="heading">
@@ -137,42 +223,14 @@ export default function UserName({
               </div>
             </div>
             <div>
-              <Text className="heading" fontSize={"lg"} marginLeft={"48px"}>
+              <Text className="heading" fontSize={"lg"} marginLeft={"50px"}>
                 {userObj.userType === "native"
                   ? t("Native Mandarin Speaker")
                   : t("Mandarin Learner")}{" "}
                 • {proficiencyMap[userObj.proficiency]}
               </Text>
             </div>
-            <Stack
-              direction={"row"}
-              spacing={4}
-              align={"center"}
-              marginTop={"10px"}
-              marginLeft={"48px"}
-              className="heading"
-            >
-              <Button
-                variant={"outline"}
-                onClick={() =>
-                  handleClickManageFriend(
-                    params.id,
-                    !(params.id in userFriends)
-                  )
-                }
-                bgColor={params.id in userFriends ? "#D9D9D9" : "white"}
-                rightIcon={
-                  params.id in userFriends ? (
-                    <Icon name="check_circle" />
-                  ) : (
-                    <></>
-                  )
-                }
-              >
-                {params.id in userFriends ? t("Friends") : t("Add as Friend")}
-              </Button>
-              <Button variant={"outline"}>{t("Block User")}</Button>
-            </Stack>
+            {buttonGroupRender}
           </div>
         </div>
       )}

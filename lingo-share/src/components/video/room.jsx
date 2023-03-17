@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { ChakraProvider, extendTheme, useToast } from "@chakra-ui/react";
+import {
+  ChakraProvider,
+  extendTheme,
+  useToast,
+  useDisclosure,
+} from "@chakra-ui/react";
 import Participant from "./participant";
 import Controls from "./controls";
 import { useTranslation } from "react-i18next";
@@ -8,6 +13,7 @@ import "../../styles/room.css";
 import { rtdb } from "../../firebase";
 import { ref, get, set, onValue } from "firebase/database";
 import PromptSidebar from "./promptSidebar";
+import LeaveConfirmModal from "./leaveconfirmmodal";
 import Icon from "@adeira/icons";
 
 export default function Room({ roomName, room, handleLogout, callID }) {
@@ -17,8 +23,10 @@ export default function Room({ roomName, room, handleLogout, callID }) {
   const [toggleAudio, setToggleAudio] = useState(true);
   const [toggleVideo, setToggleVideo] = useState(true);
   const [togglePrompt, setTogglePrompt] = useState(false);
+  const [toggleLeaveModal, setToggleLeaveModal] = useState(false);
   const toast = useToast();
   const toastIdRef = React.useRef();
+  const { isOpen, onToggle, onClose } = useDisclosure(); // for the popover over Topics button
   const activePromptRef = ref(
     rtdb,
     `/calls/${roomName}/${callID}/active_prompt`
@@ -34,8 +42,8 @@ export default function Room({ roomName, room, handleLogout, callID }) {
           // define own toast variant
           toast: {
             container: {
-              color: "gray.50",
-              bg: "#6B6C72",
+              color: "white",
+              bg: "#363636",
               padding: "20px",
             },
           },
@@ -50,11 +58,21 @@ export default function Room({ roomName, room, handleLogout, callID }) {
     setPreferredLanguage(lang);
   };
 
+  const toggleOpenPopover = async () => {
+    await timeout(5000);
+    onToggle();
+  };
+
+  function timeout(delay) {
+    return new Promise((res) => setTimeout(res, delay));
+  }
+
   useEffect(() => {
     onValue(targetUserRef, (snapshot) => {
       let snapshotVal = snapshot.val();
       setPreferredLanguage(snapshotVal.language);
     });
+    toggleOpenPopover();
   }, []);
 
   useEffect(() => {
@@ -108,6 +126,10 @@ export default function Room({ roomName, room, handleLogout, callID }) {
     set(languageRef, preferredLanguage); // set the user's language in DB after leaving call
     room.disconnect();
     handleLogout();
+  };
+
+  const handleLeaveToggle = () => {
+    setToggleLeaveModal(!toggleLeaveModal);
   };
 
   const handlePromptToggle = () => {
@@ -189,6 +211,12 @@ export default function Room({ roomName, room, handleLogout, callID }) {
             preferredLanguage={preferredLanguage}
           />
         )}
+        {toggleLeaveModal && (
+          <LeaveConfirmModal
+            handleLeaveToggle={handleLeaveToggle}
+            handleCallDisconnect={handleCallDisconnect}
+          />
+        )}
         <div className="local-participant">
           {room ? (
             <Participant
@@ -208,7 +236,10 @@ export default function Room({ roomName, room, handleLogout, callID }) {
             handleAudioToggle={handleAudioToggle}
             handleVideoToggle={handleVideoToggle}
             handlePromptToggle={handlePromptToggle}
+            handleLeaveToggle={handleLeaveToggle}
             handleTranslate={handleTranslate}
+            isOpen={isOpen}
+            onClose={onClose}
             preferredLanguage={preferredLanguage}
             translator={t}
             isPromptToggled={togglePrompt}

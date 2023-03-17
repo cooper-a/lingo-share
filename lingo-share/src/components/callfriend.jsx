@@ -1,4 +1,4 @@
-import { Button, ChakraProvider, Text, UnorderedList } from "@chakra-ui/react";
+import { ChakraProvider, Text, UnorderedList } from "@chakra-ui/react";
 import {
   get,
   onValue,
@@ -16,6 +16,7 @@ import "../styles/homepage.css";
 import { mergeObj } from "../utils/userutils";
 import CallNotification from "./callnotification";
 import CallCard from "./lingoshare-components/callcard";
+import PrimaryButton from "./lingoshare-components/primarybutton";
 import Navbar from "./navbar";
 
 export default function CallFriend() {
@@ -32,6 +33,8 @@ export default function CallFriend() {
   const statusRef = ref(rtdb, "/status");
   const usersRef = ref(rtdb, "/users");
   const activeCallsRef = ref(rtdb, "/active_calls");
+
+  console.log(mergedObj);
 
   const getQuery = (ref) => {
     onValue(ref, (snapshot) => {
@@ -171,29 +174,26 @@ export default function CallFriend() {
 
   return (
     <div>
-      <CallNotification />
-      <Navbar topLeftDisplay={t("Call a Friend")} currPage={"/callfriend"} />
-      {!hasNoFriends ? (
-        <Text className="font" fontSize="3xl">
-          {t("Who would you like to call?")}
-        </Text>
-      ) : (
-        <div className="welcome-pg">
-          <Text className="font" fontSize="3xl">
-            {t("You don't have any LingoShare friends yet!")}
-          </Text>
-          <Button
-            marginTop={"1.5rem"}
-            size={"lg"}
-            variant={"outline"}
-            onClick={() => navigate("/meetnewfriends")}
-          >
-            {t("Meet New Friends")}
-          </Button>
-        </div>
-      )}
-
       <ChakraProvider>
+        <CallNotification />
+        <Navbar topLeftDisplay={t("Call a Friend")} currPage={"/callfriend"} />
+        {!hasNoFriends ? (
+          <Text className="font" fontSize="3xl">
+            {t("Who would you like to call?")}
+          </Text>
+        ) : (
+          <div className="welcome-pg">
+            <Text className="font" fontSize="3xl">
+              {t("You don't have any LingoShare friends yet!")}
+            </Text>
+            <PrimaryButton
+              text={t("Meet New Friends")}
+              onClick={() => navigate("/meetnewfriends")}
+              marginTop={"1.5rem"}
+              size={"lg"}
+            />
+          </div>
+        )}
         <div className="field-pg">
           <UnorderedList spacing={5}>
             {Object.entries(mergedObj).map(([key, value], i) => {
@@ -204,6 +204,7 @@ export default function CallFriend() {
                     onlineStatus={value.state}
                     displayName={value.userDisplayName}
                     profileURL={value.profilePic}
+                    userType={value.userType}
                     disableButton={disableButton}
                     handleCallClick={handleClick}
                     handleViewProfile={handleClickViewProfile}

@@ -23,6 +23,10 @@ import YourFriends from "./components/yourfriends";
 import BlockedPeople from "./components/blockedpeople";
 import LandingPage from "./components/app-intro/landingpage";
 import LanguagePreference from "./components/onboarding/languagePreference";
+import ThanksFeedback from "./components/video/thanksfeedback";
+
+// Temp
+import CallFeedback from "./components/video/callfeedback";
 
 function App() {
   return (
@@ -129,6 +133,22 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <BlockedPeople />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/thanksfeedback"
+                element={
+                  <ProtectedRoute>
+                    <ThanksFeedback />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/callfeedback"
+                element={
+                  <ProtectedRoute>
+                    <CallFeedback />
                   </ProtectedRoute>
                 }
               />

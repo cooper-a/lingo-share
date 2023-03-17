@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { UserAuth } from "../contexts/AuthContext";
-import { ref, onValue, get, set, remove, child } from "firebase/database";
+import { ref, onValue, get } from "firebase/database";
 import { rtdb } from "../firebase";
-import { Button } from "@chakra-ui/react";
+import { Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import FriendRequestCard from "./lingoshare-components/friendrequestcard";
+import { handleAcceptRequest, handleIgnoreRequest } from "../utils/userutils";
 
 export default function FriendRequest() {
   const [friendRequestSnapshot, setFriendRequestSnapshot] = useState([]);
   const [requestSenders, setRequestSenders] = useState({});
+  const [incomingRequests, setIncomingRequests] = useState([]);
   const { user } = UserAuth();
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -38,10 +41,18 @@ export default function FriendRequest() {
         snapshot.forEach((userChildSnapshot) => {
           if (userChildSnapshot.key === targetID) {
             // append friend request sender to requestSenders
-            setRequestSenders((requestSenders) => ({
-              ...requestSenders,
-              [userChildSnapshot.key]: userChildSnapshot.val().userDisplayName,
-            }));
+            const { interests, userType, userDisplayName, profilePic } =
+              userChildSnapshot.val();
+            let newObj = {
+              userId: targetID,
+              interests: interests,
+              userType: userType,
+              userDisplayName: userDisplayName,
+              profilePic: profilePic,
+            };
+            let newIncomingRequests = [...incomingRequests];
+            newIncomingRequests.push(newObj);
+            setIncomingRequests(newIncomingRequests);
           }
         });
       })
@@ -50,64 +61,30 @@ export default function FriendRequest() {
       });
   };
 
-  const handleAcceptRequest = (event, targetID) => {
-    event.currentTarget.disabled = true;
-
-    // add senderID into user's friend list
-    let friendRef = ref(rtdb, `/users/${user.uid}/friends/${targetID}`);
-    set(friendRef, true)
-      .then(() => {
-        console.log("friend added");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-
-    // copy entry over to accepted_friend_requests object upon accept
-    let acceptedFriendRequestsRef = ref(
-      rtdb,
-      `accepted_friend_requests/${targetID}/${user.uid}`
-    );
-    set(acceptedFriendRequestsRef, "");
-
-    // remove the identical entry from friend request object
-    removeEntryFromFriendRequests(targetID);
-
-    // remove the added requestSenderID from the requestSenders object
-    const newRequestSenders = { ...requestSenders };
-    delete newRequestSenders[targetID];
-    setRequestSenders(newRequestSenders);
+  const handleAcceptFriendRequest = (event, incomingRequestIndex, targetID) => {
+    handleAcceptRequest(event, friendRequestsRef, user, targetID);
+    // remove the added incomingRequestId from the incomingRequests object
+    let newIncomingRequests = [];
+    for (let i = 0; i < incomingRequests.length; i++) {
+      if (i !== incomingRequestIndex) {
+        newIncomingRequests.push(incomingRequests[i]);
+      }
+    }
+    setIncomingRequests(newIncomingRequests);
 
     navigate("/meetnewfriends"); // workaround
   };
 
-  const handleIgnoreRequest = (event, targetID) => {
-    event.currentTarget.disabled = true;
-
-    removeEntryFromFriendRequests(targetID);
-
-    // remove the added requestSenderID from the requestSenders object
-    const newRequestSenders = { ...requestSenders };
-    delete newRequestSenders[targetID];
-    setRequestSenders(newRequestSenders);
-  };
-
-  const removeEntryFromFriendRequests = (targetID) => {
-    get(friendRequestsRef)
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          snapshot.forEach((childSnapshot) => {
-            Object.keys(childSnapshot.val()).forEach((receiverID) => {
-              if (childSnapshot.key === targetID && receiverID === user.uid) {
-                remove(child(friendRequestsRef, `/${targetID}/${user.uid}`));
-              }
-            });
-          });
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  const handleIgnoreFriendRequest = (event, incomingRequestIndex, targetID) => {
+    handleIgnoreRequest(event, friendRequestsRef, user, targetID);
+    // remove the added incomingRequestId from the incomingRequests object
+    let newIncomingRequests = [];
+    for (let i = 0; i < incomingRequests.length; i++) {
+      if (i !== incomingRequestIndex) {
+        newIncomingRequests.push(incomingRequests[i]);
+      }
+    }
+    setIncomingRequests(newIncomingRequests);
   };
 
   useEffect(() => {
@@ -122,34 +99,29 @@ export default function FriendRequest() {
 
   return (
     <div>
-      {Object.entries(requestSenders).map(
-        ([senderID, senderDisplayName], i) => {
-          return (
-            <div key={senderID}>
-              <h1>{t("Incoming Friend Request")}</h1>
-              <p>
-                {senderDisplayName} {t("sent you a friend request!")}
-              </p>
-              <Button
-                direction="row"
-                align="center"
-                variant="outline"
-                onClick={(event) => handleIgnoreRequest(event, senderID)}
-              >
-                {t("Ignore")}
-              </Button>
-              <Button
-                direction="row"
-                align="center"
-                variant="outline"
-                onClick={(event) => handleAcceptRequest(event, senderID)}
-              >
-                {t("Accept")}
-              </Button>
-            </div>
-          );
-        }
+      {incomingRequests.length > 0 && (
+        <Text
+          marginBottom={"2rem"}
+          className="font"
+          float={"left"}
+          fontSize="3xl"
+        >
+          {t("These people have added you as a friend!")}
+        </Text>
       )}
+      {incomingRequests.map((friendInvite, i) => (
+        <FriendRequestCard
+          key={i}
+          incomingRequestIndex={i}
+          userId={friendInvite.userId}
+          displayName={friendInvite.userDisplayName}
+          interests={friendInvite.interests}
+          userType={friendInvite.userType}
+          profilePic={friendInvite.profilePic}
+          onClickIgnore={handleIgnoreFriendRequest}
+          onClickAccept={handleAcceptFriendRequest}
+        />
+      ))}
     </div>
   );
 }

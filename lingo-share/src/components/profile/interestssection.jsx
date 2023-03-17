@@ -6,7 +6,6 @@ import {
   InputGroup,
 } from "@chakra-ui/react";
 import React from "react";
-import Icon from "@adeira/icons";
 import "../../styles/profilepage.css";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -36,17 +35,21 @@ export default function InterestsSection({
       >
         {t("Interests")}
         {isPrimaryUser && (
-          <Icon
+          <Button
+            ml="4"
+            color={"#393939"}
+            textDecoration={"underline"}
+            variant={"link"}
+            fontSize={"lg"}
             onClick={setIsEditingInterests}
-            className="edit-icon"
-            name="pen"
-          />
+          >
+            Edit
+          </Button>
         )}
       </Text>
       {isEditingInterests && (
-        <InputGroup>
+        <InputGroup mb={"6"} ml={"1"}>
           <Input
-            marginBottom={"20px"}
             variant="flushed"
             placeholder={t("Add an interest")}
             value={currentInterest}
