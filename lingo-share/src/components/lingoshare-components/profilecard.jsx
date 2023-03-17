@@ -66,7 +66,9 @@ export default function ProfileCard({
           </Box>
           <Box pl={6} pr={6} pt={0.5} className="font">
             <Text fontSize={"sm"}>
-              {interests ? "Interests: " + interests.join(", ") : ""}
+              {interests
+                ? "Interests: " + interests.slice(0, 3).join(", ") // display the top 3 interests for styling
+                : ""}
             </Text>
           </Box>
           <Box

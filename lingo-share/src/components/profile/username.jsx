@@ -81,6 +81,7 @@ export default function UserName({
       <ButtonGroup
         buttonTypeList={["primary", "secondary"]}
         textList={["Accept Friend Request", "Ignore Friend Request"]}
+        isDisabledList={[false, false]}
         onClickList={[
           (event) => handleAcceptRequest(event, params.id),
           (event) => handleIgnoreRequest(event, params.id),
@@ -97,7 +98,12 @@ export default function UserName({
       <ButtonGroup
         buttonTypeList={["secondary", "secondary"]}
         textList={[t("Friend Request Sent"), t("Block User")]}
-        onClickList={[() => {}, () => {}]}
+        onClickList={[
+          () => {},
+          () => {
+            console.log("TODO: block user button functional");
+          },
+        ]}
         isDisabledList={[true, false]}
         spacing={4}
         width={"200px"}
@@ -111,6 +117,7 @@ export default function UserName({
       <ButtonGroup
         buttonTypeList={["secondary", "secondary"]}
         textList={[t("Friends"), t("Block User")]}
+        isDisabledList={[false, false]}
         onClickList={[
           () => handleClickManageFriend(params.id, !(params.id in userFriends)),
           () => {},
@@ -128,6 +135,7 @@ export default function UserName({
       <ButtonGroup
         buttonTypeList={["primary", "secondary"]}
         textList={[t("Add as Friend"), t("Block User")]}
+        isDisabledList={[false, false]}
         onClickList={[
           () => handleClickManageFriend(params.id, !(params.id in userFriends)),
           () => {},
