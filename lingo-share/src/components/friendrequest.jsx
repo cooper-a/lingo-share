@@ -6,12 +6,12 @@ import { Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import FriendRequestCard from "./lingoshare-components/friendrequestcard";
+import "../styles/meetfriends.css";
 import { handleAcceptRequest, handleIgnoreRequest } from "../utils/userutils";
 
 export default function FriendRequest() {
   const [friendRequestSnapshot, setFriendRequestSnapshot] = useState([]);
   const [requestSenders, setRequestSenders] = useState({});
-  const [incomingRequests, setIncomingRequests] = useState([]);
   const { user } = UserAuth();
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -50,9 +50,10 @@ export default function FriendRequest() {
               userDisplayName: userDisplayName,
               profilePic: profilePic,
             };
-            let newIncomingRequests = [...incomingRequests];
-            newIncomingRequests.push(newObj);
-            setIncomingRequests(newIncomingRequests);
+            setRequestSenders((requestSenders) => ({
+              ...requestSenders,
+              [userChildSnapshot.key]: newObj,
+            }));
           }
         });
       })
@@ -61,30 +62,22 @@ export default function FriendRequest() {
       });
   };
 
-  const handleAcceptFriendRequest = (event, incomingRequestIndex, targetID) => {
+  const handleAcceptFriendRequest = (event, targetID) => {
     handleAcceptRequest(event, friendRequestsRef, user, targetID);
-    // remove the added incomingRequestId from the incomingRequests object
-    let newIncomingRequests = [];
-    for (let i = 0; i < incomingRequests.length; i++) {
-      if (i !== incomingRequestIndex) {
-        newIncomingRequests.push(incomingRequests[i]);
-      }
-    }
-    setIncomingRequests(newIncomingRequests);
+    // remove the added requestSenderID from the requestSenders object
+    const newRequestSenders = { ...requestSenders };
+    delete newRequestSenders[targetID];
+    setRequestSenders(newRequestSenders);
 
     navigate("/meetnewfriends"); // workaround
   };
 
-  const handleIgnoreFriendRequest = (event, incomingRequestIndex, targetID) => {
+  const handleIgnoreFriendRequest = (event, targetID) => {
     handleIgnoreRequest(event, friendRequestsRef, user, targetID);
-    // remove the added incomingRequestId from the incomingRequests object
-    let newIncomingRequests = [];
-    for (let i = 0; i < incomingRequests.length; i++) {
-      if (i !== incomingRequestIndex) {
-        newIncomingRequests.push(incomingRequests[i]);
-      }
-    }
-    setIncomingRequests(newIncomingRequests);
+    // remove the added requestSenderID from the requestSenders object
+    const newRequestSenders = { ...requestSenders };
+    delete newRequestSenders[targetID];
+    setRequestSenders(newRequestSenders);
   };
 
   useEffect(() => {
@@ -98,8 +91,8 @@ export default function FriendRequest() {
   }, [friendRequestSnapshot]);
 
   return (
-    <div>
-      {incomingRequests.length > 0 && (
+    <div className="friend-requests">
+      {Object.entries(requestSenders).length > 0 && (
         <Text
           marginBottom={"2rem"}
           className="font"
@@ -109,19 +102,22 @@ export default function FriendRequest() {
           {t("These people have added you as a friend!")}
         </Text>
       )}
-      {incomingRequests.map((friendInvite, i) => (
-        <FriendRequestCard
-          key={i}
-          incomingRequestIndex={i}
-          userId={friendInvite.userId}
-          displayName={friendInvite.userDisplayName}
-          interests={friendInvite.interests}
-          userType={friendInvite.userType}
-          profilePic={friendInvite.profilePic}
-          onClickIgnore={handleIgnoreFriendRequest}
-          onClickAccept={handleAcceptFriendRequest}
-        />
-      ))}
+      {Object.entries(requestSenders).map(([senderID, senderInfo], i) => {
+        console.log(senderInfo);
+        return (
+          <div key={i} className="friend-request">
+            <FriendRequestCard
+              userId={senderInfo.userId}
+              displayName={senderInfo.userDisplayName}
+              interests={senderInfo.interests}
+              userType={senderInfo.userType}
+              profilePic={senderInfo.profilePic}
+              onClickIgnore={handleIgnoreFriendRequest}
+              onClickAccept={handleAcceptFriendRequest}
+            />
+          </div>
+        );
+      })}
     </div>
   );
 }
