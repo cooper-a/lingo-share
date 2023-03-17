@@ -1,14 +1,57 @@
-import { Button, ChakraProvider, Text } from "@chakra-ui/react";
+import {
+  Button,
+  ChakraProvider,
+  Modal,
+  ModalOverlay,
+  ModalBody,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  Text,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { onValue, ref, set } from "firebase/database";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../contexts/AuthContext";
 import { rtdb } from "../firebase";
-import "../styles/meetfriends.css";
+import "../styles/blockedpeople.css";
 import { mergeObj } from "../utils/userutils";
 import CallNotification from "./callnotification";
+import CompactProfileCard from "./lingoshare-components/compactprofilecard";
+import PrimaryButton from "./lingoshare-components/primarybutton";
+import SecondaryButton from "./lingoshare-components/secondarybutton";
 import Navbar from "./navbar";
+
+const ReviewModal = ({ isOpen, blockedReason, onClose }) => {
+  const { t } = useTranslation();
+  return (
+    <div>
+      <Modal isCentered onClose={onClose} size={"sm"} isOpen={isOpen}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader
+            marginTop={"0.5rem"}
+            className="font"
+            alignSelf={"center"}
+          >
+            {"Blocked Reason"}
+          </ModalHeader>
+          <ModalBody alignSelf={"center"}>{blockedReason}</ModalBody>
+          <ModalFooter marginBottom={"1rem"} alignSelf={"center"}>
+            <SecondaryButton
+              text={t("OK")}
+              onClick={onClose}
+              marginleft={"15px"}
+              width={"150px"}
+            />
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </div>
+  );
+};
 
 export default function BlockedPeople() {
   const usersRef = ref(rtdb, "/users");
@@ -98,22 +141,50 @@ export default function BlockedPeople() {
     );
   }, [statusObj, usersObj, friendsObj]);
 
+  const [selectedBlockedReason, setSelectedBlockedReason] = useState("");
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const handleBlockedReviewClick = (blockedReason) => {
+    setSelectedBlockedReason(blockedReason);
+    onOpen();
+  };
+
   return (
     <div>
       <CallNotification />
       <Navbar currPage={"/blockedpeople"} />
       <ChakraProvider>
+        <ReviewModal
+          isOpen={isOpen}
+          onClose={onClose}
+          blockedReason={selectedBlockedReason}
+        />
         <div className="field-pg">
           <Text fontSize="3xl">{t("Manage your blocklist")}</Text>
           <div className="card-display">
             {Object.entries(mergedObj).map(([key, value], i) => {
               return (
-                <div key={i} className="card-item">
-                  <Text> {value.userDisplayName} </Text>
-                  <Text>Blocked reason: {value.blockedReason}</Text>
-                  <Button onClick={(e) => handleClickUnblockFriend(e, key)}>
-                    {t("Unblock User")}
-                  </Button>
+                <div key={i}>
+                  <CompactProfileCard
+                    marginBottom={"10px"}
+                    profileURL={value.profilePic}
+                    displayNameText={value.userDisplayName}
+                    subheadingText={
+                      value.userType === "learner"
+                        ? "Language Learner"
+                        : "Native Speaker"
+                    }
+                    moreSubheadingText={"Blocked"}
+                    secondaryButtonWidth={"100px"}
+                    secondaryButtonText={"Unblock"}
+                    tertiaryButtonText={"Review"}
+                    secondaryButtonClick={(e) =>
+                      handleClickUnblockFriend(e, key)
+                    }
+                    tertiaryButtonClick={() =>
+                      handleBlockedReviewClick(value.blockedReason)
+                    }
+                  />
                 </div>
               );
             })}

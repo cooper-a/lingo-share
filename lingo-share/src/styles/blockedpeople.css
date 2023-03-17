@@ -1,0 +1,11 @@
+.field-pg {
+  font-family: "Atkinson Hyperlegible", sans-serif;
+  display: flex;
+  height: 100%;
+  margin-top: 1%;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;
+  gap: 20px;
+}
