@@ -1,5 +1,4 @@
 import {
-  Button,
   ChakraProvider,
   Modal,
   ModalOverlay,
@@ -160,7 +159,11 @@ export default function BlockedPeople() {
           blockedReason={selectedBlockedReason}
         />
         <div className="field-pg">
-          <Text fontSize="3xl">{t("Manage your blocklist")}</Text>
+          {Object.keys(mergedObj).length ? (
+            <Text fontSize="3xl">{t("Manage your blocklist")}</Text>
+          ) : (
+            <Text fontSize="3xl">{t("You have not blocked anyone yet")}</Text>
+          )}
           <div className="card-display">
             {Object.entries(mergedObj).map(([key, value], i) => {
               return (
