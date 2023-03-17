@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../contexts/AuthContext";
 import { rtdb } from "../firebase";
 import "../styles/blockedpeople.css";
-import { mergeObj } from "../utils/userutils";
+import { mergeObj, handleUnblockUser } from "../utils/userutils";
 import CallNotification from "./callnotification";
 import CompactProfileCard from "./lingoshare-components/compactprofilecard";
 import PrimaryButton from "./lingoshare-components/primarybutton";
@@ -106,17 +106,8 @@ export default function BlockedPeople() {
 
   const handleClickUnblockFriend = async (e, targetID) => {
     e.preventDefault();
-    if (targetID !== user.uid && targetID !== undefined) {
-      let blockRef = ref(rtdb, `/users/${user.uid}/blocked/${targetID}`);
-      set(blockRef, null)
-        .then(() => {
-          console.log("user blocked");
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-      navigate("/blockedpeople");
-    }
+    handleUnblockUser(targetID, user);
+    navigate("/blockedpeople");
   };
 
   useEffect(() => {
