@@ -4,7 +4,12 @@ import { ref, get, set, push } from "firebase/database";
 import Sidebar from "./sidebar";
 import "../../styles/room.css";
 
-export default function PromptSidebar({ roomName, callID, setActivePrompt }) {
+export default function PromptSidebar({
+  roomName,
+  callID,
+  setActivePrompt,
+  preferredLanguage,
+}) {
   const prompts_ref = ref(rtdb, "/prompts/");
   const [prompts, setPrompts] = useState({});
   const callIDRef = ref(rtdb, `/calls/${roomName}/${callID}`);
@@ -39,14 +44,14 @@ export default function PromptSidebar({ roomName, callID, setActivePrompt }) {
   const handlePromptSelect = (promptName) => {
     console.log("Prompt Selected");
     set(activePromptRef, promptName);
-    setActivePrompt(promptName);
+    setActivePrompt(promptName[preferredLanguage]);
     console.log("Pushing prompt to history");
     push(promptHistoryRef, promptName);
   };
 
   useEffect(() => {
     getPrompts();
-  }, [getPrompts]);
+  });
 
   return (
     <div className="sidebar">

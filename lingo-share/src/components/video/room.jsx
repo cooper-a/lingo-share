@@ -82,9 +82,13 @@ export default function Room({ roomName, room, handleLogout, callID }) {
         // console.log("grabbing active prompt");
         if (snapshot.exists()) {
           // console.log(snapshot.val());
-          const dbPrompt = snapshot.val();
-          if (dbPrompt !== activePrompt && dbPrompt !== "none") {
-            setActivePrompt(dbPrompt);
+          let dbPromptDict = snapshot.val();
+          let dbPromptInLang = snapshot.val()[preferredLanguage];
+          if (
+            !Object.values(dbPromptDict).includes(activePrompt) &&
+            dbPromptInLang !== undefined
+          ) {
+            setActivePrompt(dbPromptInLang);
           }
         }
       });
@@ -101,7 +105,7 @@ export default function Room({ roomName, room, handleLogout, callID }) {
       room.off("participantDisconnected", participantDisconnected);
       clearInterval(interval);
     };
-  }, [room]);
+  }, [room, preferredLanguage, activePrompt]);
 
   const handleCallDisconnect = () => {
     const languageRef = ref(rtdb, `users/${user.uid}/language`);
@@ -152,7 +156,7 @@ export default function Room({ roomName, room, handleLogout, callID }) {
     if (activePrompt === "") return;
     toast.closeAll();
     toast({
-      title: `${t(activePrompt)}`,
+      title: `${activePrompt}`,
       variant: "toast",
       isClosable: true,
       containerStyle: {
@@ -171,6 +175,7 @@ export default function Room({ roomName, room, handleLogout, callID }) {
             roomName={roomName}
             callID={callID}
             setActivePrompt={setActivePrompt}
+            preferredLanguage={preferredLanguage}
           />
         )}
         <div className="local-participant">

@@ -50,7 +50,7 @@ export default function Controls({
 
       <ButtonGroup className="options-btns">
         <ControlButton
-          text={preferredLanguage === "en" ? "English" : "中文"}
+          text={preferredLanguage === "en" ? "中文" : "English"}
           iconName={"translate"}
           onClick={() =>
             handleTranslate(preferredLanguage === "en" ? "zh" : "en")

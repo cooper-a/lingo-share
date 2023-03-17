@@ -113,6 +113,9 @@ const resources = {
       "Text Size": "Text Size",
       "Leave Call": "Leave Call",
       "What do you want to talk about": "What do you want to talk about",
+      "Chinese Tradition": "Chinese Tradition",
+      Family: "Family",
+      Food: "Food",
     },
   },
   zh: {
@@ -220,6 +223,9 @@ const resources = {
       "Leave Call": "结束通话",
       "What do you want to talk about": "你想聊些什么话题",
       "Blocked People": "屏蔽的用户",
+      "Chinese Tradition": "中国传统文化",
+      Family: "家庭",
+      Food: "饮食文化",
     },
   },
 };
