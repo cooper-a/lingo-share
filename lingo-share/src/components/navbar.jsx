@@ -10,7 +10,12 @@ import LanguageToggle from "./lingoshare-components/languagetoggle";
 import AccountOptions from "./lingoshare-components/accountoptions";
 import "../styles/nav.css";
 
-export default function Navbar({ currPage, topLeftDisplay, prevPage }) {
+export default function Navbar({
+  currPage,
+  topLeftDisplay,
+  prevPage,
+  ...props
+}) {
   const { user, logout } = UserAuth();
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -51,6 +56,12 @@ export default function Navbar({ currPage, topLeftDisplay, prevPage }) {
     const languageRef = ref(rtdb, `users/${user.uid}/language`);
     set(languageRef, lang);
     console.log(currPage);
+    if (currPage === "/callfeedback") {
+      navigate("/callfeedback", {
+        state: { roomName: props.roomName, callID: props.callID },
+      });
+      return;
+    }
     navigate(currPage);
   };
 
