@@ -1,0 +1,11 @@
+.how-to-pg {
+  font-family: "Atkinson Hyperlegible", sans-serif;
+  display: flex;
+  margin-top: 1%;
+  flex-direction: column;
+  /* text-align: left; */
+  min-height: 100vh;
+  gap: 20px;
+  margin-left: 20%;
+  margin-right: 20%;
+}
