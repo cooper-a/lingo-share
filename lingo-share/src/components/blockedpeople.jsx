@@ -151,7 +151,10 @@ export default function BlockedPeople() {
   return (
     <div>
       <CallNotification />
-      <Navbar currPage={"/blockedpeople"} />
+      <Navbar
+        topLeftDisplay={"Blocked People"}
+        currPage={"/blockedpeople"}
+      />
       <ChakraProvider>
         <ReviewModal
           isOpen={isOpen}

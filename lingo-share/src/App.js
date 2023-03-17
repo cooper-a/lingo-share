@@ -21,6 +21,7 @@ import MeetNewFriends from "./components/meetnewfriends";
 import ProfilePage from "./components/profilepage";
 import YourFriends from "./components/yourfriends";
 import BlockedPeople from "./components/blockedpeople";
+import HowToGuide from "./components/howtoguide";
 import LandingPage from "./components/app-intro/landingpage";
 import LanguagePreference from "./components/onboarding/languagePreference";
 import ThanksFeedback from "./components/video/thanksfeedback";
@@ -141,6 +142,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <ThanksFeedback />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/howtouse"
+                element={
+                  <ProtectedRoute>
+                    <HowToGuide />
                   </ProtectedRoute>
                 }
               />
