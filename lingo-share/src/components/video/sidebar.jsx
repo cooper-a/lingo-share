@@ -5,6 +5,7 @@ import "../../styles/room.css";
 import { useTranslation } from "react-i18next";
 
 const NavItem = ({ topicName, onClick }) => {
+  const { t } = useTranslation();
   return (
     <div className="inner-topic-btn" onClick={onClick}>
       <Button
@@ -15,7 +16,7 @@ const NavItem = ({ topicName, onClick }) => {
         bgColor={"white"}
         fontSize={"lg"}
       >
-        {topicName}
+        {t(topicName)}
       </Button>
     </div>
   );

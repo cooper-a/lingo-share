@@ -4,15 +4,18 @@ import { ref, get, set, push } from "firebase/database";
 import Sidebar from "./sidebar";
 import "../../styles/room.css";
 
-export default function PromptSidebar({ roomName, callID, setActivePrompt }) {
+export default function PromptSidebar({
+  roomName,
+  callID,
+  setActivePrompt,
+  preferredLanguage,
+}) {
   const prompts_ref = ref(rtdb, "/prompts/");
   const [prompts, setPrompts] = useState({});
-  const callIDRef = ref(rtdb, `/calls/${roomName}/${callID}`);
   const activePromptRef = ref(
     rtdb,
     `/calls/${roomName}/${callID}/active_prompt`
   );
-
   const promptHistoryRef = ref(
     rtdb,
     `/calls/${roomName}/${callID}/prompt_history`
@@ -24,8 +27,6 @@ export default function PromptSidebar({ roomName, callID, setActivePrompt }) {
         if (snapshot.exists()) {
           // console.log(snapshot.val());
           const data = snapshot.val();
-          // const prompts = JSON.stringify(data);
-          // console.log(prompts);
           setPrompts(data);
         } else {
           console.log("No data available");
@@ -36,17 +37,18 @@ export default function PromptSidebar({ roomName, callID, setActivePrompt }) {
       });
   };
 
-  const handlePromptSelect = (promptName) => {
+  const handlePromptSelect = (promptObj) => {
     console.log("Prompt Selected");
-    set(activePromptRef, promptName);
-    setActivePrompt(promptName);
+    set(activePromptRef, promptObj);
+    console.log("promptName: " + promptObj);
+    setActivePrompt(promptObj);
     console.log("Pushing prompt to history");
-    push(promptHistoryRef, promptName);
+    push(promptHistoryRef, promptObj);
   };
 
   useEffect(() => {
     getPrompts();
-  }, [getPrompts]);
+  });
 
   return (
     <div className="sidebar">
