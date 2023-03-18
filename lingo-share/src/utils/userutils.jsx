@@ -14,7 +14,8 @@ const mergeObj = (
 ) => {
   let res = [];
   let friendsDict = {};
-  let pendingFriendRequestList = [];
+  let pendingFriendRequestList = []; // storing the list of users IDs that the current user sent a friend request to
+  let receivedFriendRequestList = []; // storing the list of users IDs that sent a friend request to the current user
 
   // Takes in status, friends, and users
 
@@ -29,6 +30,9 @@ const mergeObj = (
         Object.keys(receiverIDList).forEach((receiverID) => {
           pendingFriendRequestList.push(receiverID);
         });
+      }
+      if (receiverIDList.hasOwnProperty(uid)) {
+        receivedFriendRequestList.push(senderID);
       }
     }
   });
@@ -112,6 +116,13 @@ const mergeObj = (
       res_filtered[friendID] = res[friendID];
     }
     return res_filtered;
+  }
+
+  // filter out the users that have sent a friend request to the current user
+  if (receivedFriendRequestList.length > 0) {
+    for (let receiverID of receivedFriendRequestList) {
+      delete res[receiverID];
+    }
   }
 
   return res;
