@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { UserAuth } from "../contexts/AuthContext";
-import { ref, onValue, get } from "firebase/database";
+import { ref, onValue, get, remove } from "firebase/database";
 import { rtdb } from "../firebase";
 import { Button } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
@@ -22,10 +22,27 @@ export default function CallNotification() {
     return roomNameInList.sort().join(""); // room name will be the concatenation of the two user IDs sorted alphabetically
   };
 
-  const handleClick = (event, callerID) => {
+  const handleAccept = (event, callerID) => {
     event.currentTarget.disabled = true;
     let roomName = generateRoomName(user.uid, callerID);
     navigate("/callroom", { state: { callID: callID, roomName: roomName } });
+  };
+
+  const handleIgnore = (event, callerID) => {
+    event.currentTarget.disabled = true;
+    get(activeCallsRef).then((snapshot) => {
+      if (snapshot.exists()) {
+        snapshot.forEach((childSnapshot) => {
+          if (
+            childSnapshot.key !== "dummyObject" &&
+            childSnapshot.val().callee === user.uid &&
+            childSnapshot.val().caller === callerID
+          ) {
+            remove(childSnapshot.ref);
+          }
+        });
+      }
+    });
   };
 
   useEffect(() => {
@@ -82,12 +99,20 @@ export default function CallNotification() {
           {t(" is calling you")}
         </h1>
         <Button
-          onClick={(event) => handleClick(event, callerID)}
+          onClick={(event) => handleAccept(event, callerID)}
           direction="row"
           align="center"
           variant="outline"
         >
           {t("Accept")}
+        </Button>
+        <Button
+          onClick={(event) => handleIgnore(event, callerID)}
+          direction="row"
+          align="center"
+          variant="outline"
+        >
+          {t("Ignore")}
         </Button>
       </div>
     );
