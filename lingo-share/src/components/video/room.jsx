@@ -212,37 +212,24 @@ export default function Room({ roomName, room, handleLogout, callID }) {
     //   },
     //   icon: <Icon name={"thread"} width={"25px"} height={"25px"} />,
     // });
+    let toastDesc = "";
+    if (preferredLanguage === "en")
+      toastDesc = `${localActivePrompt.zh} ${localActivePrompt["zh-pinyin"]}`;
+    if (preferredLanguage === "zh")
+      toastDesc = `${localActivePrompt["zh-pinyin"]}`;
 
-    if (preferredLanguage === "en") {
-      // for english we want to display english, chinese, and pinyin
-      toastIdRef.current = toast({
-        // title: `${localActivePrompt}`,
-        title: `${localActivePrompt[preferredLanguage]}`,
-        description: `${localActivePrompt.zh} ${localActivePrompt["zh-pinyin"]}`,
-        variant: "toast",
-        isClosable: true,
-        containerStyle: {
-          marginBottom: "125px",
-          fontFamily: "Atkinson Hyperlegible",
-        },
-        icon: <Icon name={"thread"} width={"25px"} height={"25px"} />,
-      });
-    }
-    if (preferredLanguage === "zh") {
-      // for chinese we want to display chinese, and pinyin
-      toastIdRef.current = toast({
-        // title: `${localActivePrompt}`,
-        title: `${localActivePrompt[preferredLanguage]}`,
-        description: `${localActivePrompt["zh-pinyin"]}`,
-        variant: "toast",
-        isClosable: true,
-        containerStyle: {
-          marginBottom: "125px",
-          fontFamily: "Atkinson Hyperlegible",
-        },
-        icon: <Icon name={"thread"} width={"25px"} height={"25px"} />,
-      });
-    }
+    toastIdRef.current = toast({
+      // title: `${localActivePrompt}`,
+      title: `${localActivePrompt[preferredLanguage]}`,
+      description: toastDesc,
+      variant: "toast",
+      isClosable: true,
+      containerStyle: {
+        marginBottom: "125px",
+        fontFamily: "Atkinson Hyperlegible",
+      },
+      icon: <Icon name={"thread"} width={"25px"} height={"25px"} />,
+    });
   }, [localActivePrompt, toast]);
 
   useEffect(() => {

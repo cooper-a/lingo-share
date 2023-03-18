@@ -1,10 +1,78 @@
 import React, { useState, useEffect } from "react";
 import { UserAuth } from "../contexts/AuthContext";
-import { ref, onValue, get, remove } from "firebase/database";
+import { ref, get, remove } from "firebase/database";
 import { rtdb } from "../firebase";
-import { Button } from "@chakra-ui/react";
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  useDisclosure,
+  Text,
+} from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import SecondaryButton from "./lingoshare-components/secondarybutton";
+import PrimaryButton from "./lingoshare-components/primarybutton";
+import "../styles/font.css";
+
+const CallNotificationModal = ({
+  isOpen,
+  handleAccept,
+  handleIgnore,
+  onClose,
+  callerName,
+  callerID,
+}) => {
+  const { t } = useTranslation();
+  return (
+    <div>
+      <Modal onClose={onClose} size={"sm"} isOpen={isOpen}>
+        <ModalOverlay />
+        <ModalContent borderRadius={"2xl"} bgColor={"#363636"} color={"white"}>
+          <ModalHeader
+            marginTop={"0.25rem"}
+            className="font"
+            alignSelf={"center"}
+          >
+            <Text className="font-bold" fontSize={"2xl"}>
+              {callerName}
+            </Text>
+            <Text textAlign={"center"} fontSize={"md"}>
+              {t(" is calling you")}
+            </Text>
+          </ModalHeader>
+          <ModalFooter
+            gap={"20px"}
+            marginBottom={"0.5rem"}
+            alignSelf={"center"}
+          >
+            <SecondaryButton
+              onClick={(event) => handleAccept(event, callerID)}
+              direction="row"
+              align="center"
+              text={t("Answer")}
+              width={"150px"}
+              height={"45px"}
+            />
+            <PrimaryButton
+              onClick={(event) => handleIgnore(event, callerID)}
+              direction="row"
+              align="center"
+              variant="outline"
+              text={t("Ignore")}
+              outlineColor={"white"}
+              borderWidth={"2px"}
+              width={"150px"}
+              height={"45px"}
+            />
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </div>
+  );
+};
 
 export default function CallNotification() {
   const [callerID, setCallerID] = useState("");
@@ -16,6 +84,7 @@ export default function CallNotification() {
   const navigate = useNavigate();
   const activeCallsRef = ref(rtdb, "/active_calls");
   const usersRef = ref(rtdb, "/users");
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const generateRoomName = (uid, callerID) => {
     let roomNameInList = [uid, callerID];
@@ -43,6 +112,7 @@ export default function CallNotification() {
         });
       }
     });
+    onClose();
   };
 
   useEffect(() => {
@@ -90,32 +160,18 @@ export default function CallNotification() {
     });
   }, [callerID]);
 
-  let render;
-  if (isCallee) {
-    render = (
+  return (
+    isCallee && (
       <div>
-        <h1>
-          {callerDisplayName === "" ? callerID : callerDisplayName}
-          {t(" is calling you")}
-        </h1>
-        <Button
-          onClick={(event) => handleAccept(event, callerID)}
-          direction="row"
-          align="center"
-          variant="outline"
-        >
-          {t("Accept")}
-        </Button>
-        <Button
-          onClick={(event) => handleIgnore(event, callerID)}
-          direction="row"
-          align="center"
-          variant="outline"
-        >
-          {t("Ignore")}
-        </Button>
+        <CallNotificationModal
+          isOpen={isCallee}
+          callerName={callerDisplayName === "" ? callerID : callerDisplayName}
+          onClose={onClose}
+          callerID={callerID}
+          handleAccept={handleAccept}
+          handleIgnore={handleIgnore}
+        />
       </div>
-    );
-  }
-  return render;
+    )
+  );
 }

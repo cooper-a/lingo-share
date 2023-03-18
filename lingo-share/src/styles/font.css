@@ -1,3 +1,8 @@
 .font {
   font-family: "Atkinson Hyperlegible", sans-serif;
 }
+
+.font-bold {
+  font-family: "Atkinson Hyperlegible";
+  font-weight: 900;
+}
