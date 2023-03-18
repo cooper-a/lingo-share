@@ -34,8 +34,6 @@ export default function CallFriend() {
   const usersRef = ref(rtdb, "/users");
   const activeCallsRef = ref(rtdb, "/active_calls");
 
-  console.log(mergedObj);
-
   const getQuery = (ref) => {
     onValue(ref, (snapshot) => {
       let newObjectList = [];

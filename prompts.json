@@ -2,36 +2,140 @@
   "Chinese Tradition": {
     "Prompts": [
       {
-        "Prompt": "What is the name of the Chinese tradition that is celebrated on the 15th day of the first lunar month?",
+        "Prompt": {
+          "en": "Do you know much about Feng Shui?",
+          "zh": "你知道什么是风水吗？",
+          "zh-pinyin": "nǐ zhīdào shénmeshì fēngshuǐ ma?"
+        },
         "id": 1
       },
       {
-        "Prompt": "What is your favorite Chinese tradition?",
+        "Prompt": {
+          "en": "What is your favorite Chinese tradition?",
+          "zh": "你最喜欢的中华文化传统是什么？",
+          "zh-pinyin": "Nǐ zuì xǐhuān de zhōnghuá wénhuà chuántǒng shì shénme?"
+        },
         "id": 2
-      }
-    ]
-  },
-  "Food": {
-    "Prompts": [
+      },
       {
-        "Prompt": "What is your favorite food?",
+        "Prompt": {
+          "en": "Do you know any famous landmarks in China?",
+          "zh": "你知道哪些来自中国的风景名胜？",
+          "zh-pinyin": "Nǐ zhīdào nǎxiē láizì zhōngguó de fēngjǐng míngshèng?"
+        },
         "id": 3
       },
       {
-        "Prompt": "What is your favorite food to eat on a special occasion?",
+        "Prompt": {
+          "en": "What do you know about Yin Yang？",
+          "zh": "你知道阴阳的意义吗？",
+          "zh-pinyin": "Nǐ zhīdào yīnyáng de yìyì ma?"
+        },
         "id": 4
+      },
+      {
+        "Prompt": {
+          "en": "What do you think about Chinese medicine?",
+          "zh": "你对传统中医药有什么看法？",
+          "zh-pinyin": "Nǐ duì chuántǒng zhōng yīyào yǒu shé me kànfǎ?"
+        },
+        "id": 5
+      },
+      {
+        "Prompt": {
+          "en": "Do you know your own Chinese zodiac?",
+          "zh": "你知道你自己属于哪个十二生肖吗？",
+          "zh-pinyin": "Nǐ zhīdào nǐ zìjǐ shǔyú nǎge shí'èr shēngxiào ma?"
+        },
+        "id": 6
       }
     ]
   },
   "Family": {
     "Prompts": [
       {
-        "Prompt": "What is your favorite family tradition?",
-        "id": 5
+        "Prompt": {
+          "en": "What is your favorite family tradition?",
+          "zh": " 你最不喜欢的家务是什么？",
+          "zh-pinyin": "Nǐ zuì bù xǐhuān de jiāwù shì shénme?"
+        },
+        "id": 1
       },
       {
-        "Prompt": "What is your favorite family tradition?",
-        "id": 6
+        "Prompt": {
+          "en": "What is your favorite family tradition?",
+          "zh": "你最喜欢的家庭传统是什么？",
+          "zh-pinyin": "Nǐ zuì xǐhuān de jiātíng chuántǒng shì shénme?"
+        },
+        "id": 2
+      },
+      {
+        "Prompt": {
+          "en": "Do you have any siblings",
+          "zh": "你有兄弟姐妹吗？",
+          "zh-pinyin": "Nǐ yǒu xiōngdì jiěmèi ma?"
+        },
+        "id": 3
+      },
+      {
+        "Prompt": {
+          "en": "What one important thing that your parents have taught you?",
+          "zh": "什么是一个你父母教会你最重要的事情？",
+          "zh-pinyin": "Shénme shì yīgè nǐ fùmǔ jiàohuì nǐ zuì zhòngyào de shìqíng?"
+        },
+        "id": 4
+      },
+      {
+        "Prompt": {
+          "en": "Where would you like to travel for your next family vacation?",
+          "zh": "你的下一次家庭度假想去哪里旅行？",
+          "zh-pinyin": "Nǐ de xià yīcì jiātíng dùjià xiǎng qù nǎlǐ lǚxíng?"
+        },
+        "id": 5
+      }
+    ]
+  },
+  "Food": {
+    "Prompts": [
+      {
+        "Prompt": {
+          "en": "What are some of the famous Chinese dishes that you know?",
+          "zh": "你知道哪些著名的中国菜肴？",
+          "zh-pinyin": "Nǐ zhīdào nǎxiē zhùmíng de zhōngguó càiyáo?"
+        },
+        "id": 1
+      },
+      {
+        "Prompt": {
+          "en": "What is your favorite Chinese festival food?",
+          "zh": "你最喜欢的中国节日菜肴是什么？",
+          "zh-pinyin": "Nǐ zuì xǐhuān de zhōngguó jiérì càiyáo shì shénme?"
+        },
+        "id": 2
+      },
+      {
+        "Prompt": {
+          "en": "Do you enjoy cooking?",
+          "zh": "你喜欢烧菜吗？",
+          "zh-pinyin": "Nǐ xǐhuān shāocài ma?"
+        },
+        "id": 3
+      },
+      {
+        "Prompt": {
+          "en": "Do you have a favourite Chinese food?",
+          "zh": "你最喜欢的中国美食是什么？",
+          "zh-pinyin": "Nǐ zuì xǐhuān de zhōngguó měishí shì shénme?"
+        },
+        "id": 4
+      },
+      {
+        "Prompt": {
+          "en": "How much can you handle spicy food?",
+          "zh": "你能吃辣吗？",
+          "zh-pinyin": "Nǐ néng chī là ma?"
+        },
+        "id": 5
       }
     ]
   }

@@ -131,7 +131,6 @@ export default function ProfilePage() {
   };
 
   useEffect(() => {
-    console.log(user.uid);
     setIsPrimaryUser(user.uid === params.id);
   }, [user, params]);
 
