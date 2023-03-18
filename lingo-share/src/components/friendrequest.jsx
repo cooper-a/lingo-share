@@ -6,12 +6,16 @@ import { Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import FriendRequestCard from "./lingoshare-components/friendrequestcard";
-import { handleAcceptRequest, handleIgnoreRequest } from "../utils/userutils";
+import "../styles/meetfriends.css";
+import {
+  handleAcceptRequest,
+  handleIgnoreRequest,
+  extractRequestSenderID,
+} from "../utils/userutils";
 
 export default function FriendRequest() {
   const [friendRequestSnapshot, setFriendRequestSnapshot] = useState([]);
   const [requestSenders, setRequestSenders] = useState({});
-  const [incomingRequests, setIncomingRequests] = useState([]);
   const { user } = UserAuth();
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -20,71 +24,32 @@ export default function FriendRequest() {
   // console.log(friendRequestSnapshot);
   // console.log(requestSenders);
 
-  const extractRequestSenderID = () => {
-    friendRequestSnapshot.forEach((requestChildSnapshot) => {
-      Object.keys(requestChildSnapshot.val()).forEach((receiverID) => {
-        if (
-          user.uid === receiverID &&
-          !requestSenders.hasOwnProperty(requestChildSnapshot.key)
-        ) {
-          let senderUid = requestChildSnapshot.key;
-          appendRequestSender(senderUid);
-        }
-      });
-    });
+  const extractRequestSenderIDFromSnapshot = () => {
+    extractRequestSenderID(
+      friendRequestSnapshot,
+      user,
+      requestSenders,
+      usersRef,
+      setRequestSenders
+    );
   };
 
-  const appendRequestSender = (targetID) => {
-    // extract sender's display name
-    get(usersRef)
-      .then((snapshot) => {
-        snapshot.forEach((userChildSnapshot) => {
-          if (userChildSnapshot.key === targetID) {
-            // append friend request sender to requestSenders
-            const { interests, userType, userDisplayName, profilePic } =
-              userChildSnapshot.val();
-            let newObj = {
-              userId: targetID,
-              interests: interests,
-              userType: userType,
-              userDisplayName: userDisplayName,
-              profilePic: profilePic,
-            };
-            let newIncomingRequests = [...incomingRequests];
-            newIncomingRequests.push(newObj);
-            setIncomingRequests(newIncomingRequests);
-          }
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  const handleAcceptFriendRequest = (event, incomingRequestIndex, targetID) => {
+  const handleAcceptFriendRequest = (event, targetID) => {
     handleAcceptRequest(event, friendRequestsRef, user, targetID);
-    // remove the added incomingRequestId from the incomingRequests object
-    let newIncomingRequests = [];
-    for (let i = 0; i < incomingRequests.length; i++) {
-      if (i !== incomingRequestIndex) {
-        newIncomingRequests.push(incomingRequests[i]);
-      }
-    }
-    setIncomingRequests(newIncomingRequests);
+    // remove the added requestSenderID from the requestSenders object
+    const newRequestSenders = { ...requestSenders };
+    delete newRequestSenders[targetID];
+    setRequestSenders(newRequestSenders);
 
     navigate("/meetnewfriends"); // workaround
   };
 
-  const handleIgnoreFriendRequest = (event, incomingRequestIndex, targetID) => {
+  const handleIgnoreFriendRequest = (event, targetID) => {
     handleIgnoreRequest(event, friendRequestsRef, user, targetID);
-    // remove the added incomingRequestId from the incomingRequests object
-    let newIncomingRequests = [];
-    for (let i = 0; i < incomingRequests.length; i++) {
-      if (i !== incomingRequestIndex) {
-        newIncomingRequests.push(incomingRequests[i]);
-      }
-    }
-    setIncomingRequests(newIncomingRequests);
+    // remove the added requestSenderID from the requestSenders object
+    const newRequestSenders = { ...requestSenders };
+    delete newRequestSenders[targetID];
+    setRequestSenders(newRequestSenders);
   };
 
   useEffect(() => {
@@ -94,12 +59,12 @@ export default function FriendRequest() {
   }, []);
 
   useEffect(() => {
-    extractRequestSenderID();
+    extractRequestSenderIDFromSnapshot();
   }, [friendRequestSnapshot]);
 
   return (
-    <div>
-      {incomingRequests.length > 0 && (
+    <div className="friend-requests">
+      {Object.entries(requestSenders).length > 0 && (
         <Text
           marginBottom={"2rem"}
           className="font"
@@ -109,19 +74,23 @@ export default function FriendRequest() {
           {t("These people have added you as a friend!")}
         </Text>
       )}
-      {incomingRequests.map((friendInvite, i) => (
-        <FriendRequestCard
-          key={i}
-          incomingRequestIndex={i}
-          userId={friendInvite.userId}
-          displayName={friendInvite.userDisplayName}
-          interests={friendInvite.interests}
-          userType={friendInvite.userType}
-          profilePic={friendInvite.profilePic}
-          onClickIgnore={handleIgnoreFriendRequest}
-          onClickAccept={handleAcceptFriendRequest}
-        />
-      ))}
+      {Object.entries(requestSenders).map(([senderID, senderInfo], i) => {
+        console.log(i);
+        return (
+          <div key={senderID} className="friend-request">
+            <FriendRequestCard
+              key={i}
+              userId={senderInfo.userId}
+              displayName={senderInfo.userDisplayName}
+              interests={senderInfo.interests}
+              userType={senderInfo.userType}
+              profilePic={senderInfo.profilePic}
+              onClickIgnore={handleIgnoreFriendRequest}
+              onClickAccept={handleAcceptFriendRequest}
+            />
+          </div>
+        );
+      })}
     </div>
   );
 }
