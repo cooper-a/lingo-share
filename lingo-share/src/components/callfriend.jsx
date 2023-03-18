@@ -134,13 +134,12 @@ export default function CallFriend() {
   }
 
   const handleClick = (event, callerID) => {
-    console.log("hi");
     event.currentTarget.disabled = true;
     generateCallStatusEntryAndNavigate(callerID);
   };
 
   const handleClickViewProfile = (targetID) => {
-    navigate(`/profile/${targetID}`);
+    navigate(`/profile/${targetID}`, { state: { prevPage: "/callfriend" } });
   };
 
   const disableButton = (key, state) => {

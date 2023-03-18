@@ -19,11 +19,13 @@ import Icon from "@adeira/icons";
 export default function Room({ roomName, room, handleLogout, callID }) {
   const [participants, setParticipants] = useState([]);
   const [activePrompt, setActivePrompt] = useState("");
+  const [localActivePrompt, setLocalActivePrompt] = useState("");
   const [toggleAudio, setToggleAudio] = useState(true);
   const [toggleVideo, setToggleVideo] = useState(true);
   const [togglePrompt, setTogglePrompt] = useState(false);
   const [toggleLeaveModal, setToggleLeaveModal] = useState(false);
   const toast = useToast();
+  const toastIdRef = React.useRef();
   const { isOpen, onToggle, onClose } = useDisclosure(); // for the popover over Topics button
   const activePromptRef = ref(
     rtdb,
@@ -100,26 +102,24 @@ export default function Room({ roomName, room, handleLogout, callID }) {
         // console.log("grabbing active prompt");
         if (snapshot.exists()) {
           // console.log(snapshot.val());
-          const dbPrompt = snapshot.val();
-          if (dbPrompt !== activePrompt && dbPrompt !== "none") {
-            setActivePrompt(dbPrompt);
+          let dbPromptObj = snapshot.val();
+          // let dbPromptInLang = snapshot.val()[preferredLanguage];
+          if (
+            dbPromptObj !== undefined &&
+            activePrompt[preferredLanguage] !== dbPromptObj[preferredLanguage]
+          ) {
+            setActivePrompt(dbPromptObj);
           }
         }
       });
     }, 1000);
-
-    // onValue(activePromptRef, (snapshot) => {
-    //   const data = snapshot.val();
-    //   console.log(data);
-    //   console.log("change detected");
-    // });
 
     return () => {
       room.off("participantConnected", participantConnected);
       room.off("participantDisconnected", participantDisconnected);
       clearInterval(interval);
     };
-  }, [room]);
+  }, [room, preferredLanguage, activePrompt]);
 
   const handleCallDisconnect = () => {
     const languageRef = ref(rtdb, `users/${user.uid}/language`);
@@ -171,10 +171,12 @@ export default function Room({ roomName, room, handleLogout, callID }) {
   ));
 
   useEffect(() => {
-    if (activePrompt === "") return;
+    if (localActivePrompt === "" || localActivePrompt === undefined) return;
+    // when our active prompt changes, we want to display a toast
     toast.closeAll();
-    toast({
-      title: `${t(activePrompt)}`,
+    console.log(localActivePrompt);
+    toastIdRef.current = toast({
+      title: `${localActivePrompt}`,
       variant: "toast",
       isClosable: true,
       containerStyle: {
@@ -183,7 +185,20 @@ export default function Room({ roomName, room, handleLogout, callID }) {
       },
       icon: <Icon name={"thread"} width={"25px"} height={"25px"} />,
     });
-  }, [activePrompt, toast]);
+  }, [localActivePrompt, toast]);
+
+  useEffect(() => {
+    // when our preferred language changes, we want to change the language of the toast but only if it exists
+    if (toast.isActive(toastIdRef.current)) {
+      console.log(localActivePrompt);
+      setLocalActivePrompt(activePrompt[preferredLanguage]);
+    }
+  }, [preferredLanguage]);
+
+  useEffect(() => {
+    // when our active prompt changes we always want to update the local active prompt
+    setLocalActivePrompt(activePrompt[preferredLanguage]);
+  }, [activePrompt]);
 
   return (
     <ChakraProvider theme={customTheme}>
@@ -193,6 +208,7 @@ export default function Room({ roomName, room, handleLogout, callID }) {
             roomName={roomName}
             callID={callID}
             setActivePrompt={setActivePrompt}
+            preferredLanguage={preferredLanguage}
           />
         )}
         {toggleLeaveModal && (

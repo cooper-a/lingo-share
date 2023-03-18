@@ -146,7 +146,9 @@ export default function MeetNewFriends() {
   };
 
   const handleClickViewProfile = (targetID) => {
-    navigate(`/profile/${targetID}`);
+    navigate(`/profile/${targetID}`, {
+      state: { prevPage: "/meetnewfriends" },
+    });
   };
 
   useEffect(() => {
