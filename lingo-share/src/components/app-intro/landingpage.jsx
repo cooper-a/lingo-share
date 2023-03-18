@@ -45,7 +45,7 @@ export default function LandingPage() {
 
   useEffect(() => {
     setCurDisplay("showDescription");
-  }, [user, navigate]);
+  }, []);
 
   return <div>{pages[curDisplay]}</div>;
 }
