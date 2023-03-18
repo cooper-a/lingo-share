@@ -19,7 +19,9 @@ export default function FriendRequestCard({
   const navigate = useNavigate();
 
   const handleClickViewProfile = (targetID) => {
-    navigate(`/profile/${targetID}`);
+    navigate(`/profile/${targetID}`, {
+      state: { prevPage: "/meetnewfriends" },
+    });
   };
 
   return (
