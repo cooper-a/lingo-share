@@ -28,8 +28,8 @@ const resources = {
       "You are...": "You are...",
       "A native Mandarin speaker": "A native Mandarin speaker",
       "Learning to speak Mandarin": "Learning to speak Mandarin",
-      "All done! We hope you enjoy LingoShare":
-        "All done! We hope you enjoy LingoShare",
+      "All done! We hope you enjoy LingoShare!":
+        "All done! We hope you enjoy LingoShare!",
       "Get Started": "Get Started",
       "User Email": "User Email",
       Account: "Account",
@@ -147,7 +147,7 @@ const resources = {
       "You are...": "你是...",
       "A native Mandarin speaker": "中文是我的母语",
       "Learning to speak Mandarin": "正在学习中文",
-      "All done! We hope you enjoy LingoShare": "完成！希望你会喜欢LingoShare",
+      "All done! We hope you enjoy LingoShare!": "完成！希望你会喜欢LingoShare",
       "Get Started": "开始",
       "User Email": "用户电子邮件",
       Account: "帐户",

@@ -1,5 +1,5 @@
 import "../styles/nav.css";
-import { Button, ChakraProvider, Stack, Text } from "@chakra-ui/react";
+import { ChakraProvider, Stack, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../contexts/AuthContext";
 import React, { useEffect, useState } from "react";
@@ -46,7 +46,7 @@ export default function Home() {
     <div>
       {showLogin ? (
         <div>
-          <Navbar currPage={"/home"} />
+          <Navbar currPage={"/"} />
           <ChakraProvider>
             <div className="welcome-pg">
               <Text fontSize="5xl">{t("Welcome to LingoShare!")}</Text>

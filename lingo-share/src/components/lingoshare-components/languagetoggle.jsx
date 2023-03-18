@@ -9,8 +9,8 @@ export default function LanguageToggle({ isEnglish, handleTranslate }) {
         onClick={() => handleTranslate("en")}
         size={"lg"}
         variant="solid"
-        bgColor={isEnglish ? "black" : "white"}
-        color={isEnglish ? "white" : "black"}
+        bgColor={isEnglish ? "#363636" : "white"}
+        color={isEnglish ? "white" : "#363636"}
       >
         English
       </Tag>
@@ -19,8 +19,8 @@ export default function LanguageToggle({ isEnglish, handleTranslate }) {
         onClick={() => handleTranslate("zh")}
         size={"lg"}
         variant="solid"
-        bgColor={isEnglish ? "white" : "black"}
-        color={isEnglish ? "black" : "white"}
+        bgColor={isEnglish ? "white" : "#363636"}
+        color={isEnglish ? "#363636" : "white"}
       >
         中文
       </Tag>

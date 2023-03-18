@@ -3,8 +3,7 @@ import { ChakraProvider, Text } from "@chakra-ui/react";
 import lingoImage from "./landing-page-resources/lightbulb.png";
 import PrimaryButton from "../lingoshare-components/primarybutton";
 
-
-export default function ActionPage({ t, handleNavigation }) {
+export default function ActionPage({ t, handleStepChange }) {
   return (
     <div>
       <ChakraProvider>
@@ -24,7 +23,7 @@ export default function ActionPage({ t, handleNavigation }) {
             height={"50px"}
             marginTop={"50px"}
             text={t("Next")}
-            onClick={() => handleNavigation("home")}
+            onClick={() => handleStepChange("showWelcome")}
           />
         </div>
       </ChakraProvider>

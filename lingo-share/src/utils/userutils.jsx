@@ -1,4 +1,4 @@
-import { ref, onValue, set, get, remove, child } from "firebase/database";
+import { ref, set, get, remove, child } from "firebase/database";
 import { rtdb } from "../firebase";
 
 const mergeObj = (
