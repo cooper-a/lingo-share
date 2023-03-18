@@ -217,6 +217,8 @@ const handleUnblockUser = async (targetID, user) => {
         console.log(error);
       });
   }
+};
+
 const extractRequestSenderID = (
   friendRequestSnapshot,
   user,
