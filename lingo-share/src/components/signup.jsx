@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, ChakraProvider, Text } from "@chakra-ui/react";
+import { ChakraProvider, Text } from "@chakra-ui/react";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import PasswordInput from "./passwordinput";
 import { useState } from "react";
@@ -17,7 +17,6 @@ export default function Signup() {
   const [password, setPassword] = useState(null);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [error, setError] = useState(null);
   const [firstNameError, setFirstNameError] = useState(null);
   const [lastNameError, setLastNameError] = useState(null);
   const [emailError, setEmailError] = useState(null);
@@ -54,7 +53,7 @@ export default function Signup() {
         displayName: firstName + " " + lastName,
       });
       console.log("successfully added user");
-      navigate("/userselect");
+      navigate("/landingpage");
     } catch (e) {
       if (!e.message.includes("auth/")) {
         console.log(e.message);

@@ -19,6 +19,20 @@
   gap: 15px;
 }
 
+.request-notification {
+  font-family: "Atkinson Hyperlegible", sans-serif;
+  font-weight: bolder;
+  position: absolute;
+  top: 0.55rem;
+  right: 0.55rem;
+  font-size: x-large;
+  background-color: #363636;
+  color: white;
+  width: 36px;
+  height: 36px;
+  border-radius: 30%;
+}
+
 .card-name-heading {
   display: flex;
   flex-direction: column;

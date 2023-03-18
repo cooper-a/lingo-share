@@ -6,7 +6,11 @@ import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../contexts/AuthContext";
 import { rtdb } from "../firebase";
 import "../styles/meetfriends.css";
-import { mergeObj } from "../utils/userutils";
+import {
+  mergeObj,
+  handleBlockUser,
+  handleReportUser,
+} from "../utils/userutils";
 import CallNotification from "./callnotification";
 import Input from "./lingoshare-components/input";
 import Navbar from "./navbar";
@@ -23,7 +27,7 @@ export default function YourFriends() {
   const [blockedObj, setBlockedObj] = useState([]);
   const [blockedByObj, setBlockedByObj] = useState([]);
   const [blockedReason, setBlockedReason] = useState("");
-  const [reportUser, setReportUser] = useState("");
+  const [reportReason, setReportReason] = useState("");
   const { t } = useTranslation();
 
   const getQuery = (ref) => {
@@ -67,46 +71,15 @@ export default function YourFriends() {
 
   const handleClickBlockFriend = async (e, targetID) => {
     e.preventDefault();
-    if (targetID !== user.uid && targetID !== undefined) {
-      let blockRef = ref(rtdb, `/users/${user.uid}/blocked/${targetID}`);
-      let friendRef = ref(rtdb, `/users/${user.uid}/friends/${targetID}`);
-      if (blockedReason === "") {
-        setBlockedReason("No reason given");
-      }
-      set(blockRef, blockedReason)
-        .then(() => {
-          console.log("user blocked");
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-      set(friendRef, null)
-        .then(() => {
-          console.log("user removed from friends list");
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-      navigate("/yourfriends");
-    }
+    handleBlockUser(targetID, blockedReason, user);
+    navigate("/yourfriends");
   };
 
   const handleClickReportUser = async (e, targetID) => {
     e.preventDefault();
-    if (targetID !== user.uid && targetID !== undefined) {
-      let reportRef = ref(rtdb, `/reports/${user.uid}/${targetID}`);
-      if (reportUser === "") {
-        setReportUser("No reason given");
-      }
-      set(reportRef, reportUser)
-        .then(() => {
-          console.log("user reported");
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-      navigate("/yourfriends");
-    }
+    console.log(user.uid);
+    handleReportUser(targetID, reportReason, user);
+    navigate("/yourfriends");
   };
 
   useEffect(() => {
@@ -153,7 +126,7 @@ export default function YourFriends() {
                   </Button>
 
                   <Input
-                    onChange={(e) => setReportUser(e.target.value)}
+                    onChange={(e) => setReportReason(e.target.value)}
                     width={"350px"}
                     placeholder={t("Report Reason")}
                     height={"50px"}

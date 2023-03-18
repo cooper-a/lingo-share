@@ -36,11 +36,11 @@ function App() {
         <Router>
           <div className="App">
             <Routes>
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/home" element={<Home />} />
+              <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/prompt" element={<PromptSidebar />} />
+              <Route path="/landingpage" element={<ProtectedRoute><LandingPage /></ProtectedRoute>} />
               <Route
                 path="/userselect"
                 element={

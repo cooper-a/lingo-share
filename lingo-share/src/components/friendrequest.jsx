@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { UserAuth } from "../contexts/AuthContext";
-import { ref, onValue, get } from "firebase/database";
+import { ref, onValue } from "firebase/database";
 import { rtdb } from "../firebase";
 import { Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
