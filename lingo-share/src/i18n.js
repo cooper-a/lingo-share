@@ -133,6 +133,7 @@ const resources = {
       "Report Reason": "Report Reason",
       "Report User": "Report User",
       "What do you want to talk about?": "What do you want to talk about?",
+      Answer: "Answer",
     },
   },
   zh: {
@@ -259,6 +260,7 @@ const resources = {
       "Report Reason": "举报原因",
       "Report User": "举报用户",
       "What do you want to talk about?": "你想聊些什么话题",
+      Answer: "接听",
     },
   },
 };
