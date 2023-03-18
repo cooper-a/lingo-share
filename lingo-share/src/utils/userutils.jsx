@@ -165,4 +165,57 @@ const removeEntryFromFriendRequests = (friendRequestsRef, user, targetID) => {
     });
 };
 
-export { mergeObj, handleAcceptRequest, handleIgnoreRequest };
+const extractRequestSenderID = (
+  friendRequestSnapshot,
+  user,
+  requestSenders,
+  usersRef,
+  setRequestSenders
+) => {
+  friendRequestSnapshot.forEach((requestChildSnapshot) => {
+    Object.keys(requestChildSnapshot.val()).forEach((receiverID) => {
+      if (
+        user.uid === receiverID &&
+        !requestSenders.hasOwnProperty(requestChildSnapshot.key)
+      ) {
+        let senderUid = requestChildSnapshot.key;
+        appendRequestSender(senderUid, usersRef, setRequestSenders);
+      }
+    });
+  });
+};
+
+const appendRequestSender = (targetID, usersRef, setRequestSenders) => {
+  // extract sender's display name
+  get(usersRef)
+    .then((snapshot) => {
+      snapshot.forEach((userChildSnapshot) => {
+        if (userChildSnapshot.key === targetID) {
+          // append friend request sender to requestSenders
+          const { interests, userType, userDisplayName, profilePic } =
+            userChildSnapshot.val();
+          let newObj = {
+            userId: targetID,
+            interests: interests,
+            userType: userType,
+            userDisplayName: userDisplayName,
+            profilePic: profilePic,
+          };
+          setRequestSenders((requestSenders) => ({
+            ...requestSenders,
+            [userChildSnapshot.key]: newObj,
+          }));
+        }
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
+export {
+  mergeObj,
+  handleAcceptRequest,
+  handleIgnoreRequest,
+  extractRequestSenderID,
+};

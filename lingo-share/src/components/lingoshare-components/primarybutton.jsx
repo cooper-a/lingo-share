@@ -5,12 +5,11 @@ export default function PrimaryButton({
   onClick,
   align,
   direction,
-  isDisabled,
+  isDisabled = false,
   size,
   text,
   width,
   height,
-  rightIcon,
   marginTop,
   marginLeft,
   marginRight,
@@ -28,7 +27,6 @@ export default function PrimaryButton({
       marginRight={marginRight}
       width={width}
       borderRadius={"xl"}
-      rightIcon={rightIcon}
       height={height}
       onClick={onClick}
       size={size}
