@@ -1,4 +1,4 @@
-import { ref, onValue, set, get, remove, child } from "firebase/database";
+import { ref, set, get, remove, child, push } from "firebase/database";
 import { rtdb } from "../firebase";
 
 const mergeObj = (
@@ -101,7 +101,6 @@ const mergeObj = (
   // filter out the users that are blocked by the current user
   for (let [blockedID, blockedValue] of Object.entries(blockedObj)) {
     delete res[blockedID];
-    console.log(blockedID);
   }
 
   // filter out the users that have blocked the current user
@@ -176,4 +175,115 @@ const removeEntryFromFriendRequests = (friendRequestsRef, user, targetID) => {
     });
 };
 
-export { mergeObj, handleAcceptRequest, handleIgnoreRequest };
+const handleBlockUser = async (targetID, blockedReason, user) => {
+  if (targetID !== user.uid && targetID !== undefined) {
+    let blockRef = ref(rtdb, `/users/${user.uid}/blocked/${targetID}`);
+    let friendRef = ref(rtdb, `/users/${user.uid}/friends/${targetID}`);
+    let blockedReasonString = blockedReason;
+    if (blockedReason === "") {
+      blockedReasonString = "No reason given";
+    }
+    set(blockRef, blockedReasonString)
+      .then(() => {
+        console.log("user blocked");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    set(friendRef, null)
+      .then(() => {
+        console.log("user removed from friends list");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+};
+
+const handleReportUser = async (targetID, reportReason, user) => {
+  if (targetID !== user.uid && targetID !== undefined) {
+    let reportRef = ref(rtdb, `/reports/${user.uid}/${targetID}`);
+    let reportReasonString = reportReason;
+    if (reportReasonString === "") {
+      reportReasonString = "No reason given";
+    }
+    push(reportRef, reportReasonString)
+      .then(() => {
+        console.log("user reported");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+};
+
+const handleUnblockUser = async (targetID, user) => {
+  if (targetID !== user.uid && targetID !== undefined) {
+    let blockRef = ref(rtdb, `/users/${user.uid}/blocked/${targetID}`);
+    set(blockRef, null)
+      .then(() => {
+        console.log("user unblocked");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+};
+
+const extractRequestSenderID = (
+  friendRequestSnapshot,
+  user,
+  requestSenders,
+  usersRef,
+  setRequestSenders
+) => {
+  friendRequestSnapshot.forEach((requestChildSnapshot) => {
+    Object.keys(requestChildSnapshot.val()).forEach((receiverID) => {
+      if (
+        user.uid === receiverID &&
+        !requestSenders.hasOwnProperty(requestChildSnapshot.key)
+      ) {
+        let senderUid = requestChildSnapshot.key;
+        appendRequestSender(senderUid, usersRef, setRequestSenders);
+      }
+    });
+  });
+};
+
+const appendRequestSender = (targetID, usersRef, setRequestSenders) => {
+  // extract sender's display name
+  get(usersRef)
+    .then((snapshot) => {
+      snapshot.forEach((userChildSnapshot) => {
+        if (userChildSnapshot.key === targetID) {
+          // append friend request sender to requestSenders
+          const { interests, userType, userDisplayName, profilePic } =
+            userChildSnapshot.val();
+          let newObj = {
+            userId: targetID,
+            interests: interests,
+            userType: userType,
+            userDisplayName: userDisplayName,
+            profilePic: profilePic,
+          };
+          setRequestSenders((requestSenders) => ({
+            ...requestSenders,
+            [userChildSnapshot.key]: newObj,
+          }));
+        }
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
+export {
+  mergeObj,
+  handleAcceptRequest,
+  handleIgnoreRequest,
+  handleBlockUser,
+  handleReportUser,
+  handleUnblockUser,
+  extractRequestSenderID,
+};

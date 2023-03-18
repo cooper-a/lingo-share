@@ -7,7 +7,6 @@ import TertiaryButton from "./tertiarybutton";
 import { useTranslation } from "react-i18next";
 
 export default function FriendRequestCard({
-  incomingRequestIndex,
   userId,
   userType,
   interests,
@@ -26,13 +25,13 @@ export default function FriendRequestCard({
   return (
     <div>
       <Card
-        className="call-card"
         borderWidth={"1px"}
         borderColor={"#363636"}
-        width={"820px"}
+        maxW={"100vh"}
         maxH={"120px"}
         left={"20px"}
         rounded={"2xl"}
+        marginLeft={"20px"}
       >
         <CardHeader>
           <Flex spacing="4">
@@ -66,17 +65,13 @@ export default function FriendRequestCard({
               />
               <SecondaryButton
                 text={t("Ignore")}
-                onClick={(event) =>
-                  onClickIgnore(event, incomingRequestIndex, userId)
-                }
+                onClick={(event) => onClickIgnore(event, userId)}
               />
               <PrimaryButton
                 marginLeft={"15px"}
                 width={"105px"}
                 text={t("Accept")}
-                onClick={(event) =>
-                  onClickAccept(event, incomingRequestIndex, userId)
-                }
+                onClick={(event) => onClickAccept(event, userId)}
               />
             </Box>
           </Flex>

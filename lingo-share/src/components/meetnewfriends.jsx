@@ -146,7 +146,9 @@ export default function MeetNewFriends() {
   };
 
   const handleClickViewProfile = (targetID) => {
-    navigate(`/profile/${targetID}`);
+    navigate(`/profile/${targetID}`, {
+      state: { prevPage: "/meetnewfriends" },
+    });
   };
 
   useEffect(() => {
@@ -181,9 +183,7 @@ export default function MeetNewFriends() {
       />
       <ChakraProvider>
         <div className="meet-friends-pg">
-          <div className="friend-requests">
-            <FriendRequest />
-          </div>
+          <FriendRequest />
           <div className="also-users-text">
             <Text className="font" fontSize="3xl">
               {t("These people are also using LingoShare")}

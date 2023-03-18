@@ -1,31 +1,33 @@
 import {
   Tag,
-  Text,
-  TagLabel,
   TagCloseButton,
+  TagLabel,
+  Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useNavigate, useParams } from "react-router-dom";
-import { UserAuth } from "../contexts/AuthContext";
-import Navbar from "./navbar";
+import { onValue, ref, set } from "firebase/database";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ref, onValue, set, get, remove, child } from "firebase/database";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { UserAuth } from "../contexts/AuthContext";
 import { rtdb } from "../firebase";
+import "../styles/profilepage.css";
+import { handleAcceptRequest, handleIgnoreRequest } from "../utils/userutils";
 import CallNotification from "./callnotification";
-import SavedAlert from "./profile/savedalert";
-import UserName from "./profile/username";
+import SecondaryButton from "./lingoshare-components/secondarybutton";
+import Navbar from "./navbar";
 import AboutSection from "./profile/aboutsection";
 import InterestsSection from "./profile/interestssection";
-import SecondaryButton from "./lingoshare-components/secondarybutton";
-import { handleAcceptRequest, handleIgnoreRequest } from "../utils/userutils";
-import "../styles/profilepage.css";
+import SavedAlert from "./profile/savedalert";
+import UserName from "./profile/username";
 
 export default function ProfilePage() {
-  const { user, logout } = UserAuth();
+  const { user } = UserAuth();
   const navigate = useNavigate();
   const { t } = useTranslation();
   const params = useParams();
+  const { state } = useLocation();
+  const prevPage = state ? state.prevPage : null;
   const userRef = ref(rtdb, "users/" + user.uid);
   const targetUserRef = ref(rtdb, "users/" + params.id);
   const userStatusRef = ref(rtdb, "status/" + params.id);
@@ -193,7 +195,7 @@ export default function ProfilePage() {
         currPage={
           isPrimaryUser ? "/profile/" + user.uid : "/profile/" + params.id
         }
-        prevPage={isPrimaryUser ? "/dashboard" : "/meetnewfriends"}
+        prevPage={isPrimaryUser ? "/dashboard" : prevPage}
       />
       <div className="primary-user">
         <UserName
