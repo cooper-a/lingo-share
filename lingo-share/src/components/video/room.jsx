@@ -4,6 +4,11 @@ import {
   extendTheme,
   useToast,
   useDisclosure,
+  Box,
+  Text,
+  AbsoluteCenter,
+  CloseButton,
+  Alert,
 } from "@chakra-ui/react";
 import Participant from "./participant";
 import Controls from "./controls";
@@ -175,29 +180,91 @@ export default function Room({ roomName, room, handleLogout, callID }) {
     // when our active prompt changes, we want to display a toast
     toast.closeAll();
     console.log(localActivePrompt);
-    toastIdRef.current = toast({
-      title: `${localActivePrompt}`,
-      variant: "toast",
-      isClosable: true,
-      containerStyle: {
-        marginBottom: "125px",
-        fontFamily: "Atkinson Hyperlegible",
-      },
-      icon: <Icon name={"thread"} width={"25px"} height={"25px"} />,
-    });
+
+    let test_prompt = `Do you know much about Feng Shui?`;
+    let test_prompt_chinese = `你知道什么是风水吗?`;
+    let test_prompt_pinyin = `Nǐ zhī dào shén me shì fēng shuǐ ma?`;
+
+    // TODO: Style a custom toast to display prompts, translations, and pinyin
+    // toastIdRef.current = toast({
+    //   // title: `${localActivePrompt}`,
+    //   render: (props) => (
+    //     <Alert
+    //       {...props}
+    //       bg={"#363636"}
+    //       color={"white"}
+    //       p={4}
+    //       borderRadius={"md"}
+    //       fontFamily={"Atkinson Hyperlegible"}
+    //       className="prompt-toast"
+    //     >
+    //       <Text>
+    //         {test_prompt + "\n" + test_prompt_chinese + test_prompt_pinyin}
+    //       </Text>
+    //       <CloseButton />
+    //     </Alert>
+    //   ),
+    //   variant: "toast",
+    //   isClosable: true,
+    //   containerStyle: {
+    //     marginBottom: "125px",
+    //     fontFamily: "Atkinson Hyperlegible",
+    //   },
+    //   icon: <Icon name={"thread"} width={"25px"} height={"25px"} />,
+    // });
+
+    if (preferredLanguage === "en") {
+      // for english we want to display english, chinese, and pinyin
+      toastIdRef.current = toast({
+        // title: `${localActivePrompt}`,
+        title: `${localActivePrompt[preferredLanguage]}`,
+        description: `${localActivePrompt.zh} ${localActivePrompt["zh-pinyin"]}`,
+        variant: "toast",
+        isClosable: true,
+        containerStyle: {
+          marginBottom: "125px",
+          fontFamily: "Atkinson Hyperlegible",
+        },
+        icon: <Icon name={"thread"} width={"25px"} height={"25px"} />,
+      });
+    }
+    if (preferredLanguage === "zh") {
+      // for chinese we want to display chinese, and pinyin
+      toastIdRef.current = toast({
+        // title: `${localActivePrompt}`,
+        title: `${localActivePrompt[preferredLanguage]}`,
+        description: `${localActivePrompt["zh-pinyin"]}`,
+        variant: "toast",
+        isClosable: true,
+        containerStyle: {
+          marginBottom: "125px",
+          fontFamily: "Atkinson Hyperlegible",
+        },
+        icon: <Icon name={"thread"} width={"25px"} height={"25px"} />,
+      });
+    }
   }, [localActivePrompt, toast]);
 
   useEffect(() => {
     // when our preferred language changes, we want to change the language of the toast but only if it exists
     if (toast.isActive(toastIdRef.current)) {
-      console.log(localActivePrompt);
-      setLocalActivePrompt(activePrompt[preferredLanguage]);
+      if (preferredLanguage === "en") {
+        // for english we want to display english, chinese, and pinyin
+        setLocalActivePrompt(activePrompt);
+      }
+      if (preferredLanguage === "zh") {
+        // for chinese we want to display chinese, and pinyin
+        setLocalActivePrompt({
+          zh: activePrompt.zh,
+          "zh-pinyin": activePrompt["zh-pinyin"],
+        });
+      }
     }
   }, [preferredLanguage]);
 
   useEffect(() => {
     // when our active prompt changes we always want to update the local active prompt
-    setLocalActivePrompt(activePrompt[preferredLanguage]);
+    setLocalActivePrompt(activePrompt);
   }, [activePrompt]);
 
   return (
