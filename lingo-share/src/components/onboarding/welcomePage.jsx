@@ -10,7 +10,6 @@ import { useTranslation } from "react-i18next";
 import PrimaryButton from "../lingoshare-components/primarybutton";
 
 export default function WelcomePage() {
-  const [error, setError] = useState(null);
   const navigate = useNavigate();
   const [userType, setUserType] = useState("");
   const [snapshotData, setSnapshotData] = useState({});
@@ -46,7 +45,7 @@ export default function WelcomePage() {
       <ChakraProvider>
         <div className="welcome-pg">
           <Text fontSize="4xl">
-            {t("All done! We hope you enjoy LingoShare")}
+            {t("All done! We hope you enjoy LingoShare!")}
           </Text>
           <PrimaryButton
             width={"280px"}

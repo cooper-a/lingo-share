@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardBody,
@@ -10,18 +10,23 @@ import {
 import "../../styles/card.css";
 import "@fontsource/atkinson-hyperlegible";
 import { rtdb } from "../../firebase";
-import { ref, get } from "firebase/database";
+import { ref, get, onValue } from "firebase/database";
 import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../../contexts/AuthContext";
 import Navbar from "../navbar";
 import { useTranslation } from "react-i18next";
 import CallNotification from "../callnotification";
 import Icon from "@adeira/icons";
+import { extractRequestSenderID } from "../../utils/userutils";
 
 export default function Dashboard() {
   const navigate = useNavigate();
   const { user, checkStatus } = UserAuth();
   const languageRef = ref(rtdb, `users/${user.uid}/language`);
+  const friendRequestsRef = ref(rtdb, "/friend_requests");
+  const usersRef = ref(rtdb, "/users");
+  const [friendRequestSnapshot, setFriendRequestSnapshot] = useState([]);
+  const [requestSenders, setRequestSenders] = useState({});
   const { t, i18n } = useTranslation();
 
   const handleClick = (path) => {
@@ -37,9 +42,28 @@ export default function Dashboard() {
         console.log("No data available");
       }
     });
+    onValue(friendRequestsRef, (snapshot) => {
+      setFriendRequestSnapshot(snapshot);
+    });
   }, []);
 
-  const CardItem = ({ text, iconName, onClick }) => {
+  useEffect(() => {
+    extractRequestSenderID(
+      friendRequestSnapshot,
+      user,
+      requestSenders,
+      usersRef,
+      setRequestSenders
+    );
+  }, [friendRequestSnapshot]);
+
+  const CardItem = ({
+    text,
+    iconName,
+    onClick,
+    displayNotification,
+    friendRequests,
+  }) => {
     return (
       <Card
         className="card"
@@ -49,6 +73,9 @@ export default function Dashboard() {
         onClick={onClick}
       >
         <CardBody>
+          {displayNotification && (
+            <div className="request-notification">{friendRequests}</div>
+          )}
           <Icon name={iconName} width={"80px"} height={"80px"} />
           <Stack mt="6" spacing="3">
             <Text fontWeight={"bold"} className="font" fontSize="md">
@@ -81,6 +108,8 @@ export default function Dashboard() {
               text={t("Meet New Friends")}
               iconName={"users"}
               onClick={() => handleClick("meetnewfriends")}
+              displayNotification={Object.keys(requestSenders).length > 0}
+              friendRequests={Object.keys(requestSenders).length}
             />
             <CardItem
               text={t("Your Profile")}
