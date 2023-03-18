@@ -124,6 +124,8 @@ export default function Dashboard() {
             <CardItem
               text={t("How to Use this App")}
               iconName={"info_circle"}
+              onClick={() => handleClick(`howtouse`)}
+
             />
           </SimpleGrid>
         </div>

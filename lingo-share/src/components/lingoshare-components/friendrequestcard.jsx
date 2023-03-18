@@ -49,12 +49,12 @@ export default function FriendRequestCard({
                 )}
                 <Text>
                   {userType === "learner"
-                    ? "Language Learner"
-                    : "Native Speaker"}
+                    ? t("Language Learner")
+                    : t("Native Speaker")}
                 </Text>
                 {interests && (
                   <Text marginTop={"0.25rem"} fontSize={"sm"}>
-                    {"Interests: " + interests.join(", ")}
+                    {t("Interests: ") + interests.join(", ")}
                   </Text>
                 )}
               </div>
