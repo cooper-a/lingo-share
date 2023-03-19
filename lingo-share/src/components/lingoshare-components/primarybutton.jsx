@@ -13,9 +13,12 @@ export default function PrimaryButton({
   marginTop,
   marginLeft,
   marginRight,
+  outlineColor,
+  borderWidth,
 }) {
   return (
     <Button
+      className="font"
       bgColor={"#363636"}
       _hover={{ bgColor: "#7d7c7c" }}
       align={align}
@@ -30,6 +33,8 @@ export default function PrimaryButton({
       height={height}
       onClick={onClick}
       size={size}
+      borderColor={outlineColor}
+      borderWidth={borderWidth}
     >
       {text}
     </Button>

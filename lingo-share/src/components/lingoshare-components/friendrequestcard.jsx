@@ -5,6 +5,7 @@ import PrimaryButton from "./primarybutton";
 import SecondaryButton from "./secondarybutton";
 import TertiaryButton from "./tertiarybutton";
 import { useTranslation } from "react-i18next";
+import ButtonGroup from "./buttongroup.jsx";
 
 export default function FriendRequestCard({
   userId,
@@ -25,58 +26,55 @@ export default function FriendRequestCard({
   };
 
   return (
-    <div>
+    <div className="friend-request-card">
       <Card
         borderWidth={"1px"}
         borderColor={"#363636"}
-        maxW={"100vh"}
-        maxH={"120px"}
+        width={"100vh"}
+        maxH={"135px"}
         left={"20px"}
         rounded={"2xl"}
         marginLeft={"20px"}
       >
         <CardHeader>
-          <Flex spacing="4">
-            <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
+          <div className="friend-request-card-content">
+            <div className="user-invite-avatar">
               <Avatar bg="grey" src={profilePic} />
-              <div className="user-invite-heading">
-                {displayName ? (
-                  <Text float={"left"} fontWeight={"bold"} fontSize="lg">
-                    {displayName}
-                  </Text>
-                ) : (
-                  <Text fontSize="sm">{userId}</Text>
-                )}
-                <Text>
-                  {userType === "learner"
-                    ? "Language Learner"
-                    : "Native Speaker"}
+            </div>
+            <div className="user-invite-heading">
+              {displayName ? (
+                <Text float={"left"} fontWeight={"bold"} fontSize="lg">
+                  {displayName}
                 </Text>
-                {interests && (
-                  <Text marginTop={"0.25rem"} fontSize={"sm"}>
-                    {"Interests: " + interests.join(", ")}
-                  </Text>
-                )}
-              </div>
-            </Flex>
-            <Box alignSelf={"center"}>
-              <TertiaryButton
-                onClick={() => handleClickViewProfile(userId)}
-                marginRight={"20px"}
-                text={t("View Profile")}
-              />
-              <SecondaryButton
-                text={t("Ignore")}
-                onClick={(event) => onClickIgnore(event, userId)}
-              />
-              <PrimaryButton
-                marginLeft={"15px"}
+              ) : (
+                <Text fontSize="sm">{userId}</Text>
+              )}
+              <Text>
+                {userType === "learner" ? "Language Learner" : "Native Speaker"}
+              </Text>
+              {interests && (
+                <Text maxW={"400px"} marginTop={"0.25rem"} fontSize={"sm"}>
+                  {"Interests: " + interests.join(", ")}
+                </Text>
+              )}
+            </div>
+            <div className="user-invite-buttongroup">
+              <ButtonGroup
+                buttonTypeList={["tertiary", "secondary", "primary"]}
+                textList={["View Profile", "Ignore", "Accept"]}
+                isDisabledList={[false, false, false]}
+                onClickList={[
+                  () => handleClickViewProfile(userId),
+                  (event) => onClickIgnore(event, userId),
+                  (event) => onClickAccept(event, userId),
+                ]}
+                spacing={4}
                 width={"105px"}
-                text={t("Accept")}
-                onClick={(event) => onClickAccept(event, userId)}
+                height={"45px"}
+                marginLeft={"48px"}
               />
-            </Box>
-          </Flex>
+            </div>
+          </div>
         </CardHeader>
       </Card>
     </div>

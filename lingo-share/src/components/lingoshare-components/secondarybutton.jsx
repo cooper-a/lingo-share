@@ -33,6 +33,7 @@ export default function SecondaryButton({
       onClick={onClick}
       rightIcon={rightIcon}
       size={size}
+      className="font"
     >
       {text}
     </Button>
