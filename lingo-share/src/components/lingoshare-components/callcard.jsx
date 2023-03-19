@@ -31,7 +31,7 @@ const ConfirmationModal = ({
     <div>
       <Modal isCentered onClose={onClose} size={"md"} isOpen={isOpen}>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent borderRadius={"2xl"}>
           <ModalHeader marginTop={"1rem"} className="font" alignSelf={"center"}>
             {t("Call ") + displayName + "?"}
           </ModalHeader>

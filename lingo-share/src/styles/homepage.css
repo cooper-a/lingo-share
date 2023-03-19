@@ -43,3 +43,11 @@
   background-color: #393939;
   color: white;
 }
+
+.page-title {
+  margin-left: 25%;
+  margin-right: 25%;
+  text-align: left;
+  margin-bottom: 2rem;
+  font-family: "Atkinson Hyperlegible", sans-serif;
+}

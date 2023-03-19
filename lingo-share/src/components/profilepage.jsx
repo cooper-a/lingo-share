@@ -45,6 +45,7 @@ export default function ProfilePage() {
   const [bio, setBio] = useState("");
   const [interests, setInterests] = useState(new Set([]));
   const [userObj, setUserObj] = useState({});
+  const [blockedUsers, setBlockedUsers] = useState({});
   const [userFriends, setUserFriends] = useState({});
   const [alertText, setAlertText] = useState("");
   const {
@@ -156,6 +157,10 @@ export default function ProfilePage() {
       if (!snapshotVal.friends) {
         setUserFriends({});
       }
+      setBlockedUsers(snapshotVal.blocked);
+      if (!snapshotVal.blocked) {
+        setBlockedUsers({});
+      }
     });
     onValue(userFriendRequestsRef, (snapshot) => {
       let newObjectList = [];
@@ -198,6 +203,7 @@ export default function ProfilePage() {
       />
       <div className="primary-user">
         <UserName
+          blockedUsers={blockedUsers}
           curPage={
             isPrimaryUser ? "/profile/" + user.uid : "/profile/" + params.id
           }

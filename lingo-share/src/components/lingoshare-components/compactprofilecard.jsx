@@ -35,6 +35,10 @@ export default function CompactProfileCard({
         width={"700px"}
         height={"115px"}
         rounded={"2xl"}
+        marginLeft={marginLeft}
+        marginRight={marginRight}
+        marginTop={marginTop}
+        marginBottom={marginBottom}
       >
         <CardHeader>
           <Flex spacing="4">

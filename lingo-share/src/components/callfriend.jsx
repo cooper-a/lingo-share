@@ -174,23 +174,25 @@ export default function CallFriend() {
       <ChakraProvider>
         <CallNotification />
         <Navbar topLeftDisplay={t("Call a Friend")} currPage={"/callfriend"} />
-        {!hasNoFriends ? (
-          <Text className="font" fontSize="3xl">
-            {t("Who would you like to call?")}
-          </Text>
-        ) : (
-          <div className="welcome-pg">
+        <div className="page-title">
+          {!hasNoFriends ? (
             <Text className="font" fontSize="3xl">
-              {t("You don't have any LingoShare friends yet!")}
+              {t("Who would you like to call?")}
             </Text>
-            <PrimaryButton
-              text={t("Meet New Friends")}
-              onClick={() => navigate("/meetnewfriends")}
-              marginTop={"1.5rem"}
-              size={"lg"}
-            />
-          </div>
-        )}
+          ) : (
+            <div className="welcome-pg">
+              <Text className="font" fontSize="3xl">
+                {t("You don't have any LingoShare friends yet!")}
+              </Text>
+              <PrimaryButton
+                text={t("Meet New Friends")}
+                onClick={() => navigate("/meetnewfriends")}
+                marginTop={"1.5rem"}
+                size={"lg"}
+              />
+            </div>
+          )}
+        </div>
         <div className="field-pg">
           <UnorderedList spacing={5}>
             {Object.entries(mergedObj).map(([key, value], i) => {
