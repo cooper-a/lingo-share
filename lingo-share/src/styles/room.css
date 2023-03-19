@@ -71,3 +71,7 @@
   width: 100vh; */
   /* z-index: -999; */
 }
+
+.prompt-icon {
+  margin-right: 50px;
+}
