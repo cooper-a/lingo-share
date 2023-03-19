@@ -43,7 +43,6 @@ export default function Room({ roomName, room, handleLogout, callID }) {
           // define own toast variant
           toast: {
             container: {
-              maxW: "700px",
               color: "white",
               bg: "#363636",
               padding: "20px",
@@ -206,6 +205,7 @@ export default function Room({ roomName, room, handleLogout, callID }) {
       variant: "toast",
       isClosable: true,
       containerStyle: {
+        maxW: "1000px",
         display: "flex",
         flexDirection: "column",
         marginBottom: "125px",
