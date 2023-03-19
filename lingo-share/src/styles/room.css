@@ -1,7 +1,7 @@
 .room {
   position: relative;
   font-family: "Atkinson Hyperlegible", sans-serif;
-  height: calc(100vh - 100px);
+  height: calc(100vh - 13vh);
   background-color: #363636;
   z-index: 0;
 }

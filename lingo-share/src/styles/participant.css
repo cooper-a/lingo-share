@@ -1,6 +1,6 @@
 .local-video {
   border-radius: 25px;
-  border: 1px solid black;
+  border: 1px solid white;
 }
 
 .local-video-nocamera {
@@ -44,7 +44,7 @@
   width: 73vw;
   /* min-height: 100%; */
   position: absolute;
-  height: 85vh;
+  height: 86vh;
   z-index: -1;
   top: 5px;
   left: 5px;

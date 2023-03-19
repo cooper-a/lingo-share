@@ -208,7 +208,7 @@ export default function Room({ roomName, room, handleLogout, callID }) {
         maxW: "1000px",
         display: "flex",
         flexDirection: "column",
-        marginBottom: "125px",
+        marginBottom: "15vh",
         fontFamily: "Atkinson Hyperlegible",
       },
       duration: null,
@@ -275,7 +275,9 @@ export default function Room({ roomName, room, handleLogout, callID }) {
           <div className="remote-participants">{remoteParticipants}</div>
         ) : (
           <div className="waiting-div">
-            <Text fontSize={"2xl"}>{t("Waiting for other user...")}</Text>
+            <Text color={"white"} fontSize={"2xl"}>
+              {t("Waiting for other user...")}
+            </Text>
           </div>
         )}
         <div className="controls">

@@ -33,6 +33,8 @@ export default function LeaveConfirmModal({
         bottom={"110px"}
         position={"fixed"}
         w="300px"
+        borderWidth={"1px"}
+        borderColor={"white"}
       >
         <div className="leave-sidebar-title">
           <Text color={"white"} fontSize="xl">
