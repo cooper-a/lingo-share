@@ -58,13 +58,13 @@ export default function Controls({
         </PopoverTrigger>
         <PopoverContent
           margin="12px"
-          padding={"2px"}
+          padding={"0.15rem"}
           bg={"#363636"}
           color="white"
         >
           <PopoverArrow bg={"#363636"} />
           <PopoverCloseButton />
-          <PopoverBody>
+          <PopoverBody textAlign={"left"}>
             {t("Find something to talk about by choosing a topic!")}
           </PopoverBody>
         </PopoverContent>
