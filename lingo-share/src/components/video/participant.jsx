@@ -1,3 +1,4 @@
+import { Box } from "@chakra-ui/react";
 import React, { useState, useEffect, useRef } from "react";
 import "../../styles/participant.css";
 
@@ -69,7 +70,9 @@ const Participant = ({ participant, isLocal, isVideoOn }) => {
         {isLocal ? (
           <video className="local-video" ref={videoRef} autoPlay={true} />
         ) : (
-          <video className="remote-video" ref={videoRef} autoPlay={true} />
+          <div className="remote-video-border">
+            <video width={"100%"} ref={videoRef} autoPlay={true} />
+          </div>
         )}
         {isLocal && isVideoOn ? (
           <h3 className="local-name-cameraon">{participant.identity}</h3>

@@ -50,6 +50,8 @@ export default function Sidebar({ prompts, handlePromptSelect }) {
         bottom={"110px"}
         position={"fixed"}
         w="375px"
+        borderWidth={"1.5px"}
+        borderColor={"white"}
       >
         <div className="title-sidebar">
           <Text color={"white"} as={"b"} fontSize="xl" fontFamily={"Inter"}>

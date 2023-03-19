@@ -9,3 +9,11 @@
   min-height: 100vh;
   gap: 20px;
 }
+
+.blocked-people-title {
+  margin-left: 25%;
+  margin-right: 25%;
+  text-align: left;
+  margin-bottom: 2rem;
+  font-family: "Atkinson Hyperlegible", sans-serif;
+}

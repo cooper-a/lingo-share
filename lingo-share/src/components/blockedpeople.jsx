@@ -8,6 +8,7 @@ import {
   ModalFooter,
   Text,
   useDisclosure,
+  UnorderedList,
 } from "@chakra-ui/react";
 import { onValue, ref, set } from "firebase/database";
 import React, { useEffect, useState } from "react";
@@ -19,7 +20,6 @@ import "../styles/blockedpeople.css";
 import { mergeObj, handleUnblockUser } from "../utils/userutils";
 import CallNotification from "./callnotification";
 import CompactProfileCard from "./lingoshare-components/compactprofilecard";
-import PrimaryButton from "./lingoshare-components/primarybutton";
 import SecondaryButton from "./lingoshare-components/secondarybutton";
 import Navbar from "./navbar";
 
@@ -29,7 +29,7 @@ const ReviewModal = ({ isOpen, blockedReason, onClose }) => {
     <div>
       <Modal isCentered onClose={onClose} size={"sm"} isOpen={isOpen}>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent borderRadius={"2xl"}>
           <ModalHeader
             marginTop={"0.5rem"}
             className="font"
@@ -142,20 +142,22 @@ export default function BlockedPeople() {
   return (
     <div>
       <CallNotification />
-      <Navbar currPage={"/blockedpeople"} />
+      <Navbar topLeftDisplay={"Blocked People"} currPage={"/blockedpeople"} />
       <ChakraProvider>
         <ReviewModal
           isOpen={isOpen}
           onClose={onClose}
           blockedReason={selectedBlockedReason}
         />
-        <div className="field-pg">
-          {Object.keys(mergedObj).length ? (
+        {Object.keys(mergedObj).length ? (
+          <div className="blocked-people-title">
             <Text fontSize="3xl">{t("Manage your blocklist")}</Text>
-          ) : (
-            <Text fontSize="3xl">{t("You have not blocked anyone yet")}</Text>
-          )}
-          <div className="card-display">
+          </div>
+        ) : (
+          <Text fontSize="3xl">{t("You have not blocked anyone yet")}</Text>
+        )}
+        <div className="field-pg">
+          <UnorderedList spacing={5}>
             {Object.entries(mergedObj).map(([key, value], i) => {
               return (
                 <div key={i}>
@@ -182,7 +184,7 @@ export default function BlockedPeople() {
                 </div>
               );
             })}
-          </div>
+          </UnorderedList>
         </div>
       </ChakraProvider>
     </div>

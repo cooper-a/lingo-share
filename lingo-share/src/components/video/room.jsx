@@ -4,11 +4,7 @@ import {
   extendTheme,
   useToast,
   useDisclosure,
-  Box,
   Text,
-  AbsoluteCenter,
-  CloseButton,
-  Alert,
 } from "@chakra-ui/react";
 import Participant from "./participant";
 import Controls from "./controls";
@@ -179,56 +175,48 @@ export default function Room({ roomName, room, handleLogout, callID }) {
     if (localActivePrompt === "" || localActivePrompt === undefined) return;
     // when our active prompt changes, we want to display a toast
     toast.closeAll();
-    console.log(localActivePrompt);
 
-    let test_prompt = `Do you know much about Feng Shui?`;
-    let test_prompt_chinese = `你知道什么是风水吗?`;
-    let test_prompt_pinyin = `Nǐ zhī dào shén me shì fēng shuǐ ma?`;
-
-    // TODO: Style a custom toast to display prompts, translations, and pinyin
-    // toastIdRef.current = toast({
-    //   // title: `${localActivePrompt}`,
-    //   render: (props) => (
-    //     <Alert
-    //       {...props}
-    //       bg={"#363636"}
-    //       color={"white"}
-    //       p={4}
-    //       borderRadius={"md"}
-    //       fontFamily={"Atkinson Hyperlegible"}
-    //       className="prompt-toast"
-    //     >
-    //       <Text>
-    //         {test_prompt + "\n" + test_prompt_chinese + test_prompt_pinyin}
-    //       </Text>
-    //       <CloseButton />
-    //     </Alert>
-    //   ),
-    //   variant: "toast",
-    //   isClosable: true,
-    //   containerStyle: {
-    //     marginBottom: "125px",
-    //     fontFamily: "Atkinson Hyperlegible",
-    //   },
-    //   icon: <Icon name={"thread"} width={"25px"} height={"25px"} />,
-    // });
-    let toastDesc = "";
+    let toastDesc = <></>;
     if (preferredLanguage === "en")
-      toastDesc = `${localActivePrompt.zh} ${localActivePrompt["zh-pinyin"]}`;
+      toastDesc = (
+        <div>
+          <Text paddingLeft={"10px"} fontSize={"lg"} marginBottom={"5px"}>
+            {localActivePrompt.zh}
+          </Text>{" "}
+          <Text paddingLeft={"10px"} fontSize={"lg"}>
+            {localActivePrompt["zh-pinyin"]}
+          </Text>
+        </div>
+      );
     if (preferredLanguage === "zh")
-      toastDesc = `${localActivePrompt["zh-pinyin"]}`;
+      toastDesc = (
+        <Text paddingLeft={"10px"} fontSize={"lg"}>
+          {localActivePrompt["zh-pinyin"]}
+        </Text>
+      );
 
     toastIdRef.current = toast({
-      // title: `${localActivePrompt}`,
-      title: `${localActivePrompt[preferredLanguage]}`,
+      title: (
+        <Text paddingLeft={"10px"} fontSize={"lg"} marginBottom={"5px"}>
+          {localActivePrompt[preferredLanguage]}
+        </Text>
+      ),
       description: toastDesc,
       variant: "toast",
       isClosable: true,
       containerStyle: {
-        marginBottom: "125px",
+        maxW: "1000px",
+        display: "flex",
+        flexDirection: "column",
+        marginBottom: "15vh",
         fontFamily: "Atkinson Hyperlegible",
       },
-      icon: <Icon name={"thread"} width={"25px"} height={"25px"} />,
+      duration: null,
+      icon: (
+        <div className="prompt-icon">
+          <Icon name={"thread"} width={"25px"} height={"25px"} />
+        </div>
+      ),
     });
   }, [localActivePrompt, toast]);
 
@@ -283,7 +271,15 @@ export default function Room({ roomName, room, handleLogout, callID }) {
             <div></div>
           )}
         </div>
-        <div className="remote-participants">{remoteParticipants}</div>
+        {remoteParticipants.length > 0 ? (
+          <div className="remote-participants">{remoteParticipants}</div>
+        ) : (
+          <div className="waiting-div">
+            <Text color={"white"} fontSize={"2xl"}>
+              {t("Waiting for other user...")}
+            </Text>
+          </div>
+        )}
         <div className="controls">
           <Controls
             handleCallDisconnect={handleCallDisconnect}

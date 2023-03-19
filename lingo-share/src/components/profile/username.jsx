@@ -4,6 +4,7 @@ import {
   EditableInput,
   EditablePreview,
   Text,
+  useDisclosure,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import Icon from "@adeira/icons";
@@ -19,8 +20,12 @@ import { ref as dbRef, set } from "firebase/database";
 import { updateProfile } from "firebase/auth";
 import { UserAuth } from "../../contexts/AuthContext";
 import EditableControls from "./editablecontrols";
+import InputModal from "../lingoshare-components/inputmodal";
+import { handleBlockUser } from "../../utils/userutils";
+import SecondaryButton from "../lingoshare-components/secondarybutton";
 
 export default function UserName({
+  blockedUsers,
   curPage,
   displayName,
   handleAcceptRequest,
@@ -44,6 +49,10 @@ export default function UserName({
   const { user } = UserAuth();
   const [pfp, setPfp] = useState(null);
   const navigate = useNavigate();
+  const [blockedReason, setBlockedReason] = useState("");
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const isBlocked = params.id in blockedUsers;
+
   let isUserFriendRequested = false;
   friendRequests.forEach((request) => {
     if (request.hasOwnProperty(params.id)) {
@@ -51,8 +60,6 @@ export default function UserName({
       return;
     }
   });
-
-  console.log(userFriends);
 
   const saveCompressedPhotoURL = () => {
     getDownloadURL(
@@ -75,8 +82,29 @@ export default function UserName({
     onOpenSuccessAlert();
   };
 
+  const handleOpenBlockedReasonInput = () => {
+    onOpen();
+  };
+
+  const handleClickBlockFriend = async (targetID) => {
+    handleBlockUser(targetID, blockedReason, user);
+    onClose();
+    navigate("/profile/" + params.id);
+  };
+
   let buttonGroupRender = <div></div>;
-  if (isRequestIncoming) {
+  if (isBlocked) {
+    buttonGroupRender = (
+      <SecondaryButton
+        onClick={() => navigate("/blockedpeople")}
+        text={"User Blocked"}
+        width={"400px"}
+        height={"45px"}
+        marginTop={"10px"}
+        marginLeft={"48px"}
+      />
+    );
+  } else if (isRequestIncoming) {
     buttonGroupRender = (
       <ButtonGroup
         buttonTypeList={["primary", "secondary"]}
@@ -98,12 +126,7 @@ export default function UserName({
       <ButtonGroup
         buttonTypeList={["secondary", "secondary"]}
         textList={[t("Friend Request Sent"), t("Block User")]}
-        onClickList={[
-          () => {},
-          () => {
-            console.log("TODO: block user button functional");
-          },
-        ]}
+        onClickList={[() => {}, () => handleOpenBlockedReasonInput()]}
         isDisabledList={[true, false]}
         spacing={4}
         width={"200px"}
@@ -120,7 +143,7 @@ export default function UserName({
         isDisabledList={[false, false]}
         onClickList={[
           () => handleClickManageFriend(params.id, !(params.id in userFriends)),
-          () => {},
+          () => handleOpenBlockedReasonInput(),
         ]} // TODO: block user button functional
         rightIconList={[<Icon name="check_circle" />, <></>]}
         spacing={4}
@@ -138,7 +161,7 @@ export default function UserName({
         isDisabledList={[false, false]}
         onClickList={[
           () => handleClickManageFriend(params.id, !(params.id in userFriends)),
-          () => {},
+          () => handleOpenBlockedReasonInput(),
         ]}
         spacing={4}
         width={"200px"}
@@ -148,8 +171,17 @@ export default function UserName({
       />
     );
   }
+
+  console.log(blockedReason);
   return (
     <div className="profile-pic">
+      <InputModal
+        onClose={onClose}
+        isOpen={isOpen}
+        inputPrompt={t("Why are you blocking this user?")}
+        onSubmitInput={() => handleClickBlockFriend(params.id)}
+        setText={setBlockedReason}
+      />
       <div className="picture">
         <div>
           <Avatar

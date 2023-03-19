@@ -1,6 +1,9 @@
 .room {
   position: relative;
   font-family: "Atkinson Hyperlegible", sans-serif;
+  height: calc(100vh - 13vh);
+  background-color: #363636;
+  z-index: 0;
 }
 
 .alert-style {
@@ -18,6 +21,7 @@
   position: fixed;
   bottom: 0;
   width: 100%;
+  z-index: 2;
 }
 
 .description {
@@ -32,6 +36,7 @@
   padding-top: 2rem;
   padding-left: 2rem;
   padding-bottom: 0.5rem;
+  z-index: 1;
 }
 
 .leave-sidebar-title {
@@ -66,8 +71,20 @@
 }
 
 .remote-participants {
-  /* position: absolute; */
-  /* height: 100vw;
-  width: 100vh; */
+  /* position: absolute;
+  width: 100vw;
+  height: 100vh; */
   /* z-index: -999; */
+}
+
+.prompt-icon {
+  margin-right: 50px;
+}
+
+.waiting-div {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  height: 60vh;
 }
