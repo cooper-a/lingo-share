@@ -271,7 +271,13 @@ export default function Room({ roomName, room, handleLogout, callID }) {
             <div></div>
           )}
         </div>
-        <div className="remote-participants">{remoteParticipants}</div>
+        {remoteParticipants.length > 0 ? (
+          <div className="remote-participants">{remoteParticipants}</div>
+        ) : (
+          <div className="waiting-div">
+            <Text fontSize={"2xl"}>{t("Waiting for other user...")}</Text>
+          </div>
+        )}
         <div className="controls">
           <Controls
             handleCallDisconnect={handleCallDisconnect}

@@ -75,3 +75,11 @@
 .prompt-icon {
   margin-right: 50px;
 }
+
+.waiting-div {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  height: 60vh;
+}
