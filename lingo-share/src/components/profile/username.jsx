@@ -97,7 +97,7 @@ export default function UserName({
     buttonGroupRender = (
       <SecondaryButton
         onClick={() => navigate("/blockedpeople")}
-        text={"User Blocked"}
+        text={t("User Blocked")}
         width={"400px"}
         height={"45px"}
         marginTop={"10px"}
@@ -108,7 +108,7 @@ export default function UserName({
     buttonGroupRender = (
       <ButtonGroup
         buttonTypeList={["primary", "secondary"]}
-        textList={["Accept Friend Request", "Ignore Friend Request"]}
+        textList={[t("Accept Friend Request"), t("Ignore Friend Request")]}
         isDisabledList={[false, false]}
         onClickList={[
           (event) => handleAcceptRequest(event, params.id),

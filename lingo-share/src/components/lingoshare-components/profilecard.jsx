@@ -60,14 +60,16 @@ export default function ProfileCard({
                 {name}
               </Text>
               <Text>
-                {userType === "learner" ? "Language Learner" : "Native Speaker"}
+                {userType === "learner"
+                  ? t("Language Learner")
+                  : t("Native Speaker")}
               </Text>
             </Stack>
           </Box>
           <Box pl={6} pr={6} pt={0.5} className="font">
             <Text fontSize={"sm"}>
               {interests
-                ? "Interests: " + interests.slice(0, 3).join(", ") // display the top 3 interests for styling
+                ? t("Interests: ") + interests.slice(0, 3).join(", ") // display the top 3 interests for styling
                 : ""}
             </Text>
           </Box>

@@ -50,18 +50,20 @@ export default function FriendRequestCard({
                 <Text fontSize="sm">{userId}</Text>
               )}
               <Text>
-                {userType === "learner" ? "Language Learner" : "Native Speaker"}
+                {userType === "learner"
+                  ? t("Language Learner")
+                  : t("Native Speaker")}
               </Text>
               {interests && (
                 <Text maxW={"400px"} marginTop={"0.25rem"} fontSize={"sm"}>
-                  {"Interests: " + interests.join(", ")}
+                  {t("Interests: ") + interests.join(", ")}
                 </Text>
               )}
             </div>
             <div className="user-invite-buttongroup">
               <ButtonGroup
                 buttonTypeList={["tertiary", "secondary", "primary"]}
-                textList={["View Profile", "Ignore", "Accept"]}
+                textList={[t("View Profile"), t("Ignore"), t("Accept")]}
                 isDisabledList={[false, false, false]}
                 onClickList={[
                   () => handleClickViewProfile(userId),

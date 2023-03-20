@@ -110,8 +110,8 @@ export default function CallCard({
                 )}
                 <Text>
                   {userType === "learner"
-                    ? "Language Learner"
-                    : "Native Speaker"}
+                    ? t("Language Learner")
+                    : t("Native Speaker")}
                 </Text>
                 {onlineStatus === "online" ? (
                   <Text className="font" float={"left"}>
