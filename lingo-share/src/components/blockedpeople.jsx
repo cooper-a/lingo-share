@@ -35,7 +35,7 @@ const ReviewModal = ({ isOpen, blockedReason, onClose }) => {
             className="font"
             alignSelf={"center"}
           >
-            {"Blocked Reason"}
+            {t("Blocked Reason")}
           </ModalHeader>
           <ModalBody alignSelf={"center"}>{blockedReason}</ModalBody>
           <ModalFooter marginBottom={"1rem"} alignSelf={"center"}>
@@ -142,7 +142,10 @@ export default function BlockedPeople() {
   return (
     <div>
       <CallNotification />
-      <Navbar topLeftDisplay={"Blocked People"} currPage={"/blockedpeople"} />
+      <Navbar
+        topLeftDisplay={t("Blocked People")}
+        currPage={"/blockedpeople"}
+      />
       <ChakraProvider>
         <ReviewModal
           isOpen={isOpen}
@@ -167,13 +170,13 @@ export default function BlockedPeople() {
                     displayNameText={value.userDisplayName}
                     subheadingText={
                       value.userType === "learner"
-                        ? "Language Learner"
-                        : "Native Speaker"
+                        ? t("Language Learner")
+                        : t("Native Speaker")
                     }
-                    moreSubheadingText={"Blocked"}
+                    moreSubheadingText={t("Blocked")}
                     secondaryButtonWidth={"100px"}
-                    secondaryButtonText={"Unblock"}
-                    tertiaryButtonText={"Review"}
+                    secondaryButtonText={t("Unblock")}
+                    tertiaryButtonText={t("Review")}
                     secondaryButtonClick={(e) =>
                       handleClickUnblockFriend(e, key)
                     }
