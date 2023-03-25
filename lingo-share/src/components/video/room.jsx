@@ -251,6 +251,7 @@ export default function Room({ roomName, room, handleLogout, callID }) {
             callID={callID}
             setActivePrompt={setActivePrompt}
             preferredLanguage={preferredLanguage}
+            handlePromptToggle={handlePromptToggle}
           />
         )}
         {toggleLeaveModal && (
