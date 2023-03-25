@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
-import { ChevronLeftIcon } from "@chakra-ui/icons";
+import { CloseIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
 import "../../styles/room.css";
 import { useTranslation } from "react-i18next";
@@ -22,7 +22,11 @@ const NavItem = ({ topicName, onClick }) => {
   );
 };
 
-export default function Sidebar({ prompts, handlePromptSelect }) {
+export default function Sidebar({
+  prompts,
+  handlePromptSelect,
+  handlePromptToggle,
+}) {
   const { t } = useTranslation();
   const [homeList, setHomeList] = useState([]);
   const [displayList, setDiplayList] = useState([]);
@@ -57,6 +61,14 @@ export default function Sidebar({ prompts, handlePromptSelect }) {
           <Text color={"white"} as={"b"} fontSize="xl" fontFamily={"Inter"}>
             {t("Choose a Topic")}
           </Text>
+          <CloseIcon
+            cursor={"pointer"}
+            marginLeft={"auto"}
+            marginRight={"3rem"}
+            marginTop={"0.5rem"}
+            onClick={handlePromptToggle}
+            color={"white"}
+          />
         </div>
         <div className="title-description">
           <Text color={"white"}>{t("What do you want to talk about?")}</Text>

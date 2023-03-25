@@ -8,7 +8,7 @@ export default function PromptSidebar({
   roomName,
   callID,
   setActivePrompt,
-  preferredLanguage,
+  handlePromptToggle,
 }) {
   const prompts_ref = ref(rtdb, "/prompts/");
   const [prompts, setPrompts] = useState({});
@@ -52,7 +52,11 @@ export default function PromptSidebar({
 
   return (
     <div className="sidebar">
-      <Sidebar prompts={prompts} handlePromptSelect={handlePromptSelect} />
+      <Sidebar
+        prompts={prompts}
+        handlePromptSelect={handlePromptSelect}
+        handlePromptToggle={handlePromptToggle}
+      />
     </div>
   );
 }

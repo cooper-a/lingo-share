@@ -30,8 +30,8 @@
 
 .title-sidebar {
   display: flex;
-  flex-flow: column wrap;
-  direction: column;
+  flex-flow: row wrap;
+  direction: row;
   align-content: flex-start;
   padding-top: 2rem;
   padding-left: 2rem;
