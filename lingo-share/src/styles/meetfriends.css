@@ -10,6 +10,17 @@
   text-align: left;
 }
 
+.bolded-text {
+  font-weight: bold;
+}
+
+.disclaimer-msg {
+  font-family: "Atkinson Hyperlegible", sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
 .meet-friends-pg {
   font-family: "Atkinson Hyperlegible", sans-serif;
   display: flex;

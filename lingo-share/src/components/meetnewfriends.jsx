@@ -22,39 +22,70 @@ import FriendRequest from "./friendrequest";
 import ProfileCard from "./lingoshare-components/profilecard";
 import "../styles/meetfriends.css";
 import PrimaryButton from "./lingoshare-components/primarybutton";
-import SecondaryButton from "./lingoshare-components/secondarybutton";
+import TertiaryButton from "./lingoshare-components/tertiarybutton";
 import { mergeObj } from "../utils/userutils";
 
 const FraudConfirmationModal = ({ isOpen, onClose, handleNotShowAgain }) => {
   const { t } = useTranslation();
   return (
     <div>
-      <Modal isCentered onClose={onClose} size={"md"} isOpen={isOpen}>
+      <Modal isCentered onClose={onClose} size={"xl"} isOpen={isOpen}>
         <ModalOverlay />
-        <ModalContent borderRadius={"2xl"}>
-          <ModalHeader marginTop={"1rem"} className="font" alignSelf={"center"}>
+        <ModalContent
+          paddingLeft={"15px"}
+          paddingRight={"15px"}
+          paddingTop={"15px"}
+          borderRadius={"2xl"}
+        >
+          <ModalHeader
+            marginTop={"1rem"}
+            fontSize={"3xl"}
+            fontWeight={"extrabold"}
+            className="font"
+            alignSelf={"center"}
+            marginRight={"auto"}
+          >
             {t("Before you start making friends...")}
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            {t("Remember that LingoShare is free for everyone!")}
-            {t(
-              "Nobody has to pay for anything to use LingoShare. If anyone asks for or demands money, please report their profile immediately."
-            )}
-            {t("Happy chatting!")}
+            <div className="disclaimer-msg">
+              <div>
+                <Text>
+                  {t("Remember that")}{" "}
+                  <span className="bolded-text">
+                    {t("LingoShare is free for everyone!")}
+                  </span>
+                </Text>
+              </div>
+              <div>
+                <Text>
+                  {t(
+                    "Nobody has to pay for anything to use LingoShare. If anyone asks for or demands money, please report their profile immediately."
+                  )}
+                </Text>
+              </div>
+              <div>
+                <Text>{t("Happy chatting!")}</Text>
+              </div>
+            </div>
           </ModalBody>
-
-          <ModalFooter marginBottom={"1.5rem"} alignSelf={"center"}>
-            <PrimaryButton
-              text={t("OK")}
-              marginRight={"15px"}
-              onClick={onClose}
-              width={"150px"}
-            />
-            <SecondaryButton
+          <ModalFooter
+            marginLeft={"auto"}
+            marginBottom={"1.5rem"}
+            alignSelf={"center"}
+            className="font"
+          >
+            <TertiaryButton
               text={t("Don't show this again")}
               onClick={handleNotShowAgain}
-              marginleft={"15px"}
+              marginRight={"15px"}
+              width={"150px"}
+            />
+            <PrimaryButton
+              text={t("OK")}
+              marginLeft={"15px"}
+              onClick={onClose}
               width={"150px"}
             />
           </ModalFooter>

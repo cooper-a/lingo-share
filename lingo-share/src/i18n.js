@@ -158,8 +158,10 @@ const resources = {
         "You can always change the language later!",
       "Before you start making friends...":
         "Before you start making friends...",
-      "Remember that LingoShare is free for everyone!":
-        "Remember that LingoShare is free for everyone!",
+      "Remember that":
+        "Remember that",
+      "LingoShare is free for everyone!":
+        "LingoShare is free for everyone!",
       "Nobody has to pay for anything to use LingoShare. If anyone asks for or demands money, please report their profile immediately.":
         "Nobody has to pay for anything to use LingoShare. If anyone asks for or demands money, please report their profile immediately.",
       "Happy chatting!": "Happy chatting!",
@@ -315,8 +317,10 @@ const resources = {
         "你想用英文还是中文来使用LingoShare?",
       "You can always change the language later!": "你可以随时更改语言设置!",
       "Before you start making friends...": "在你开始结交新朋友之前...",
-      "Remember that LingoShare is free for everyone!":
-        "请记住LingoShare是一个免费的平台!",
+      "Remember that":
+        "请记住",
+      "LingoShare is free for everyone!":
+        "LingoShare是一个免费的平台!",
       "Nobody has to pay for anything to use LingoShare. If anyone asks for or demands money, please report their profile immediately.":
         "任何人都可以免费使用LingoShare。如果有用户要求或者索取你的钱财,请立即举报。",
       "Happy chatting!": "祝你聊天愉快!",
