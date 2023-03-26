@@ -1,19 +1,15 @@
 import { ChakraProvider, Text, UnorderedList } from "@chakra-ui/react";
-import {
-  get,
-  onValue,
-  push,
-  ref,
-  serverTimestamp,
-  set,
-} from "firebase/database";
+import { onValue, ref } from "firebase/database";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../contexts/AuthContext";
 import { rtdb } from "../firebase";
 import "../styles/homepage.css";
-import { mergeObj } from "../utils/userutils";
+import {
+  generateCallStatusEntryAndNavigate,
+  mergeObj,
+} from "../utils/userutils";
 import CallNotification from "./callnotification";
 import CallCard from "./lingoshare-components/callcard";
 import PrimaryButton from "./lingoshare-components/primarybutton";
@@ -76,64 +72,14 @@ export default function CallFriend() {
     });
   };
 
-  const generateRoomName = (uid, callerID) => {
-    let roomNameInList = [uid, callerID];
-    return roomNameInList.sort().join(""); // room name will be the concatenation of the two user IDs sorted alphabetically
-  };
-
-  async function generateCallStatusEntryAndNavigate(callerID) {
-    var startTime = performance.now();
-    get(activeCallsRef)
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          let callExists = false;
-          snapshot.forEach((childSnapshot) => {
-            if (
-              childSnapshot.val().caller === user.uid ||
-              childSnapshot.val().callee === callerID
-            ) {
-              callExists = true;
-            }
-          });
-          if (!callExists) {
-            const pushData = {
-              caller: user.uid, // the user who initiated the call will always be caller
-              callee: callerID, // the user who is being called will always be callee
-            };
-            const currActiveCallsRef = push(activeCallsRef, pushData);
-            const callID = currActiveCallsRef.key;
-            const roomName = generateRoomName(user.uid, callerID);
-            const callIDRef = ref(rtdb, `/calls/${roomName}/${callID}`);
-            set(callIDRef, {
-              caller: user.uid,
-              callee: callerID,
-              active_prompt: "none",
-              prompt_history: [],
-              created_at: serverTimestamp(),
-            });
-            var endTime = performance.now();
-            console.log(
-              "Time taken to generate call status entry and navigate: " +
-                (endTime - startTime) +
-                " milliseconds."
-            );
-            navigate("/callroom", {
-              state: {
-                callID: callID,
-                roomName: roomName,
-              },
-            });
-          }
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-
   const handleClick = (event, callerID) => {
     event.currentTarget.disabled = true;
-    generateCallStatusEntryAndNavigate(callerID);
+    generateCallStatusEntryAndNavigate(
+      callerID,
+      activeCallsRef,
+      user,
+      navigate
+    );
   };
 
   const handleClickViewProfile = (targetID) => {

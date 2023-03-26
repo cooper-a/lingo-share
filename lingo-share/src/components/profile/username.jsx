@@ -21,8 +21,12 @@ import { updateProfile } from "firebase/auth";
 import { UserAuth } from "../../contexts/AuthContext";
 import EditableControls from "./editablecontrols";
 import InputModal from "../lingoshare-components/inputmodal";
-import { handleBlockUser } from "../../utils/userutils";
+import {
+  handleBlockUser,
+  generateCallStatusEntryAndNavigate,
+} from "../../utils/userutils";
 import SecondaryButton from "../lingoshare-components/secondarybutton";
+import { PhoneIcon } from "@chakra-ui/icons";
 
 export default function UserName({
   blockedUsers,
@@ -52,6 +56,7 @@ export default function UserName({
   const [blockedReason, setBlockedReason] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const isBlocked = params.id in blockedUsers;
+  const activeCallsRef = dbRef(rtdb, "/active_calls");
 
   let isUserFriendRequested = false;
   friendRequests.forEach((request) => {
@@ -90,6 +95,15 @@ export default function UserName({
     handleBlockUser(targetID, blockedReason, user);
     onClose();
     navigate("/profile/" + params.id);
+  };
+
+  const handleClickCallFriend = (callerID) => {
+    generateCallStatusEntryAndNavigate(
+      callerID,
+      activeCallsRef,
+      user,
+      navigate
+    );
   };
 
   let buttonGroupRender = <div></div>;
@@ -139,13 +153,14 @@ export default function UserName({
     buttonGroupRender = (
       <ButtonGroup
         buttonTypeList={["secondary", "secondary"]}
-        textList={[t("Friends"), t("Block User")]}
+        textList={[t("Call"), t("Block User")]}
         isDisabledList={[false, false]}
         onClickList={[
-          () => handleClickManageFriend(params.id, !(params.id in userFriends)),
+          () =>
+            handleClickCallFriend(params.id, activeCallsRef, user, navigate),
           () => handleOpenBlockedReasonInput(),
-        ]} // TODO: block user button functional
-        rightIconList={[<Icon name="check_circle" />, <></>]}
+        ]}
+        rightIconList={[<PhoneIcon />, <></>]}
         spacing={4}
         width={"200px"}
         height={"45px"}
