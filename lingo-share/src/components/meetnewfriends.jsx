@@ -3,21 +3,105 @@ import { UserAuth } from "../contexts/AuthContext";
 import { ref, onValue, get, set, remove, child } from "firebase/database";
 import { rtdb } from "../firebase";
 import { useNavigate } from "react-router-dom";
-import { ChakraProvider, Text } from "@chakra-ui/react";
+import {
+  ChakraProvider,
+  Text,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalFooter,
+  ModalBody,
+} from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import Navbar from "./navbar";
 import CallNotification from "./callnotification";
 import FriendRequest from "./friendrequest";
 import ProfileCard from "./lingoshare-components/profilecard";
 import "../styles/meetfriends.css";
+import PrimaryButton from "./lingoshare-components/primarybutton";
+import TertiaryButton from "./lingoshare-components/tertiarybutton";
 import { mergeObj } from "../utils/userutils";
 
+const FraudConfirmationModal = ({ isOpen, onClose, handleNotShowAgain }) => {
+  const { t } = useTranslation();
+  return (
+    <div>
+      <Modal isCentered onClose={onClose} size={"xl"} isOpen={isOpen}>
+        <ModalOverlay />
+        <ModalContent
+          paddingLeft={"15px"}
+          paddingRight={"15px"}
+          paddingTop={"15px"}
+          borderRadius={"2xl"}
+        >
+          <ModalHeader
+            marginTop={"1rem"}
+            fontSize={"3xl"}
+            fontWeight={"extrabold"}
+            className="font"
+            alignSelf={"center"}
+            marginRight={"auto"}
+          >
+            {t("Before you start making friends...")}
+          </ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <div className="disclaimer-msg">
+              <div>
+                <Text>
+                  {t("Remember that")}{" "}
+                  <span className="bolded-text">
+                    {t("LingoShare is free for everyone!")}
+                  </span>
+                </Text>
+              </div>
+              <div>
+                <Text>
+                  {t(
+                    "Nobody has to pay for anything to use LingoShare. If anyone asks for or demands money, please report their profile immediately."
+                  )}
+                </Text>
+              </div>
+              <div>
+                <Text>{t("Happy chatting!")}</Text>
+              </div>
+            </div>
+          </ModalBody>
+          <ModalFooter
+            marginLeft={"auto"}
+            marginBottom={"1.5rem"}
+            alignSelf={"center"}
+            className="font"
+          >
+            <TertiaryButton
+              text={t("Don't show this again")}
+              onClick={handleNotShowAgain}
+              marginRight={"15px"}
+              width={"150px"}
+            />
+            <PrimaryButton
+              text={t("OK")}
+              marginLeft={"15px"}
+              onClick={onClose}
+              width={"150px"}
+            />
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </div>
+  );
+};
+
 export default function MeetNewFriends() {
+  const { user } = UserAuth();
   const usersRef = ref(rtdb, "/users");
+  const fraudCheckRef = ref(rtdb, "users/" + user.uid + "/fraudCheck");
   const statusRef = ref(rtdb, "/status");
   const friendRequestsRef = ref(rtdb, "/friend_requests");
   const acceptedFriendRequestsRef = ref(rtdb, "/accepted_friend_requests");
-  const { user } = UserAuth();
   const navigate = useNavigate();
   const [statusObj, setStatusObj] = useState([]);
   const [usersObj, setUsersObj] = useState([]);
@@ -27,6 +111,27 @@ export default function MeetNewFriends() {
   const [blockedObj, setBlockedObj] = useState([]);
   const [blockedByObj, setBlockedByObj] = useState([]);
   const { t } = useTranslation();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const handleNotShowAgain = () => {
+    set(fraudCheckRef, true);
+    onClose();
+    navigate("/meetnewfriends");
+  };
+
+  const handlefraudConfirmation = () => {
+    get(fraudCheckRef).then((snapshot) => {
+      if (snapshot.exists()) {
+        if (snapshot.val() === false) {
+          onOpen();
+        }
+      } else {
+        set(fraudCheckRef, false);
+        navigate("/meetnewfriends");
+        onOpen();
+      }
+    });
+  };
 
   const getQuery = (ref) => {
     onValue(ref, (snapshot) => {
@@ -156,6 +261,7 @@ export default function MeetNewFriends() {
     getQuery(usersRef);
     getQuery(acceptedFriendRequestsRef);
     getQuery(friendRequestsRef);
+    handlefraudConfirmation();
   }, [user.uid]);
 
   useEffect(() => {
@@ -177,6 +283,11 @@ export default function MeetNewFriends() {
   return (
     <div>
       <CallNotification />
+      <FraudConfirmationModal
+        isOpen={isOpen}
+        onClose={onClose}
+        handleNotShowAgain={handleNotShowAgain}
+      />
       <Navbar
         topLeftDisplay={t("Meet New Friends")}
         currPage={"/meetnewfriends"}
