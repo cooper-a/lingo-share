@@ -9,8 +9,10 @@ import {
 } from "@chakra-ui/react";
 import "../../styles/card.css";
 import "@fontsource/atkinson-hyperlegible";
-import { rtdb } from "../../firebase";
-import { ref, get, onValue } from "firebase/database";
+import { rtdb, storage } from "../../firebase";
+import { ref, get, onValue, set } from "firebase/database";
+import { updateProfile } from "firebase/auth";
+import { getDownloadURL, ref as storageRef } from "firebase/storage";
 import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../../contexts/AuthContext";
 import Navbar from "../navbar";
@@ -45,6 +47,23 @@ export default function Dashboard() {
     onValue(friendRequestsRef, (snapshot) => {
       setFriendRequestSnapshot(snapshot);
     });
+    // Change profile pic to compressed version if it exists in storage
+    if (user.photoURL && !user.photoURL.includes("profile_150x150")) {
+      console.log("changing to compressed version");
+      getDownloadURL(
+        storageRef(storage, `profile_pics/${user.uid}_profile_150x150`)
+      )
+        .then((url) => {
+          set(ref(rtdb, `users/${user.uid}/profilePic`), url);
+          updateProfile(user, {
+            photoURL: url, // save the compressed photo url to auth context
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+          console.log("Error getting compressed photo url");
+        });
+    }
   }, []);
 
   useEffect(() => {
