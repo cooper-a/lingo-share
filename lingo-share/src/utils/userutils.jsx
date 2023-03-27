@@ -1,12 +1,4 @@
-import {
-  ref,
-  set,
-  get,
-  remove,
-  child,
-  push,
-  serverTimestamp,
-} from "firebase/database";
+import { ref, set, get, remove, child, push } from "firebase/database";
 import { rtdb } from "../firebase";
 
 const mergeObj = (
@@ -286,67 +278,6 @@ const appendRequestSender = (targetID, usersRef, setRequestSenders) => {
     });
 };
 
-async function generateCallStatusEntryAndNavigate(
-  callerID,
-  activeCallsRef,
-  user,
-  navigate
-) {
-  var startTime = performance.now();
-  const uid = user.uid;
-  get(activeCallsRef)
-    .then((snapshot) => {
-      if (snapshot.exists()) {
-        let callExists = false;
-        snapshot.forEach((childSnapshot) => {
-          if (
-            childSnapshot.val().caller === uid ||
-            childSnapshot.val().callee === callerID
-          ) {
-            callExists = true;
-          }
-        });
-        if (!callExists) {
-          const pushData = {
-            caller: uid, // the user who initiated the call will always be caller
-            callee: callerID, // the user who is being called will always be callee
-          };
-          const currActiveCallsRef = push(activeCallsRef, pushData);
-          const callID = currActiveCallsRef.key;
-          const roomName = generateRoomName(uid, callerID);
-          const callIDRef = ref(rtdb, `/calls/${roomName}/${callID}`);
-          set(callIDRef, {
-            caller: uid,
-            callee: callerID,
-            active_prompt: "none",
-            prompt_history: [],
-            created_at: serverTimestamp(),
-          });
-          var endTime = performance.now();
-          console.log(
-            "Time taken to generate call status entry and navigate: " +
-              (endTime - startTime) +
-              " milliseconds."
-          );
-          navigate("/callroom", {
-            state: {
-              callID: callID,
-              roomName: roomName,
-            },
-          });
-        }
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-}
-
-const generateRoomName = (uid, callerID) => {
-  let roomNameInList = [uid, callerID];
-  return roomNameInList.sort().join(""); // room name will be the concatenation of the two user IDs sorted alphabetically
-};
-
 export {
   mergeObj,
   handleAcceptRequest,
@@ -355,6 +286,4 @@ export {
   handleReportUser,
   handleUnblockUser,
   extractRequestSenderID,
-  generateCallStatusEntryAndNavigate,
-  generateRoomName,
 };

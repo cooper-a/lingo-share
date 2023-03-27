@@ -187,14 +187,7 @@ export default function ProfilePage() {
       });
       setIncomingRequest(isRequestIncoming);
     });
-  }, [
-    incomingRequestsRef,
-    targetUserRef,
-    user,
-    userRef,
-    userStatusRef,
-    userFriendRequestsRef,
-  ]);
+  }, []);
 
   return (
     <div>
