@@ -3,30 +3,75 @@ import {
   Editable,
   EditableInput,
   EditablePreview,
+  Modal,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
-import Icon from "@adeira/icons";
 import "@fontsource/atkinson-hyperlegible";
-import "../../styles/profilepage.css";
-import ProfilePicture from "../profilepicture";
-import ButtonGroup from "../lingoshare-components/buttongroup";
+import { updateProfile } from "firebase/auth";
+import { ref as dbRef, set } from "firebase/database";
+import { getDownloadURL, ref as storageRef } from "firebase/storage";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { getDownloadURL, ref as storageRef } from "firebase/storage";
-import { rtdb, storage } from "../../firebase";
-import { ref as dbRef, set } from "firebase/database";
-import { updateProfile } from "firebase/auth";
 import { UserAuth } from "../../contexts/AuthContext";
-import EditableControls from "./editablecontrols";
-import InputModal from "../lingoshare-components/inputmodal";
+import { rtdb, storage } from "../../firebase";
+import "../../styles/profilepage.css";
 import {
-  handleBlockUser,
   generateCallStatusEntryAndNavigate,
+  handleBlockUser,
 } from "../../utils/userutils";
+import ButtonGroup from "../lingoshare-components/buttongroup";
+import InputModal from "../lingoshare-components/inputmodal";
+import PrimaryButton from "../lingoshare-components/primarybutton";
 import SecondaryButton from "../lingoshare-components/secondarybutton";
-import { PhoneIcon } from "@chakra-ui/icons";
+import ProfilePicture from "../profilepicture";
+import EditableControls from "./editablecontrols";
+
+const ConfirmationModal = ({
+  isOpen,
+  displayName,
+  handleCallConfirm,
+  userId,
+  onClose,
+  activeCallsRef,
+  user,
+  navigate,
+}) => {
+  const { t } = useTranslation();
+  return (
+    <div>
+      <Modal isCentered onClose={onClose} size={"md"} isOpen={isOpen}>
+        <ModalOverlay />
+        <ModalContent borderRadius={"2xl"}>
+          <ModalHeader marginTop={"1rem"} className="font" alignSelf={"center"}>
+            {t("Call ") + displayName + "?"}
+          </ModalHeader>
+          <ModalFooter marginBottom={"1.5rem"} alignSelf={"center"}>
+            <PrimaryButton
+              text={t("Yes")}
+              marginRight={"15px"}
+              onClick={() =>
+                handleCallConfirm(userId, activeCallsRef, user, navigate)
+              }
+              width={"150px"}
+            />
+            <SecondaryButton
+              text={t("No")}
+              onClick={onClose}
+              marginleft={"15px"}
+              width={"150px"}
+            />
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </div>
+  );
+};
 
 export default function UserName({
   blockedUsers,
@@ -55,6 +100,11 @@ export default function UserName({
   const navigate = useNavigate();
   const [blockedReason, setBlockedReason] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isOpenCallModal,
+    onOpen: onOpenCallModal,
+    onClose: onCloseCallModal,
+  } = useDisclosure();
   const isBlocked = params.id in blockedUsers;
   const activeCallsRef = dbRef(rtdb, "/active_calls");
 
@@ -149,18 +199,36 @@ export default function UserName({
         marginLeft={"48px"}
       />
     );
-  } else if (params.id in userFriends) {
+  } else if (params.id in userFriends && isOnline === "online") {
     buttonGroupRender = (
       <ButtonGroup
-        buttonTypeList={["secondary", "secondary"]}
+        buttonTypeList={["primary", "secondary"]}
         textList={[t("Call"), t("Block User")]}
         isDisabledList={[false, false]}
+        onClickList={[
+          () => onOpenCallModal(),
+          () => handleOpenBlockedReasonInput(),
+        ]}
+        rightIconList={[<></>, <></>]}
+        spacing={4}
+        width={"200px"}
+        height={"45px"}
+        marginTop={"10px"}
+        marginLeft={"48px"}
+      />
+    );
+  } else if (params.id in userFriends && isOnline === "offline") {
+    buttonGroupRender = (
+      <ButtonGroup
+        buttonTypeList={["primary", "secondary"]}
+        textList={[t("Call"), t("Block User")]}
+        isDisabledList={[true, false]}
         onClickList={[
           () =>
             handleClickCallFriend(params.id, activeCallsRef, user, navigate),
           () => handleOpenBlockedReasonInput(),
         ]}
-        rightIconList={[<PhoneIcon />, <></>]}
+        rightIconList={[<></>, <></>]}
         spacing={4}
         width={"200px"}
         height={"45px"}
@@ -187,9 +255,18 @@ export default function UserName({
     );
   }
 
-  console.log(blockedReason);
   return (
     <div className="profile-pic">
+      <ConfirmationModal
+        isOpen={isOpenCallModal}
+        onClose={onCloseCallModal}
+        handleCallConfirm={handleClickCallFriend}
+        displayName={displayName}
+        userId={params.id}
+        activeCallsRef={activeCallsRef}
+        user={user}
+        navigate={navigate}
+      />
       <InputModal
         onClose={onClose}
         isOpen={isOpen}
