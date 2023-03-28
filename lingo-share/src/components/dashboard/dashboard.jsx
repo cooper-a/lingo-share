@@ -51,12 +51,13 @@ export default function Dashboard() {
     if (
       user.photoURL &&
       !user.photoURL.includes("profile_150x150") &&
-      !user.photoURL.includes("profile_250x250")
+      !user.photoURL.includes("profile_250x250") &&
+      !user.photoURL.includes("profile_500x500")
     ) {
       console.log("changing to compressed version");
       console.log(user.photoURL);
       getDownloadURL(
-        storageRef(storage, `profile_pics/${user.uid}_profile_250x250`)
+        storageRef(storage, `profile_pics/${user.uid}_profile_500x500`)
       )
         .then((url) => {
           set(ref(rtdb, `users/${user.uid}/profilePic`), url);
