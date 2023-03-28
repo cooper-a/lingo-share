@@ -171,7 +171,7 @@ export default function UserName({
     );
   }
 
-  console.log(blockedReason);
+  // console.log(blockedReason);
   return (
     <div className="profile-pic">
       <InputModal

@@ -48,10 +48,15 @@ export default function Dashboard() {
       setFriendRequestSnapshot(snapshot);
     });
     // Change profile pic to compressed version if it exists in storage
-    if (user.photoURL && !user.photoURL.includes("profile_150x150")) {
+    if (
+      user.photoURL &&
+      !user.photoURL.includes("profile_150x150") &&
+      !user.photoURL.includes("profile_250x250")
+    ) {
       console.log("changing to compressed version");
+      console.log(user.photoURL);
       getDownloadURL(
-        storageRef(storage, `profile_pics/${user.uid}_profile_150x150`)
+        storageRef(storage, `profile_pics/${user.uid}_profile_250x250`)
       )
         .then((url) => {
           set(ref(rtdb, `users/${user.uid}/profilePic`), url);
