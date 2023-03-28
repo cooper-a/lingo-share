@@ -138,7 +138,6 @@ export default function ProfilePage() {
   useEffect(() => {
     onValue(targetUserRef, (snapshot) => {
       let snapshotVal = snapshot.val();
-      console.log(snapshotVal);
       setDisplayName(snapshotVal.userDisplayName);
       setProfilePicURL(snapshotVal.profilePic);
       setUserType(snapshotVal.userType);
@@ -151,7 +150,6 @@ export default function ProfilePage() {
     });
     onValue(userRef, (snapshot) => {
       let snapshotVal = snapshot.val();
-      console.log(snapshotVal);
       if (!snapshotVal) return;
       setUserFriends(snapshotVal.friends);
       if (!snapshotVal.friends) {
@@ -180,7 +178,6 @@ export default function ProfilePage() {
       // profile that they are viewing)
       let isRequestIncoming = false;
       snapshot.forEach((childSnapshot) => {
-        console.log(childSnapshot.key);
         if (childSnapshot.key === user.uid) {
           isRequestIncoming = true;
         }

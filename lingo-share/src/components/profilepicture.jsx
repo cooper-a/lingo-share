@@ -19,8 +19,8 @@ export default function ProfilePicture({ saveCompressedPhotoURL }) {
     uploadBytes(fileRef, file).then((snapshot) => {
       setLoading(false);
       setPhotoBinary(null);
-      console.log("Uploaded a profile pic!");
       saveCompressedPhotoURL();
+      console.log("Uploaded a profile pic!");
     });
   };
 
