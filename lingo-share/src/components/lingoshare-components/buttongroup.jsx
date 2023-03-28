@@ -16,7 +16,6 @@ export default function ButtonGroup({
   width,
   height,
 }) {
-  console.log(isDisabledList);
   return (
     <Stack
       direction={"row"}

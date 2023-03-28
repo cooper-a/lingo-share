@@ -117,9 +117,7 @@ export default function UserName({
   });
 
   const saveCompressedPhotoURL = () => {
-    getDownloadURL(
-      storageRef(storage, `profile_pics/${user.uid}_profile_150x150`)
-    )
+    getDownloadURL(storageRef(storage, `profile_pics/${user.uid}_profile`))
       .then((url) => {
         setPfp(url);
         set(dbRef(rtdb, `users/${user.uid}/profilePic`), url);
@@ -130,6 +128,7 @@ export default function UserName({
       })
       .catch((error) => {
         console.log(error);
+        console.log("Error getting compressed photo url");
       });
     setAlertText(
       t("Your profile picture was updated, please refresh to see changes")
@@ -255,6 +254,7 @@ export default function UserName({
     );
   }
 
+  // console.log(blockedReason);
   return (
     <div className="profile-pic">
       <ConfirmationModal

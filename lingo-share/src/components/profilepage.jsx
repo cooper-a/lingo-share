@@ -178,7 +178,10 @@ export default function ProfilePage() {
       // profile that they are viewing)
       let isRequestIncoming = false;
       snapshot.forEach((childSnapshot) => {
+<<<<<<< HEAD
         // console.log(childSnapshot.key);
+=======
+>>>>>>> main
         if (childSnapshot.key === user.uid) {
           isRequestIncoming = true;
         }
