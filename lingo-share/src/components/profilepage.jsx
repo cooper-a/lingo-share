@@ -184,7 +184,7 @@ export default function ProfilePage() {
       });
       setIncomingRequest(isRequestIncoming);
     });
-  }, []);
+  }, [user]);
 
   return (
     <div>

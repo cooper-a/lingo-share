@@ -74,7 +74,7 @@ export default function Room({ roomName, room, handleLogout, callID }) {
       setPreferredLanguage(snapshotVal.language);
     });
     toggleOpenPopover();
-  }, []);
+  }, [targetUserRef]);
 
   useEffect(() => {
     // Here we define what happens when a remote participant joins
@@ -120,7 +120,7 @@ export default function Room({ roomName, room, handleLogout, callID }) {
       room.off("participantDisconnected", participantDisconnected);
       clearInterval(interval);
     };
-  }, [room, preferredLanguage, activePrompt]);
+  }, [room, preferredLanguage, activePrompt, activePromptRef]);
 
   const handleCallDisconnect = () => {
     const languageRef = ref(rtdb, `users/${user.uid}/language`);
