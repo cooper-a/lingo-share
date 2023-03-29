@@ -31,8 +31,6 @@ export default function Sidebar({
   const [homeList, setHomeList] = useState([]);
   const [displayList, setDiplayList] = useState([]);
 
-  console.log(homeList);
-
   useEffect(() => {
     let hl = Object.keys(prompts);
     setHomeList(hl);
