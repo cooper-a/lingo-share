@@ -1,20 +1,43 @@
-# LingoShare
+![LingoShare banner](/readme_assets/banner.png)
 
-Deployed live at [lingoshare.ca](https://lingoshare.ca)
+[lingoshare.ca](https://lingoshare.ca)
 
-Lingoshare is a platform that connects older adult native Mandarin speakers with younger adult language learners through interactive, prompt-based video calls and language learning activities.
+## LingoShare
 
-Coming soon - Currently in development
+Lingoshare is a platform that connects older adult Chinese-Canadian Mandarin speakers with young adult language learners to share language and culture. It offers an easy and convenient way for Mandarin learners to practice speaking and listening skills with native speakers through a video calling experience.
+
+Lingoshare was created for the University of Waterloo Systems Design Engineering Final Year Design Project (FYDP) and was awarded with the Ojala Social Impact Award.
+
+## Features
+
+
+* **Meet New Friends:** Meet new people, connect with others on the platform, and form friendships!
+* **Topic-Based Video Chat:**  Engage in conversations, practice language, learn something new. When you don't know what to talk about use the topic sidebar to get some ideas!
+* **Community:** Join a community of language learners and native speakers.
+* **Free:**  The platform is completely free to use.
+
+## Team
+* **[Justin Qiao](https://github.com/jqiao26)** - 
+  Software Engineer (Frontend Lead)
+
+* **[Cooper Ang](https://github.com/cooper-a)** - 
+  Software Engineer (Backend Lead)
+
+* **[Mark Xue](https://github.com/Markxue923)** - 
+  Software Engineer
+
+* **[Seth Morenos](https://www.sethvm.com/)** - Design Lead
+
+## Development Guide
+
+### Directories
 
 `./lingo-share` contains all the front-end client code (built in React)
 
 `./lingoshare_cloud_functions` contains a Firebase Cloud Functions to issue Twilio API tokens for the application, and other functions that do deleting or adding based on database events
 
+### Quick Start:
 
-## Development Guide
-
-Dependencies:
-
-Windows: Install Node Version Manager (https://github.com/coreybutler/nvm-windows/releases)
-`nvm install 16`  
-Inside the `lingo-share/lingo`-share directory use `npm install`  
+1. Windows: Install Node Version Manager (https://github.com/coreybutler/nvm-windows/releases) `nvm install 16`
+1. Inside the `/lingo-share` directory `npm install` to download dependencies
+1. Run `npm start` to start the development server
