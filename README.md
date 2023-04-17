@@ -1,18 +1,19 @@
 ![LingoShare banner](/readme_assets/banner.png)
 
-[lingoshare.ca](https://lingoshare.ca)
+# [LingoShare](https://lingoshare.ca)
 
-## LingoShare
-
+## About
 Lingoshare is a platform that connects older adult Chinese-Canadian Mandarin speakers with young adult language learners to share language and culture. It offers an easy and convenient way for Mandarin learners to practice speaking and listening skills with native speakers through a video calling experience.
 
 Lingoshare was created for the University of Waterloo Systems Design Engineering Final Year Design Project (FYDP) and was awarded with the Ojala Social Impact Award.
 
 ## Features
 
-
-* **Meet New Friends:** Meet new people, connect with others on the platform, and form friendships!
-* **Topic-Based Video Chat:**  Engage in conversations, practice language, learn something new. When you don't know what to talk about use the topic sidebar to get some ideas!
+* **Meet New Friends:** Discover new people and form friendships!
+* **Customizable Profiles:** Express yourself with customizable profiles.
+* **Topic-Based Video Chat:**  Engage in conversations, practice language, learn something new. When you don't know what to talk about use the topic sidebar to get some ideas! (shown in English, Mandarin, or Pinyin)
+* **English and Mandarin Interface:** Easily toggle between simplified Chinese characters and English.
+* **Accessibility:** Built from the ground up to be accessible and easy to use using UI/UX best practices.
 * **Community:** Join a community of language learners and native speakers.
 * **Free:**  The platform is completely free to use.
 
@@ -41,3 +42,7 @@ Lingoshare was created for the University of Waterloo Systems Design Engineering
 1. Windows: Install Node Version Manager (https://github.com/coreybutler/nvm-windows/releases) `nvm install 16`
 1. Inside the `/lingo-share` directory `npm install` to download dependencies
 1. Run `npm start` to start the development server
+
+## Feedback
+
+We welcome your feedback on LingoShare. Please feel free to contact us with any comments, suggestions or feedback you may have. Also feel free to create a github issue or PR for any platform enhancements!
