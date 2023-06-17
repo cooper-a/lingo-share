@@ -2,6 +2,7 @@
 
 # [LingoShare](https://lingoshare.ca)
 ### [lingoshare.ca](https://lingoshare.ca)
+### [Ojala Social Impact Award Winners](https://uwaterloo.ca/systems-design-engineering/news/2023-award-winning-capstone-design-teams)
 
 ## About
 Lingoshare is a platform that connects older adult Chinese-Canadian Mandarin speakers with young adult language learners to share language and culture. It offers an easy and convenient way for Mandarin learners to practice speaking and listening skills with native speakers through a video calling experience.
